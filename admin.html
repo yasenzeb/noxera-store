@@ -721,19 +721,29 @@
 
   // ─── IMAGE UPLOAD ────────────────────────────────────
   async function uploadImage(file, type) {
-    const formData = new FormData();
-    formData.append('file', file);
     try {
-      const res = await fetch('/api/upload', { method:'POST', body:formData });
+      // Convert file to base64
+      const base64 = await new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload  = () => resolve(r.result);
+        r.onerror = reject;
+        r.readAsDataURL(file);
+      });
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: base64, fileName: file.name })
+      });
       const data = await res.json();
       if (data.success) {
         if (type === 'add') newProductImageUrl = data.url;
         else editProductImageUrl = data.url;
         toast('✓ تم رفع الصورة', 'success');
       } else {
-        toast('فشل رفع الصورة', 'error');
+        toast('فشل رفع الصورة: ' + (data.error || ''), 'error');
       }
-    } catch(e) { toast('خطأ في رفع الصورة', 'error'); }
+    } catch(e) { toast('خطأ في رفع الصورة: ' + e.message, 'error'); }
   }
 
   // ─── DISCOUNT TOGGLE ────────────────────────────────

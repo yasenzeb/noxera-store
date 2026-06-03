@@ -1,49 +1,4 @@
-<<<<<<< HEAD
 import { createClient } from '@supabase/supabase-js';
-import formidable from 'formidable';
-import fs from 'fs';
-
-export const config = { api: { bodyParser: false } };
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-
-export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(204).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
-
-  const form = formidable({ maxFileSize: 5 * 1024 * 1024 });
-  form.parse(req, async (err, fields, files) => {
-    if (err) return res.status(400).json({ error: err.message });
-    const file = files.file?.[0] || files.file;
-    if (!file) return res.status(400).json({ error: 'No file uploaded' });
-
-    const ext = file.originalFilename?.split('.').pop() || 'jpg';
-    const fileName = `product_${Date.now()}.${ext}`;
-    const fileBuffer = fs.readFileSync(file.filepath);
-
-    const { data, error } = await supabase.storage.from('products').upload(fileName, fileBuffer, {
-      contentType: file.mimetype || 'image/jpeg',
-      upsert: true
-    });
-
-    if (error) return res.status(500).json({ error: error.message });
-
-    const { data: { publicUrl } } = supabase.storage.from('products').getPublicUrl(fileName);
-    return res.status(200).json({ success: true, url: publicUrl });
-  });
-}
-=======
-import { createClient } from '@supabase/supabase-js';
-import formidable from 'formidable';
-import fs from 'fs';
-
-export const config = {
-  api: {
-    bodyParser: false
-  }
-};
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -52,68 +7,41 @@ const supabase = createClient(
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(204).end();
+  if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'POST only' });
 
-  if (req.method === 'OPTIONS') {
-    return res.status(204).end();
-  }
+  try {
+    const { data: base64Data, fileName } = req.body;
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({
-      error: 'POST only'
-    });
-  }
-
-  const form = formidable({
-    maxFileSize: 5 * 1024 * 1024
-  });
-
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      return res.status(400).json({
-        error: err.message
-      });
+    if (!base64Data || !fileName) {
+      return res.status(400).json({ success: false, error: 'data و fileName مطلوبان' });
     }
 
-    const file = files.file?.[0] || files.file;
+    // استخراج mime type والـ buffer من base64
+    const matches = base64Data.match(/^data:(.+);base64,(.+)$/);
+    if (!matches) return res.status(400).json({ success: false, error: 'base64 format invalid' });
 
-    if (!file) {
-      return res.status(400).json({
-        error: 'No file'
-      });
-    }
+    const mimeType  = matches[1];
+    const buffer    = Buffer.from(matches[2], 'base64');
+    const ext       = fileName.split('.').pop().toLowerCase() || 'jpg';
+    const uniqueName = `product_${Date.now()}_${Math.random().toString(36).slice(2,7)}.${ext}`;
 
-    const ext =
-      file.originalFilename?.split('.').pop() || 'jpg';
-
-    const fileName = `product_${Date.now()}.${ext}`;
-
-    const fileBuffer = fs.readFileSync(file.filepath);
-
-    const { error } = await supabase
-      .storage
+    const { error } = await supabase.storage
       .from('products')
-      .upload(fileName, fileBuffer, {
-        contentType: file.mimetype || 'image/jpeg',
-        upsert: true
-      });
+      .upload(uniqueName, buffer, { contentType: mimeType, upsert: false });
 
-    if (error) {
-      return res.status(500).json({
-        error: error.message
-      });
-    }
+    if (error) throw error;
 
-    const {
-      data: { publicUrl }
-    } = supabase
-      .storage
+    const { data: { publicUrl } } = supabase.storage
       .from('products')
-      .getPublicUrl(fileName);
+      .getPublicUrl(uniqueName);
 
-    return res.status(200).json({
-      success: true,
-      url: publicUrl
-    });
-  });
+    return res.status(200).json({ success: true, url: publicUrl });
+
+  } catch (err) {
+    console.error('[API /upload]', err);
+    return res.status(500).json({ success: false, error: err.message });
+  }
 }
->>>>>>> c7586527e87ac2c1896002347d53f281f19455df
