@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOXERA — المنتج</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg:#1B191A; --cream:#E9E4E0; --rust:#943A1F; --card:#141213; --border:rgba(148,58,31,0.2); }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--cream); font-family:'Cairo',sans-serif; }
+
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      background:#141213; border-bottom:1px solid var(--border);
+      padding:0 2rem; height:64px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .nav-logo img { height:36px; object-fit:contain; }
+    .nav-logo span { font-family:'Bebas Neue'; font-size:1.6rem; color:var(--cream); letter-spacing:3px; }
+    .nav-links { display:flex; align-items:center; gap:2rem; }
+    .nav-links a { color:var(--cream); text-decoration:none; font-family:'Bebas Neue'; font-size:1rem; letter-spacing:2px; opacity:0.7; transition:opacity 0.3s,color 0.3s; }
+    .nav-links a:hover { opacity:1; color:var(--rust); }
+    .cart-icon { position:relative; }
+    .cart-badge { position:absolute; top:-8px; right:-8px; background:var(--rust); color:white; font-family:'Space Mono'; font-size:10px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+
+    .product-page {
+      min-height:100vh; padding-top:64px;
+      display:flex; align-items:center;
+    }
+    .product-inner {
+      max-width:1100px; margin:0 auto; padding:4rem 2rem;
+      display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start;
+    }
+    .product-img-wrap {
+      position:relative; aspect-ratio:3/4; background:var(--card);
+      border:1px solid var(--border); overflow:hidden;
+    }
+    .product-img-wrap img { width:100%; height:100%; object-fit:cover; }
+    .product-img-placeholder {
+      width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,0.07);
+    }
+    .product-img-placeholder i { font-size:6rem; }
+
+    .product-details { padding-top:1rem; }
+    .product-cat { font-family:'Space Mono'; font-size:0.7rem; color:var(--rust); letter-spacing:3px; text-transform:uppercase; margin-bottom:1rem; }
+    .product-title { font-family:'Bebas Neue'; font-size:clamp(2.5rem,5vw,4rem); color:var(--cream); letter-spacing:2px; line-height:1; margin-bottom:1.5rem; }
+    .product-price-wrap { display:flex; align-items:center; gap:1rem; margin-bottom:2rem; }
+    .product-final-price { font-family:'Space Mono'; font-size:2rem; color:var(--rust); font-weight:700; }
+    .product-old-price { font-family:'Space Mono'; font-size:1.2rem; color:#555; text-decoration:line-through; }
+    .product-desc { font-family:'Cairo'; font-size:0.95rem; color:var(--cream); opacity:0.55; line-height:1.8; margin-bottom:2.5rem; }
+
+    .actions { display:flex; flex-direction:column; gap:1rem; }
+    .btn-primary {
+      background:var(--rust); color:var(--cream);
+      padding:16px 32px; border:none; border-radius:100px;
+      font-family:'Bebas Neue'; font-size:1.1rem; letter-spacing:3px;
+      cursor:pointer; transition:background 0.3s, transform 0.2s;
+    }
+    .btn-primary:hover { background:#b5491e; transform:scale(1.02); }
+    .btn-secondary {
+      background:transparent; color:var(--cream);
+      padding:16px 32px; border:1px solid var(--border); border-radius:100px;
+      font-family:'Bebas Neue'; font-size:1.1rem; letter-spacing:3px;
+      cursor:pointer; transition:border-color 0.3s, transform 0.2s;
+    }
+    .btn-secondary:hover { border-color:var(--rust); color:var(--rust); transform:scale(1.02); }
+
+    .back-link {
+      display:inline-flex; align-items:center; gap:8px;
+      color:var(--cream); opacity:0.4; text-decoration:none;
+      font-family:'Bebas Neue'; font-size:0.9rem; letter-spacing:2px;
+      margin-bottom:2rem; transition:opacity 0.3s;
+    }
+    .back-link:hover { opacity:1; }
+
+    .empty-page { min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding-top:64px; }
+    .empty-page h2 { font-family:'Bebas Neue'; font-size:3rem; color:var(--cream); opacity:0.3; letter-spacing:3px; }
+
+    @media (max-width:768px) {
+      .product-inner { grid-template-columns:1fr; gap:2rem; padding:2rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="logo.png" alt="NOXERA" onerror="this.style.display='none'">
+    <span>NOXERA</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">HOME</a>
+    <a href="index.html#shop">SHOP</a>
+    <a href="cart.html" class="cart-icon">
+      <i class="fas fa-shopping-bag"></i>
+      <span class="cart-badge" id="cartBadge" style="display:none">1</span>
+    </a>
+  </div>
+</nav>
+
+<div id="pageContent"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+  const name  = localStorage.getItem('selectedProduct') || '';
+  const price = localStorage.getItem('selectedPrice') || '';
+  const img   = localStorage.getItem('selectedImg') || '';
+  const id    = localStorage.getItem('selectedId') || '';
+
+  // Cart badge
+  if (localStorage.getItem('selectedProduct')) {
+    const b = document.getElementById('cartBadge');
+    if (b) b.style.display = 'flex';
+  }
+
+  if (!name) {
+    document.getElementById('pageContent').innerHTML = `
+      <div class="empty-page">
+        <div>
+          <h2>لم يتم اختيار منتج</h2>
+          <a href="index.html" style="display:inline-block;margin-top:1.5rem;font-family:'Bebas Neue';font-size:1rem;letter-spacing:3px;color:#943A1F;text-decoration:none;">← العودة للمتجر</a>
+        </div>
+      </div>`;
+  } else {
+    document.getElementById('pageContent').innerHTML = `
+      <section class="product-page">
+        <div class="product-inner">
+          <div class="product-img-wrap">
+            ${img
+              ? `<img src="${img}" alt="${name}">`
+              : `<div class="product-img-placeholder"><i class="fas fa-tshirt"></i></div>`}
+          </div>
+          <div class="product-details">
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-right"></i> العودة للمتجر</a>
+            <div class="product-cat">NOXERA COLLECTION</div>
+            <h1 class="product-title">${name}</h1>
+            <div class="product-price-wrap">
+              <span class="product-final-price">${price} ج.م</span>
+            </div>
+            <p class="product-desc">
+              قطعة مميزة من كولكشن NOXERA — تصميم عصري بخامات عالية الجودة. 
+              ستايل مختلف يناسب كل المناسبات.
+            </p>
+            <div class="actions">
+              <button class="btn-primary" onclick="buyNow()">اشتري الآن — ${price} ج.م</button>
+              <button class="btn-secondary" onclick="addToCart()">أضف للسلة</button>
+            </div>
+          </div>
+        </div>
+      </section>`;
+
+    gsap.from(".product-img-wrap", { opacity:0, x:-40, duration:0.8, ease:"power3.out" });
+    gsap.from(".product-details", { opacity:0, x:40, duration:0.8, ease:"power3.out", delay:0.15 });
+  }
+
+  function addToCart() {
+    // Already saved in localStorage from index
+    showToast('✓ تمت إضافة المنتج للسلة');
+    setTimeout(() => window.location.href = 'cart.html', 800);
+  }
+
+  function buyNow() {
+    window.location.href = 'checkout.html';
+  }
+
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.style.cssText = `position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#943A1F;color:#E9E4E0;padding:12px 28px;border-radius:100px;font-family:'Bebas Neue';font-size:1rem;letter-spacing:2px;z-index:9999;`;
+    t.innerText = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 2500);
+  }
+</script>
+</body>
+</html>

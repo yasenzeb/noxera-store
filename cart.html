@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOXERA — السلة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg:#1B191A; --cream:#E9E4E0; --rust:#943A1F; --card:#141213; --border:rgba(148,58,31,0.2); }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--cream); font-family:'Cairo',sans-serif; min-height:100vh; }
+
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      background:#141213; border-bottom:1px solid var(--border);
+      padding:0 2rem; height:64px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .nav-logo img { height:36px; object-fit:contain; }
+    .nav-logo span { font-family:'Bebas Neue'; font-size:1.6rem; color:var(--cream); letter-spacing:3px; }
+    .nav-links { display:flex; align-items:center; gap:2rem; }
+    .nav-links a { color:var(--cream); text-decoration:none; font-family:'Bebas Neue'; font-size:1rem; letter-spacing:2px; opacity:0.7; transition:opacity 0.3s,color 0.3s; }
+    .nav-links a:hover { opacity:1; color:var(--rust); }
+
+    .page-wrap {
+      min-height:100vh; padding-top:64px;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .cart-inner { max-width:900px; width:100%; margin:0 auto; padding:4rem 2rem; }
+
+    .page-label { font-family:'Space Mono'; font-size:0.7rem; color:var(--rust); letter-spacing:4px; margin-bottom:0.8rem; }
+    .page-title { font-family:'Bebas Neue'; font-size:clamp(3rem,7vw,6rem); color:var(--cream); letter-spacing:3px; line-height:1; margin-bottom:3rem; }
+
+    /* EMPTY STATE */
+    .empty-cart {
+      text-align:center; padding:5rem 1rem;
+      border:1px solid var(--border); border-radius:4px; background:var(--card);
+    }
+    .empty-cart i { font-size:4rem; color:var(--rust); opacity:0.3; margin-bottom:1.5rem; display:block; }
+    .empty-cart h3 { font-family:'Bebas Neue'; font-size:2rem; color:var(--cream); opacity:0.4; letter-spacing:3px; margin-bottom:0.5rem; }
+    .empty-cart p { font-family:'Cairo'; font-size:0.9rem; color:var(--cream); opacity:0.3; margin-bottom:2rem; }
+    .btn-shop {
+      display:inline-block; background:var(--rust); color:var(--cream);
+      padding:12px 36px; border-radius:100px;
+      font-family:'Bebas Neue'; font-size:1rem; letter-spacing:3px;
+      text-decoration:none; transition:background 0.3s;
+    }
+    .btn-shop:hover { background:#b5491e; }
+
+    /* CART ITEM */
+    .cart-item {
+      display:grid; grid-template-columns:120px 1fr auto;
+      gap:1.5rem; align-items:center;
+      background:var(--card); border:1px solid var(--border);
+      border-radius:4px; padding:1.5rem;
+      margin-bottom:1rem;
+    }
+    .cart-item-img {
+      aspect-ratio:3/4; background:#1a1718; overflow:hidden; border-radius:2px;
+    }
+    .cart-item-img img { width:100%; height:100%; object-fit:cover; }
+    .cart-item-img .no-img { width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.1); }
+    .cart-item-name { font-family:'Bebas Neue'; font-size:1.5rem; color:var(--cream); letter-spacing:2px; margin-bottom:0.4rem; }
+    .cart-item-price { font-family:'Space Mono'; color:var(--rust); font-size:1.1rem; font-weight:700; }
+    .cart-item-label { font-family:'Cairo'; font-size:0.75rem; color:var(--cream); opacity:0.35; margin-bottom:0.3rem; }
+
+    .delete-btn {
+      background:transparent; border:1px solid rgba(255,0,0,0.15);
+      color:rgba(255,80,80,0.5); padding:8px 12px; border-radius:4px;
+      cursor:pointer; transition:all 0.3s; font-size:1rem; align-self:flex-start;
+    }
+    .delete-btn:hover { border-color:rgba(255,80,80,0.5); color:rgba(255,80,80,0.9); background:rgba(255,0,0,0.05); }
+
+    /* SUMMARY */
+    .cart-summary {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:4px; padding:1.5rem 2rem;
+      display:flex; align-items:center; justify-content:space-between;
+      margin-top:1.5rem; flex-wrap:wrap; gap:1.5rem;
+    }
+    .summary-total-label { font-family:'Space Mono'; font-size:0.7rem; color:var(--cream); opacity:0.4; letter-spacing:2px; margin-bottom:0.3rem; }
+    .summary-total-val { font-family:'Bebas Neue'; font-size:2.5rem; color:var(--rust); letter-spacing:2px; }
+
+    .btn-checkout {
+      background:var(--rust); color:var(--cream);
+      padding:16px 40px; border:none; border-radius:100px;
+      font-family:'Bebas Neue'; font-size:1.1rem; letter-spacing:3px;
+      cursor:pointer; text-decoration:none; display:inline-block;
+      transition:background 0.3s, transform 0.2s;
+    }
+    .btn-checkout:hover { background:#b5491e; transform:scale(1.03); }
+
+    @media(max-width:640px){
+      .cart-item { grid-template-columns:90px 1fr; }
+      .delete-btn { grid-column:1/-1; width:fit-content; }
+      .cart-summary { flex-direction:column; align-items:flex-start; }
+      nav { padding:0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="logo.png" alt="NOXERA" onerror="this.style.display='none'">
+    <span>NOXERA</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">HOME</a>
+    <a href="index.html#shop">SHOP</a>
+    <a href="cart.html" style="color:var(--rust);opacity:1"><i class="fas fa-shopping-bag"></i></a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <div class="cart-inner">
+    <div class="page-label">MY BAG</div>
+    <h1 class="page-title">CART</h1>
+    <div id="cartContent"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+  function renderCart() {
+    const name  = localStorage.getItem('selectedProduct');
+    const price = localStorage.getItem('selectedPrice');
+    const img   = localStorage.getItem('selectedImg');
+    const container = document.getElementById('cartContent');
+
+    if (!name) {
+      container.innerHTML = `
+        <div class="empty-cart">
+          <i class="fas fa-shopping-bag"></i>
+          <h3>السلة فارغة</h3>
+          <p>لم تضف أي منتجات بعد</p>
+          <a href="index.html#shop" class="btn-shop">تصفح المنتجات</a>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="cart-item" id="cartItem">
+        <div class="cart-item-img">
+          ${img
+            ? `<img src="${img}" alt="${name}">`
+            : `<div class="no-img"><i class="fas fa-tshirt" style="font-size:2.5rem"></i></div>`}
+        </div>
+        <div>
+          <div class="cart-item-label">NOXERA COLLECTION</div>
+          <div class="cart-item-name">${name}</div>
+          <div class="cart-item-price">${price} ج.م</div>
+        </div>
+        <button class="delete-btn" onclick="clearCart()" title="حذف">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+
+      <div class="cart-summary">
+        <div>
+          <div class="summary-total-label">TOTAL</div>
+          <div class="summary-total-val">${price} ج.م</div>
+        </div>
+        <a href="checkout.html" class="btn-checkout">
+          استكمال الطلب <i class="fas fa-arrow-left" style="margin-right:8px"></i>
+        </a>
+      </div>`;
+
+    gsap.from(".cart-item", { opacity:0, y:30, duration:0.6, ease:"power3.out" });
+    gsap.from(".cart-summary", { opacity:0, y:20, duration:0.5, ease:"power3.out", delay:0.15 });
+  }
+
+  function clearCart() {
+    gsap.to("#cartItem", {
+      opacity:0, x:60, duration:0.4, ease:"power2.in",
+      onComplete: () => {
+        localStorage.removeItem('selectedProduct');
+        localStorage.removeItem('selectedPrice');
+        localStorage.removeItem('selectedImg');
+        localStorage.removeItem('selectedId');
+        renderCart();
+      }
+    });
+  }
+
+  renderCart();
+</script>
+</body>
+</html>
