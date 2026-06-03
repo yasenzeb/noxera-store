@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -760,3 +761,155 @@
 </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>NOXERA ADMIN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin:0;
+  font-family:'Cairo';
+  background:#1B191A;
+  color:#E9E4E0;
+}
+
+.login {
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+
+input {
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #943A1F;
+  background:#141213;
+  color:#E9E4E0;
+  margin:10px;
+  width:250px;
+}
+
+button {
+  padding:12px 25px;
+  background:#943A1F;
+  border:none;
+  border-radius:10px;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.hidden { display:none; }
+
+.container {
+  padding:20px;
+}
+
+.card {
+  background:#141213;
+  padding:15px;
+  border-radius:10px;
+  margin:10px 0;
+  border:1px solid rgba(148,58,31,0.2);
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div class="login" id="login">
+  <h1 style="font-family:'Bebas Neue'; font-size:40px;">NOXERA ADMIN</h1>
+  <input type="password" id="pass" placeholder="Enter Password">
+  <button onclick="login()">LOGIN</button>
+  <p id="err" style="color:red;display:none;">Wrong Password</p>
+</div>
+
+<!-- PANEL -->
+<div class="container hidden" id="panel">
+
+  <h1 style="font-family:'Bebas Neue';">Dashboard</h1>
+
+  <div class="card">
+    <h3>➕ Add Product</h3>
+    <input id="name" placeholder="Name">
+    <input id="type" placeholder="Type">
+    <input id="price" placeholder="Price">
+    <input id="img" placeholder="Image URL">
+    <button onclick="addProduct()">Add</button>
+  </div>
+
+  <div class="card">
+    <h3>📦 Products</h3>
+    <div id="products"></div>
+  </div>
+
+</div>
+
+<script>
+const PASSWORD = "147258";
+
+function login(){
+  const p = document.getElementById("pass").value;
+  if(p === PASSWORD){
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("panel").classList.remove("hidden");
+    loadProducts();
+  } else {
+    document.getElementById("err").style.display = "block";
+  }
+}
+
+/* 🔗 API BASE */
+const API = "https://YOUR-PROJECT.vercel.app/api/products";
+
+async function loadProducts(){
+  const res = await fetch(API);
+  const data = await res.json();
+
+  let html = "";
+  data.products.forEach(p=>{
+    html += `
+      <div class="card">
+        <b>${p.name}</b><br>
+        ${p.price} EGP<br>
+        <button onclick="deleteProduct('${p.id}')">Delete</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("products").innerHTML = html;
+}
+
+async function addProduct(){
+  await fetch(API,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({
+      name:document.getElementById("name").value,
+      type:document.getElementById("type").value,
+      price:document.getElementById("price").value,
+      image_url:document.getElementById("img").value
+    })
+  });
+
+  loadProducts();
+}
+
+async function deleteProduct(id){
+  await fetch(`${API}/${id}`,{ method:"DELETE" });
+  loadProducts();
+}
+</script>
+
+</body>
+</html>
+>>>>>>> c7586527e87ac2c1896002347d53f281f19455df
