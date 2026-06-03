@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NOXERA — Fashion Store</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -19,7 +19,7 @@
       --border: rgba(148,58,31,0.2);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: var(--bg); color: var(--cream); font-family: 'Blabeloo', 'Cairo', sans-serif; overflow-x: hidden; }
+    body { background: var(--bg); color: var(--cream); font-family: 'Blabeloo', 'Cairo', sans-serif; overflow-x: hidden; width: 100%; }
 
     /* NAV */
     nav {
@@ -50,6 +50,7 @@
       position: relative; min-height: 100vh; overflow: hidden;
       background: var(--bg);
       display: flex; align-items: center; justify-content: center;
+      padding: 0 1rem;
     }
     .hero-bg-text {
       font-family: 'Bebas Neue';
@@ -66,17 +67,18 @@
       position: relative; z-index: 2;
       text-align: center;
       padding-top: 64px;
+      width: 100%;
     }
-    .hero-logo { height: 70px; margin-bottom: 1.5rem; filter: brightness(0) invert(1); }
+    .hero-logo { height: 70px; margin-bottom: 1.5rem; filter: brightness(0) invert(1); max-width: 100%; object-fit: contain; }
     .hero-title {
       font-family: 'Bebas Neue';
-      font-size: clamp(60px, 12vw, 140px);
+      font-size: clamp(50px, 12vw, 140px);
       color: var(--cream);
-      line-height: 0.9;
+      line-height: 0.95;
       letter-spacing: 4px;
     }
     .hero-title span { color: var(--rust); }
-    .hero-tagline { font-family: 'Cairo'; color: var(--cream); opacity: 0.55; margin-top: 1.2rem; font-size: 1.1rem; }
+    .hero-tagline { font-family: 'Cairo'; color: var(--cream); opacity: 0.55; margin-top: 1.2rem; font-size: 1.1rem; padding: 0 10px; }
     .hero-btn {
       display: inline-block; margin-top: 2rem;
       background: var(--rust); color: var(--cream);
@@ -94,7 +96,7 @@
     @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
 
     /* MARQUEE */
-    .marquee-wrap { background: var(--rust); overflow: hidden; padding: 10px 0; }
+    .marquee-wrap { background: var(--rust); overflow: hidden; padding: 10px 0; width: 100%; }
     .marquee-track {
       display: flex; gap: 3rem; white-space: nowrap;
       animation: marquee 18s linear infinite;
@@ -103,7 +105,7 @@
     @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
     /* SHOP SECTION */
-    #shop { padding: 5rem 2rem; }
+    #shop { padding: 5rem 2rem; max-width: 1400px; margin: 0 auto; }
     .section-header {
       display: flex; align-items: flex-end; justify-content: space-between;
       margin-bottom: 2.5rem;
@@ -118,6 +120,7 @@
       color: var(--cream); padding: 8px 20px;
       font-family: 'Bebas Neue'; font-size: 0.9rem; letter-spacing: 2px;
       cursor: pointer; border-radius: 100px; transition: all 0.3s;
+      -webkit-tap-highlight-color: transparent;
     }
     .tab-btn:hover, .tab-btn.active { background: var(--rust); border-color: var(--rust); }
 
@@ -131,6 +134,9 @@
       background: var(--card); border: 1px solid var(--border);
       border-radius: 4px; cursor: pointer; overflow: hidden;
       transition: transform 0.3s, border-color 0.3s;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
     .product-card:hover { transform: translateY(-6px); border-color: var(--rust); }
     .product-image { aspect-ratio: 3/4; overflow: hidden; position: relative; background: #1a1718; }
@@ -140,7 +146,7 @@
       position: absolute; top: 12px; right: 12px;
       background: var(--rust); color: white;
       font-family: 'Space Mono'; font-size: 0.7rem; font-weight: 700;
-      padding: 4px 8px; border-radius: 2px;
+      padding: 4px 8px; border-radius: 2px; z-index: 10;
     }
     .add-btn {
       position: absolute; bottom: 0; left: 0; right: 0;
@@ -151,10 +157,10 @@
       transform: translateY(100%); transition: transform 0.3s;
     }
     .product-card:hover .add-btn { transform: translateY(0); }
-    .product-info { padding: 1rem; }
-    .product-name { font-family: 'Bebas Neue'; font-size: 1.3rem; color: var(--cream); margin-bottom: 0.4rem; }
+    .product-info { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .product-name { font-family: 'Bebas Neue'; font-size: 1.3rem; color: var(--cream); margin-bottom: 0.4rem; line-height: 1.2; }
     .product-type { font-family: 'Cairo'; font-size: 0.75rem; color: var(--rust); opacity: 0.8; margin-bottom: 0.5rem; }
-    .prices { display: flex; align-items: center; gap: 0.6rem; }
+    .prices { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
     .final-price { font-family: 'Space Mono'; color: var(--rust); font-weight: 700; }
     .old-price { font-family: 'Space Mono'; font-size: 0.8rem; text-decoration: line-through; color: #555; }
 
@@ -176,6 +182,7 @@
       border-top: 1px solid var(--border);
       padding: 3rem 2rem;
       display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+      text-align: center;
     }
     .footer-logo { font-family: 'Bebas Neue'; font-size: 2.5rem; letter-spacing: 6px; color: var(--cream); }
     .footer-tagline { font-family: 'Cairo'; font-size: 0.85rem; color: var(--cream); opacity: 0.4; }
@@ -196,6 +203,7 @@
       box-shadow: 0 4px 16px rgba(37,211,102,0.4);
       text-decoration: none;
       transition: transform 0.3s, box-shadow 0.3s;
+      -webkit-tap-highlight-color: transparent;
     }
     .whatsapp-float:hover {
       transform: scale(1.1);
@@ -203,10 +211,45 @@
     }
     .whatsapp-float svg { width: 30px; height: 30px; }
 
+    /* RESPONSIVE MEDIA QUERIES (MOBILE FIXES) */
     @media (max-width: 640px) {
-      nav { padding: 0 1rem; }
-      #shop { padding: 3rem 1rem; }
-      .section-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      nav { padding: 0 1.25rem; }
+      .nav-logo span { font-size: 1.3rem; letter-spacing: 2px; }
+      .nav-links { gap: 1.25rem; }
+      .nav-links a { font-size: 0.9rem; letter-spacing: 1px; }
+      
+      .hero-content { padding-top: 40px; }
+      .hero-btn { padding: 12px 36px; font-size: 1.1rem; }
+      .hero-scroll { bottom: 4.5rem; } /* منع التداخل مع الأزرار في الهواتف القصيرة */
+
+      #shop { padding: 3.5rem 1rem; }
+      .section-header { flex-direction: column; align-items: flex-start; gap: 0.4rem; margin-bottom: 1.75rem; }
+      .filter-tabs { gap: 0.4rem; margin-bottom: 1.75rem; }
+      .tab-btn { padding: 6px 16px; font-size: 0.85rem; }
+
+      /* جعل المنتجات تظهر كـ 2 في كل صف بدلاً من 1 عملاق لتجربة تصفح فاخرة */
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+      .product-info { padding: 0.75rem; }
+      .product-name { font-size: 1.05rem; margin-bottom: 0.2rem; }
+      .product-type { font-size: 0.7rem; margin-bottom: 0.3rem; }
+      .prices { gap: 0.4rem; }
+      .final-price { font-size: 0.95rem; }
+      .old-price { font-size: 0.75rem; }
+      
+      /* إظهار زر الإضافة بشكل دائم وأنيق أسفل الصورة في الهواتف لسهولة الضغط */
+      .add-btn {
+        transform: translateY(0);
+        position: relative;
+        padding: 10px;
+        font-size: 0.85rem;
+        background: var(--card);
+        border-top: 1px solid var(--border);
+      }
+      .product-card:hover { transform: none; }
+      .product-card:hover .product-image img { transform: none; }
     }
   </style>
 </head>
@@ -373,8 +416,10 @@
     }
     container.innerHTML = `<div class="products-grid">${products.map(p => productCard(p)).join('')}</div>`;
 
+    // تم تخفيف مفعول حركات GSAP على الموبايل لضمان السلاسة القصوى أثناء التمرير باللمس
+    const isMobile = window.innerWidth <= 640;
     gsap.from(".product-card", {
-      opacity: 0, y: 40, stagger: 0.07, duration: 0.5, ease: "power2.out"
+      opacity: 0, y: isMobile ? 20 : 40, stagger: isMobile ? 0.04 : 0.07, duration: 0.5, ease: "power2.out"
     });
   }
 
@@ -391,13 +436,15 @@
         <div class="product-image">
           ${p.image_url
             ? `<img src="${escHtml(p.image_url)}" alt="${escHtml(p.name)}" loading="lazy">`
-            : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.1)"><i class="fas fa-tshirt" style="font-size:4rem"></i></div>`}
+            : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.1)"><i class="fas fa-tshirt" style="font-size:3rem"></i></div>`}
           ${hasDiscount ? `<div class="discount-badge">${discLabel}</div>` : ''}
           <div class="add-btn">ADD TO CART</div>
         </div>
         <div class="product-info">
-          <div class="product-type">${catName}</div>
-          <div class="product-name">${escHtml(p.name)}</div>
+          <div>
+            <div class="product-type">${catName}</div>
+            <div class="product-name">${escHtml(p.name)}</div>
+          </div>
           <div class="prices">
             <span class="final-price">${final} ج.م</span>
             ${hasDiscount ? `<span class="old-price">${p.price} ج.م</span>` : ''}

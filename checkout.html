@@ -4,148 +4,151 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NOXERA — إتمام الطلب</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <style>
-    @import url('https://fonts.cdnfonts.com/css/blabeloo');
+    :root { 
+      --bg: #1B191A; 
+      --cream: #E9E4E0; 
+      --rust: #943A1F; 
+      --card: #141213; 
+      --border: rgba(148,58,31,0.2); 
+    }
+    
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+    
+    body { 
+      background: var(--bg); 
+      color: var(--cream); 
+      font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif; 
+      -webkit-font-smoothing: antialiased;
+    }
 
-    :root { --bg:#1B191A; --cream:#E9E4E0; --rust:#943A1F; --card:#141213; --border:rgba(148,58,31,0.2); }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { background:var(--bg); color:var(--cream); font-family:'Blabeloo','Cairo',sans-serif; }
+    /* العناوين والرموز الإنجليزية تستخدم Outfit */
+    .font-eng {
+      font-family: 'Outfit', sans-serif;
+    }
 
     nav {
-      position:fixed; top:0; left:0; right:0; z-index:1000;
-      background:#141213; border-bottom:1px solid var(--border);
-      padding:0 2rem; height:64px;
-      display:flex; align-items:center; justify-content:space-between;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: #141213; border-bottom: 1px solid var(--border);
+      padding: 0 2rem; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
     }
-    .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
-    .nav-logo img { height:36px; object-fit:contain; }
-    .nav-logo span { font-family:'Bebas Neue'; font-size:1.6rem; color:var(--cream); letter-spacing:3px; }
-    .nav-links a { color:var(--cream); text-decoration:none; font-family:'Bebas Neue'; font-size:1rem; letter-spacing:2px; opacity:0.7; transition:opacity 0.3s,color 0.3s; margin-right:1.5rem; }
-    .nav-links a:hover { opacity:1; color:var(--rust); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo img { height: 36px; object-fit: contain; }
+    .nav-logo span { font-family: 'Outfit'; font-size: 1.6rem; font-weight: 800; color: var(--cream); letter-spacing: 3px; }
+    .nav-links a { color: var(--cream); text-decoration: none; font-family: 'Outfit'; font-size: 1rem; font-weight: 600; letter-spacing: 2px; opacity: 0.7; transition: opacity 0.3s, color 0.3s; margin-right: 1.5rem; }
+    .nav-links a:hover { opacity: 1; color: var(--rust); }
 
     .checkout-wrap {
-      min-height:100vh; padding-top:64px;
-      display:grid; grid-template-columns:1fr 420px;
-      max-width:1200px; margin:0 auto; padding-left:2rem; padding-right:2rem; padding-bottom:4rem; gap:3rem;
-      align-items:start;
+      min-height: 100vh; padding-top: 64px;
+      display: grid; grid-template-columns: 1fr 420px;
+      max-width: 1200px; margin: 0 auto; padding-left: 2rem; padding-right: 2rem; padding-bottom: 4rem; gap: 3rem;
+      align-items: start;
     }
 
     /* LEFT — FORM */
-    .form-col { padding-top:4rem; }
-    .page-label { font-family:'Space Mono'; font-size:0.7rem; color:var(--rust); letter-spacing:4px; margin-bottom:0.6rem; }
-    .page-title { font-family:'Bebas Neue'; font-size:clamp(2.5rem,6vw,5rem); color:var(--cream); letter-spacing:3px; line-height:1; margin-bottom:2.5rem; }
-
-    /* AI PARSER BOX */
-    .ai-box {
-      background:var(--card); border:1px solid var(--border);
-      border-radius:6px; padding:1.5rem; margin-bottom:2rem;
-    }
-    .ai-box-header { display:flex; align-items:center; gap:10px; margin-bottom:1rem; }
-    .ai-badge {
-      background:var(--rust); color:white; font-family:'Space Mono';
-      font-size:0.6rem; padding:3px 8px; border-radius:2px; letter-spacing:2px;
-    }
-    .ai-box-title { font-family:'Bebas Neue'; font-size:1.2rem; color:var(--cream); letter-spacing:2px; }
-    .ai-box p { font-family:'Cairo'; font-size:0.82rem; color:var(--cream); opacity:0.45; margin-bottom:1rem; line-height:1.6; }
-    .ai-textarea {
-      width:100%; background:#1a1718; border:1px solid var(--border);
-      color:var(--cream); font-family:'Cairo'; font-size:0.9rem;
-      padding:12px; border-radius:4px; resize:vertical; min-height:80px;
-      outline:none; transition:border-color 0.3s;
-    }
-    .ai-textarea:focus { border-color:var(--rust); }
-    .ai-textarea::placeholder { opacity:0.3; }
-    .btn-ai {
-      margin-top:0.8rem; background:transparent; border:1px solid var(--rust);
-      color:var(--rust); padding:10px 24px; border-radius:100px;
-      font-family:'Bebas Neue'; font-size:0.9rem; letter-spacing:2px;
-      cursor:pointer; transition:all 0.3s; display:flex; align-items:center; gap:8px;
-    }
-    .btn-ai:hover { background:var(--rust); color:var(--cream); }
-    .btn-ai:disabled { opacity:0.4; cursor:not-allowed; }
-    .ai-status { font-family:'Space Mono'; font-size:0.7rem; margin-top:0.6rem; letter-spacing:1px; }
+    .form-col { padding-top: 3rem; }
+    .page-label { font-family: 'Outfit'; font-size: 0.8rem; font-weight: 600; color: var(--rust); letter-spacing: 4px; margin-bottom: 0.6rem; }
+    .page-title { font-family: 'Cairo'; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; color: var(--cream); line-height: 1.3; margin-bottom: 2.5rem; }
 
     /* FORM FIELDS */
-    .field-group { margin-bottom:1.4rem; }
-    .field-label { font-family:'Space Mono'; font-size:0.65rem; color:var(--cream); opacity:0.5; letter-spacing:3px; margin-bottom:0.5rem; display:block; }
+    .field-group { margin-bottom: 1.5rem; }
+    .field-label { font-family: 'Cairo'; font-size: 0.85rem; font-weight: 600; color: var(--cream); opacity: 0.7; margin-bottom: 0.6rem; display: block; }
     .field-input {
-      width:100%; background:var(--card); border:1px solid var(--border);
-      color:var(--cream); font-family:'Cairo'; font-size:0.95rem;
-      padding:14px 16px; border-radius:4px; outline:none; transition:border-color 0.3s;
+      width: 100%; background: var(--card); border: 1px solid var(--border);
+      color: var(--cream); font-family: 'Cairo'; font-size: 0.95rem;
+      padding: 14px 16px; border-radius: 6px; outline: none; transition: all 0.3s ease;
     }
-    .field-input:focus { border-color:var(--rust); }
-    .field-input::placeholder { opacity:0.25; }
+    .field-input:focus { border-color: var(--rust); box-shadow: 0 0 0 2px rgba(148, 58, 31, 0.1); }
+    .field-input::placeholder { opacity: 0.3; }
+    
     .field-select {
-      width:100%; background:var(--card); border:1px solid var(--border);
-      color:var(--cream); font-family:'Cairo'; font-size:0.95rem;
-      padding:14px 16px; border-radius:4px; outline:none; cursor:pointer;
-      transition:border-color 0.3s; appearance:none;
+      width: 100%; background: var(--card); border: 1px solid var(--border);
+      color: var(--cream); font-family: 'Cairo'; font-size: 0.95rem;
+      padding: 14px 16px; border-radius: 6px; outline: none; cursor: pointer;
+      transition: all 0.3s ease; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23E9E4E0'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: left 16px center;
+      background-size: 18px;
     }
-    .field-select:focus { border-color:var(--rust); }
-    .field-select option { background:#1B191A; }
-    .field-error { font-family:'Cairo'; font-size:0.75rem; color:#e05555; margin-top:0.4rem; display:none; }
-    .field-error.show { display:block; }
+    .field-select:focus { border-color: var(--rust); box-shadow: 0 0 0 2px rgba(148, 58, 31, 0.1); }
+    .field-select option { background: #1B191A; }
+    .field-error { font-family: 'Cairo'; font-size: 0.8rem; color: #e05555; margin-top: 0.5rem; display: none; }
+    .field-error.show { display: block; }
 
-    .fields-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .fields-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 
     /* PAY METHOD */
-    .pay-methods { display:flex; gap:1rem; flex-wrap:wrap; }
+    .pay-methods { display: flex; gap: 1rem; flex-wrap: wrap; }
     .pay-opt {
-      flex:1; min-width:120px; background:var(--card); border:1px solid var(--border);
-      border-radius:4px; padding:14px; cursor:pointer; transition:border-color 0.3s;
-      display:flex; align-items:center; gap:10px;
+      flex: 1; min-width: 140px; background: var(--card); border: 1px solid var(--border);
+      border-radius: 6px; padding: 16px; cursor: pointer; transition: all 0.3s ease;
+      display: flex; align-items: center; gap: 12px;
     }
-    .pay-opt.selected { border-color:var(--rust); }
-    .pay-opt input { accent-color:var(--rust); }
-    .pay-opt label { font-family:'Cairo'; font-size:0.9rem; color:var(--cream); cursor:pointer; }
+    .pay-opt.selected { border-color: var(--rust); background: rgba(148, 58, 31, 0.05); }
+    .pay-opt input { accent-color: var(--rust); width: 18px; height: 18px; }
+    .pay-opt label { font-family: 'Cairo'; font-size: 0.95rem; font-weight: 600; color: var(--cream); cursor: pointer; display: flex; align-items: center; gap: 8px; width: 100%; }
 
     .btn-submit {
-      width:100%; background:var(--rust); color:var(--cream);
-      padding:18px; border:none; border-radius:100px;
-      font-family:'Bebas Neue'; font-size:1.2rem; letter-spacing:4px;
-      cursor:pointer; transition:background 0.3s, transform 0.2s;
-      display:flex; align-items:center; justify-content:center; gap:10px; margin-top:2rem;
+      width: 100%; background: var(--rust); color: var(--cream);
+      padding: 18px; border: none; border-radius: 100px;
+      font-family: 'Cairo'; font-size: 1.1rem; font-weight: 700;
+      cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 2.5rem;
     }
-    .btn-submit:hover { background:#b5491e; transform:scale(1.02); }
+    .btn-submit:hover { background: #b5491e; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(148, 58, 31, 0.2); }
+    .btn-submit:active { transform: translateY(0); }
 
     /* RIGHT — ORDER SUMMARY */
     .summary-col {
-      padding-top:4rem;
-      position:sticky; top:80px;
+      padding-top: 3rem;
+      position: sticky; top: 80px;
     }
     .summary-box {
-      background:var(--card); border:1px solid var(--border);
-      border-radius:6px; overflow:hidden;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
     .summary-header {
-      padding:1.2rem 1.5rem; border-bottom:1px solid var(--border);
-      font-family:'Bebas Neue'; font-size:1.1rem; letter-spacing:3px; color:var(--cream); opacity:0.6;
+      padding: 1.5rem; border-bottom: 1px solid var(--border);
+      font-family: 'Cairo'; font-size: 1.1rem; font-weight: 700; color: var(--cream); letter-spacing: 0.5px;
     }
-    .summary-product { display:flex; gap:1rem; padding:1.5rem; border-bottom:1px solid var(--border); }
-    .summary-img { width:70px; aspect-ratio:3/4; background:#1a1718; border-radius:2px; overflow:hidden; flex-shrink:0; }
-    .summary-img img { width:100%; height:100%; object-fit:cover; }
-    .summary-img .no-img { width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.08); font-size:1.5rem; }
-    .summary-name { font-family:'Bebas Neue'; font-size:1.1rem; color:var(--cream); letter-spacing:1px; margin-bottom:0.3rem; }
-    .summary-pname-label { font-family:'Space Mono'; font-size:0.6rem; color:var(--cream); opacity:0.3; letter-spacing:2px; margin-bottom:0.3rem; }
+    .summary-product { display: flex; gap: 1.2rem; padding: 1.5rem; border-bottom: 1px solid var(--border); align-items: center; }
+    .summary-img { width: 75px; aspect-ratio: 3/4; background: #1a1718; border-radius: 6px; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.05); }
+    .summary-img img { width: 100%; height: 100%; object-fit: cover; }
+    .summary-img .no-img { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.1); font-size: 1.8rem; }
+    .summary-name { font-family: 'Cairo'; font-size: 1.1rem; font-weight: 600; color: var(--cream); line-height: 1.4; }
+    .summary-pname-label { font-family: 'Outfit'; font-size: 0.75rem; font-weight: 600; color: var(--rust); letter-spacing: 2px; margin-bottom: 0.2rem; }
 
-    .summary-rows { padding:1.2rem 1.5rem; }
-    .summary-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.9rem; }
-    .summary-row-label { font-family:'Cairo'; font-size:0.85rem; color:var(--cream); opacity:0.45; }
-    .summary-row-val { font-family:'Space Mono'; font-size:0.85rem; color:var(--cream); }
-    .summary-row-val.shipping { color:var(--cream); }
-    .summary-divider { border:none; border-top:1px solid var(--border); margin:0.8rem 0; }
-    .summary-total-row { display:flex; justify-content:space-between; align-items:center; }
-    .summary-total-label-txt { font-family:'Bebas Neue'; font-size:1rem; color:var(--cream); letter-spacing:2px; }
-    .summary-total-amt { font-family:'Bebas Neue'; font-size:2rem; color:var(--rust); }
+    .summary-rows { padding: 1.5rem; }
+    .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .summary-row-label { font-family: 'Cairo'; font-size: 0.9rem; color: var(--cream); opacity: 0.6; }
+    .summary-row-val { font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--cream); }
+    .summary-row-val.shipping { color: var(--cream); }
+    .summary-divider { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+    .summary-total-row { display: flex; justify-content: space-between; align-items: center; }
+    .summary-total-label-txt { font-family: 'Cairo'; font-size: 1.1rem; font-weight: 700; color: var(--cream); }
+    .summary-total-amt { font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--rust); }
 
     @media(max-width:900px){
-      .checkout-wrap { grid-template-columns:1fr; }
-      .summary-col { position:static; padding-top:0; }
-      .fields-row { grid-template-columns:1fr; }
-      nav { padding:0 1rem; }
+      .checkout-wrap { grid-template-columns: 1fr; gap: 2rem; padding-left: 1rem; padding-right: 1rem; }
+      .summary-col { position: static; padding-top: 0; }
+      .fields-row { grid-template-columns: 1fr; gap: 0rem; }
+      .form-col { padding-top: 1.5rem; }
+      nav { padding: 0 1rem; }
     }
   </style>
 </head>
@@ -164,26 +167,10 @@
 
 <div class="checkout-wrap">
 
-  <!-- FORM -->
   <div class="form-col">
     <div class="page-label">CHECKOUT</div>
-    <h1 class="page-title">إتمام<br>الطلب</h1>
+    <h1 class="page-title">إتمام الطلب</h1>
 
-    <!-- AI PARSER -->
-    <div class="ai-box">
-      <div class="ai-box-header">
-        <span class="ai-badge">AI</span>
-        <span class="ai-box-title">أدخل بياناتك بالكلام العادي</span>
-      </div>
-      <p>اكتب اسمك ورقمك ومحافظتك وعنوانك في سطر واحد — وسيملأ الذكاء الاصطناعي الفورم تلقائياً</p>
-      <textarea class="ai-textarea" id="aiInput" placeholder='مثال: "أنا محمد أحمد، موبايلي 01012345678، من المنصورة دقهلية، شارع الجلاء بجوار المسجد"'></textarea>
-      <button class="btn-ai" id="aiBtn" onclick="runAIFormParser()">
-        <i class="fas fa-magic"></i> تحليل بالذكاء الاصطناعي
-      </button>
-      <div class="ai-status" id="aiStatus"></div>
-    </div>
-
-    <!-- FIELDS wrapped in a proper form for browser autofill -->
     <form id="orderForm" autocomplete="on" onsubmit="sendToWhatsApp(event)">
 
       <div class="field-group">
@@ -197,21 +184,21 @@
           placeholder="محمد أحمد"
           oninput="validateNameInput()"
         >
-        <div class="field-error" id="nameError">الاسم يجب أن يكون حرفين على الأقل</div>
+        <div class="field-error" id="nameError">الاسم يجب أن يكون حرفين على الأقل وبدون أرقام</div>
       </div>
 
       <div class="field-group">
         <label class="field-label" for="custPhone">رقم الموبايل</label>
         <input
           type="tel"
-          class="field-input"
+          class="field-input font-eng"
           id="custPhone"
           name="tel"
           autocomplete="tel"
           placeholder="01xxxxxxxxx"
           oninput="validatePhoneInput()"
         >
-        <div class="field-error" id="phoneError">أدخل رقم مصري صحيح (010/011/012/015)</div>
+        <div class="field-error" id="phoneError">أدخل رقم مصري صحيح (010/011/012/015) مكون من 11 رقم</div>
       </div>
 
       <div class="fields-row">
@@ -237,7 +224,7 @@
             autocomplete="off"
             value="اختر المحافظة أولاً"
             readonly
-            style="opacity:0.5;cursor:default"
+            style="opacity:0.6; cursor:default;"
           >
         </div>
       </div>
@@ -250,7 +237,7 @@
           id="custAddress"
           name="street-address"
           autocomplete="street-address"
-          placeholder="الشارع، رقم المبنى، أقرب معلم..."
+          placeholder="الشارع، رقم المبنى، الدور، أقرب معلم..."
         >
       </div>
 
@@ -259,24 +246,23 @@
         <div class="pay-methods">
           <div class="pay-opt selected" onclick="selectPay(this,'كاش عند الاستلام')">
             <input type="radio" name="pay" id="pay1" checked>
-            <label for="pay1"><i class="fas fa-money-bill-wave" style="color:var(--rust);margin-left:6px"></i> كاش عند الاستلام</label>
+            <label for="pay1"><i class="fas fa-money-bill-wave" style="color:var(--rust)"></i> كاش عند الاستلام</label>
           </div>
           <div class="pay-opt" onclick="selectPay(this,'تحويل بنكي')">
             <input type="radio" name="pay" id="pay2">
-            <label for="pay2"><i class="fas fa-university" style="color:var(--rust);margin-left:6px"></i> تحويل بنكي</label>
+            <label for="pay2"><i class="fas fa-university" style="color:var(--rust)"></i> تحويل بنكي</label>
           </div>
         </div>
       </div>
 
       <button type="submit" class="btn-submit">
-        <i class="fab fa-whatsapp" style="font-size:1.3rem"></i>
+        <i class="fab fa-whatsapp" style="font-size:1.4rem"></i>
         أكمل الطلب عبر واتساب
       </button>
 
     </form>
   </div>
 
-  <!-- SUMMARY -->
   <div class="summary-col">
     <div class="summary-box">
       <div class="summary-header">ملخص الطلب</div>
@@ -310,9 +296,10 @@
 </div>
 
 <script>
+  // تحديث أسعار الشحن بحسب طلبك الدقيق
   const egyptGovernorates = [
-    { name:"القاهرة", price:95 }, { name:"الجيزة", price:95 },
-    { name:"الإسكندرية", price:50 },
+    { name:"القاهرة", price:110 }, { name:"الجيزة", price:110 },
+    { name:"الإسكندرية", price:130 },
     { name:"أسوان", price:150 }, { name:"الأقصر", price:150 },
     { name:"مطروح", price:150 }, { name:"جنوب سيناء", price:150 },
     { name:"القليوبية", price:110 }, { name:"الدقهلية", price:110 },
@@ -384,8 +371,13 @@
   function validateNameInput() {
     const val = document.getElementById('custName').value.trim();
     const err = document.getElementById('nameError');
-    if (val.length >= 2) { err.classList.remove('show'); return true; }
-    err.classList.add('show'); return false;
+    // تحسين فحص الاسم ليكون نصوص فقط وحرفين على الأقل
+    if (val.length >= 2 && /^[\u0600-\u06FFa-zA-Z\s]+$/.test(val)) { 
+      err.classList.remove('show'); 
+      return true; 
+    }
+    err.classList.add('show'); 
+    return false;
   }
 
   function validatePhoneInput() {
@@ -393,54 +385,6 @@
     const err = document.getElementById('phoneError');
     if (/^(010|011|012|015)\d{8}$/.test(val)) { err.classList.remove('show'); return true; }
     err.classList.add('show'); return false;
-  }
-
-  async function fetchGeminiAIAnalysis(userText) {
-    const response = await fetch("/api/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: userText })
-    });
-    if (!response.ok) throw new Error("حاول تاني");
-    return await response.json();
-  }
-
-  async function runAIFormParser() {
-    const aiInput = document.getElementById('aiInput').value.trim();
-    const btn = document.getElementById('aiBtn');
-    const status = document.getElementById('aiStatus');
-    if (!aiInput || aiInput.length < 5) {
-      status.style.color = '#e05555';
-      status.innerText = 'اكتب بياناتك أولاً';
-      return;
-    }
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحليل...';
-    status.style.color = 'rgba(233,228,224,0.4)';
-    status.innerText = 'الذكاء الاصطناعي بيحلل بياناتك...';
-    try {
-      const data = await fetchGeminiAIAnalysis(aiInput);
-      if (data.name) document.getElementById('custName').value = data.name;
-      if (data.phone) document.getElementById('custPhone').value = data.phone;
-      if (data.address) document.getElementById('custAddress').value = data.address;
-      if (data.governorate) {
-        const match = egyptGovernorates.find(g =>
-          data.governorate.includes(g.name) || g.name.includes(data.governorate)
-        );
-        if (match) {
-          document.getElementById('custGov').value = match.name;
-          handleGovChange();
-        }
-      }
-      status.style.color = '#5ecf7a';
-      status.innerText = '✓ تم ملء البيانات تلقائياً';
-    } catch(err) {
-      status.style.color = '#e05555';
-      status.innerText = 'فشل التحليل — تأكد من الاتصال وحاول مجدداً';
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-magic"></i> تحليل بالذكاء الاصطناعي';
-    }
   }
 
   function sendToWhatsApp(event) {
@@ -453,6 +397,11 @@
     const address = document.getElementById('custAddress').value.trim();
     const gov     = detectedGovText || document.getElementById('custGov').value;
     const total   = baseProductPrice + shippingCostAmount;
+
+    if(!gov) {
+      alert('من فضلك اختر المحافظة أولاً لحساب تكلفة الشحن');
+      return;
+    }
 
     const message =
       `🖤 *طلب جديد من NOXERA* 🖤\n\n` +

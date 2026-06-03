@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOXERA — تم إرسال طلبك بنجاح</title>
+  
+  <!-- استيراد الخطوط الفاخرة لتطابق صفحة الدفع -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    :root { 
+      --bg: #1B191A; 
+      --cream: #E9E4E0; 
+      --rust: #943A1F; 
+      --card: #141213; 
+      --border: rgba(148,58,31,0.2); 
+    }
+    
+    body { 
+      background: var(--bg); 
+      color: var(--cream); 
+      font-family: 'Cairo', sans-serif; 
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .success-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 3.5rem 2rem;
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .icon-wrap {
+      width: 80px;
+      height: 80px;
+      background: rgba(148, 58, 31, 0.1);
+      border: 1px solid var(--rust);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      color: var(--rust);
+      font-size: 2.5rem;
+    }
+
+    .brand-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: var(--rust);
+      margin-bottom: 0.5rem;
+    }
+
+    .thank-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 1rem;
+    }
+
+    .thank-desc {
+      font-size: 1rem;
+      color: var(--cream);
+      opacity: 0.7;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--cream);
+      border: 1px solid var(--cream);
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-home:hover {
+      background: var(--cream);
+      color: var(--bg);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="success-card">
+    <div class="icon-wrap">
+      <i class="fas fa-check"></i>
+    </div>
+    
+    <div class="brand-name">NOXERA</div>
+    <h1 class="thank-title">شكرًا لثقتك بنا!</h1>
+    
+    <p class="thank-desc">
+      تم تجهيز بيانات طلبك وإرسالها بنجاح عبر الواتساب. سيتواصل معك فريق خدمة العملاء قريباً لتأكيد الشحن والتسليم.
+    </p>
+
+    <a href="index.html" class="btn-home">
+      <i class="fas fa-arrow-right"></i>
+      العودة للرئيسية
+    </a>
+  </div>
+
+</body>
+</html>

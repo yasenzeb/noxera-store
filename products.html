@@ -4,13 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NOXERA — المنتج</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- استيراد الخطوط الاحترافية والفاخرة الموحدة للمتجر -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root { --bg:#1B191A; --cream:#E9E4E0; --rust:#943A1F; --card:#141213; --border:rgba(148,58,31,0.2); }
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { background:var(--bg); color:var(--cream); font-family:'Cairo',sans-serif; }
+    body { background:var(--bg); color:var(--cream); font-family:'Cairo', sans-serif; -webkit-font-smoothing: antialiased; }
+
+    /* العناوين والرموز الإنجليزية تستخدم Outfit أو Plus Jakarta Sans */
+    .font-eng {
+      font-family: 'Outfit', sans-serif;
+    }
+    .font-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
 
     nav {
       position:fixed; top:0; left:0; right:0; z-index:1000;
@@ -20,12 +33,12 @@
     }
     .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
     .nav-logo img { height:36px; object-fit:contain; }
-    .nav-logo span { font-family:'Bebas Neue'; font-size:1.6rem; color:var(--cream); letter-spacing:3px; }
-    .nav-links { display:flex; align-items:center; gap:2rem; }
-    .nav-links a { color:var(--cream); text-decoration:none; font-family:'Bebas Neue'; font-size:1rem; letter-spacing:2px; opacity:0.7; transition:opacity 0.3s,color 0.3s; }
+    .nav-logo span { font-family:'Outfit'; font-size:1.6rem; font-weight:800; color:var(--cream); letter-spacing:3px; }
+    .nav-links { display:flex; align-items:center; gap:1.5rem; }
+    .nav-links a { color:var(--cream); text-decoration:none; font-family:'Outfit'; font-size:1rem; font-weight:600; letter-spacing:2px; opacity:0.7; transition:opacity 0.3s,color 0.3s; }
     .nav-links a:hover { opacity:1; color:var(--rust); }
     .cart-icon { position:relative; }
-    .cart-badge { position:absolute; top:-8px; right:-8px; background:var(--rust); color:white; font-family:'Space Mono'; font-size:10px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+    .cart-badge { position:absolute; top:-8px; right:-8px; background:var(--rust); color:white; font-family:'Plus Jakarta Sans'; font-size:10px; font-weight:700; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
 
     .product-page {
       min-height:100vh; padding-top:64px;
@@ -37,7 +50,8 @@
     }
     .product-img-wrap {
       position:relative; aspect-ratio:3/4; background:var(--card);
-      border:1px solid var(--border); overflow:hidden;
+      border:1px solid var(--border); overflow:hidden; border-radius:12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
     .product-img-wrap img { width:100%; height:100%; object-fit:cover; }
     .product-img-placeholder {
@@ -47,42 +61,43 @@
     .product-img-placeholder i { font-size:6rem; }
 
     .product-details { padding-top:1rem; }
-    .product-cat { font-family:'Space Mono'; font-size:0.7rem; color:var(--rust); letter-spacing:3px; text-transform:uppercase; margin-bottom:1rem; }
-    .product-title { font-family:'Bebas Neue'; font-size:clamp(2.5rem,5vw,4rem); color:var(--cream); letter-spacing:2px; line-height:1; margin-bottom:1.5rem; }
+    .product-cat { font-family:'Outfit'; font-size:0.75rem; font-weight:600; color:var(--rust); letter-spacing:3px; text-transform:uppercase; margin-bottom:0.8rem; }
+    .product-title { font-family:'Cairo'; font-size:clamp(1.8rem,4vw,2.8rem); font-weight:700; color:var(--cream); line-height:1.3; margin-bottom:1.5rem; }
     .product-price-wrap { display:flex; align-items:center; gap:1rem; margin-bottom:2rem; }
-    .product-final-price { font-family:'Space Mono'; font-size:2rem; color:var(--rust); font-weight:700; }
-    .product-old-price { font-family:'Space Mono'; font-size:1.2rem; color:#555; text-decoration:line-through; }
-    .product-desc { font-family:'Cairo'; font-size:0.95rem; color:var(--cream); opacity:0.55; line-height:1.8; margin-bottom:2.5rem; }
+    .product-final-price { font-family:'Plus Jakarta Sans', 'Cairo', sans-serif; font-size:2rem; color:var(--rust); font-weight:700; }
+    .product-desc { font-family:'Cairo'; font-size:0.95rem; color:var(--cream); opacity:0.65; line-height:1.8; margin-bottom:2.5rem; }
 
     .actions { display:flex; flex-direction:column; gap:1rem; }
     .btn-primary {
       background:var(--rust); color:var(--cream);
-      padding:16px 32px; border:none; border-radius:100px;
-      font-family:'Bebas Neue'; font-size:1.1rem; letter-spacing:3px;
-      cursor:pointer; transition:background 0.3s, transform 0.2s;
+      padding:18px 32px; border:none; border-radius:100px;
+      font-family:'Cairo'; font-size:1.05rem; font-weight:700;
+      cursor:pointer; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display:flex; align-items:center; justify-content:center; gap:10px;
     }
-    .btn-primary:hover { background:#b5491e; transform:scale(1.02); }
+    .btn-primary:hover { background:#b5491e; transform:translateY(-2px); box-shadow: 0 8px 20px rgba(148, 58, 31, 0.2); }
     .btn-secondary {
       background:transparent; color:var(--cream);
       padding:16px 32px; border:1px solid var(--border); border-radius:100px;
-      font-family:'Bebas Neue'; font-size:1.1rem; letter-spacing:3px;
-      cursor:pointer; transition:border-color 0.3s, transform 0.2s;
+      font-family:'Cairo'; font-size:1.05rem; font-weight:600;
+      cursor:pointer; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .btn-secondary:hover { border-color:var(--rust); color:var(--rust); transform:scale(1.02); }
+    .btn-secondary:hover { border-color:var(--cream); transform:translateY(-2px); }
 
     .back-link {
       display:inline-flex; align-items:center; gap:8px;
-      color:var(--cream); opacity:0.4; text-decoration:none;
-      font-family:'Bebas Neue'; font-size:0.9rem; letter-spacing:2px;
-      margin-bottom:2rem; transition:opacity 0.3s;
+      color:var(--cream); opacity:0.5; text-decoration:none;
+      font-family:'Cairo'; font-size:0.9rem; font-weight:600;
+      margin-bottom:1.5rem; transition:opacity 0.3s, color 0.3s;
     }
-    .back-link:hover { opacity:1; }
+    .back-link:hover { opacity:1; color:var(--rust); }
 
     .empty-page { min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding-top:64px; }
-    .empty-page h2 { font-family:'Bebas Neue'; font-size:3rem; color:var(--cream); opacity:0.3; letter-spacing:3px; }
+    .empty-page h2 { font-family:'Cairo'; font-size:2rem; font-weight:700; color:var(--cream); opacity:0.3; }
 
     @media (max-width:768px) {
-      .product-inner { grid-template-columns:1fr; gap:2rem; padding:2rem 1rem; }
+      .product-inner { grid-template-columns:1fr; gap:2.5rem; padding:2rem 1.25rem; }
+      .product-details { padding-top:0; }
     }
   </style>
 </head>
@@ -122,8 +137,8 @@
     document.getElementById('pageContent').innerHTML = `
       <div class="empty-page">
         <div>
-          <h2>لم يتم اختيار منتج</h2>
-          <a href="index.html" style="display:inline-block;margin-top:1.5rem;font-family:'Bebas Neue';font-size:1rem;letter-spacing:3px;color:#943A1F;text-decoration:none;">← العودة للمتجر</a>
+          <h2>لم يتم اختيار منتج بعد</h2>
+          <a href="index.html" style="display:inline-block; margin-top:1.5rem; font-family:'Cairo'; font-size:1rem; font-weight:600; color:#943A1F; text-decoration:none;">← العودة للمتجر</a>
         </div>
       </div>`;
   } else {
@@ -137,17 +152,18 @@
           </div>
           <div class="product-details">
             <a href="index.html" class="back-link"><i class="fas fa-arrow-right"></i> العودة للمتجر</a>
-            <div class="product-cat">NOXERA COLLECTION</div>
+            <div class="product-cat">NOXERA PREMIUM COLLECTION</div>
             <h1 class="product-title">${name}</h1>
             <div class="product-price-wrap">
               <span class="product-final-price">${price} ج.م</span>
             </div>
             <p class="product-desc">
-              قطعة مميزة من كولكشن NOXERA — تصميم عصري بخامات عالية الجودة. 
-              ستايل مختلف يناسب كل المناسبات.
+              قطعة فريدة مصممة بعناية فائقة من كولكشن NOXERA الحصري — نجمع فيها بين أصالة الخامات المصرية الفاخرة وأحدث صيحات الموضة العصرية لتمنحك إطلالة فخمة تدوم طويلاً وتناسب كل أوقاتك.
             </p>
             <div class="actions">
-              <button class="btn-primary" onclick="buyNow()">اشتري الآن — ${price} ج.م</button>
+              <button class="btn-primary" onclick="buyNow()">
+                <i class="fas fa-shopping-bag"></i> اشتري الآن — ${price} ج.م
+              </button>
               <button class="btn-secondary" onclick="addToCart()">أضف للسلة</button>
             </div>
           </div>
@@ -159,8 +175,7 @@
   }
 
   function addToCart() {
-    // Already saved in localStorage from index
-    showToast('✓ تمت إضافة المنتج للسلة');
+    showToast('✓ تمت إضافة المنتج للسلة بنجاح');
     setTimeout(() => window.location.href = 'cart.html', 800);
   }
 
@@ -170,7 +185,7 @@
 
   function showToast(msg) {
     const t = document.createElement('div');
-    t.style.cssText = `position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#943A1F;color:#E9E4E0;padding:12px 28px;border-radius:100px;font-family:'Bebas Neue';font-size:1rem;letter-spacing:2px;z-index:9999;`;
+    t.style.cssText = `position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:#943A1F; color:#E9E4E0; padding:14px 28px; border-radius:100px; font-family:'Cairo'; font-size:0.95rem; font-weight:600; z-index:9999; box-shadow: 0 10px 25px rgba(0,0,0,0.3);`;
     t.innerText = msg;
     document.body.appendChild(t);
     setTimeout(() => t.remove(), 2500);
