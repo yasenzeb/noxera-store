@@ -2,14 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>NOXERA — Product Details</title>
-  
-  <!-- استدعاء الخطوط المستقرة -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700&family=Space+Mono:wght@400;700&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -20,64 +17,265 @@
       --card: #141213;
       --border: rgba(148,58,31,0.2);
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: var(--bg); color: var(--cream); font-family: 'Cairo', sans-serif; overflow-x: hidden; width: 100%; }
+    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    body {
+      background:var(--bg); color:var(--cream);
+      font-family:'Cairo',sans-serif;
+      overflow-x:hidden; width:100%;
+      -webkit-font-smoothing:antialiased;
+    }
 
-    /* NAV */
+    /* ── NAV ────────────────────────────────────────────── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: #141213; border-bottom: 1px solid var(--border);
-      padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between;
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      background:#141213; border-bottom:1px solid var(--border);
+      padding:0 2rem; height:64px;
+      display:flex; align-items:center; justify-content:space-between;
     }
-    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .nav-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--cream); letter-spacing: 3px; }
-    .nav-links { display: flex; align-items: center; gap: 2rem; }
-    .nav-links a { color: var(--cream); text-decoration: none; font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 2px; opacity: 0.7; }
-    .cart-icon { position: relative; }
+    .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .nav-logo span { font-family:'Bebas Neue'; font-size:1.6rem; color:var(--cream); letter-spacing:3px; }
+    .nav-links { display:flex; align-items:center; gap:2rem; }
+    .nav-links a {
+      color:var(--cream); text-decoration:none;
+      font-family:'Bebas Neue'; font-size:1rem; letter-spacing:2px;
+      opacity:0.7; transition:opacity 0.3s, color 0.3s;
+    }
+    .nav-links a:hover { opacity:1; color:var(--rust); }
+    .cart-icon { position:relative; }
     .cart-badge {
-      position: absolute; top: -8px; right: -8px; background: var(--rust); color: white;
-      font-family: 'Space Mono', monospace; font-size: 10px; width: 18px; height: 18px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
+      position:absolute; top:-8px; right:-8px;
+      background:var(--rust); color:white;
+      font-family:'Space Mono'; font-size:10px;
+      width:18px; height:18px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
     }
 
-    /* PRODUCT LAYOUT */
-    .product-container { max-width: 1200px; margin: 120px auto 60px; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
-    .product-media img { width: 100%; border-radius: 4px; border: 1px solid var(--border); object-fit: cover; aspect-ratio: 3/4; background: #1a1718; }
-    .product-meta-title { font-family: 'Outfit', 'Syne', sans-serif; font-weight: 900; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin-bottom: 1rem; color: var(--cream); }
-    .product-meta-price { font-family: 'Space Mono', monospace; font-size: 1.8rem; color: var(--rust); font-weight: 700; margin-bottom: 2rem; }
-    
-    .selector-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 0.5rem; opacity: 0.6; }
-    .size-options { display: flex; gap: 0.75rem; margin-bottom: 2.5rem; }
+    /* ── PAGE LAYOUT ────────────────────────────────────── */
+    .product-page {
+      max-width:1100px; margin:0 auto;
+      padding:100px 2rem 5rem;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:4rem;
+      align-items:start;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       MEDIA COLUMN — main image + thumbnail strip
+    ══════════════════════════════════════════════════════ */
+    .media-col { display:flex; flex-direction:column; gap:14px; }
+
+    /* Main viewer */
+    .main-viewer {
+      position:relative;
+      width:100%;
+      aspect-ratio:3/4;
+      background:#131112;
+      border:1px solid var(--border);
+      border-radius:6px;
+      overflow:hidden;
+    }
+    .main-viewer img {
+      width:100%; height:100%;
+      object-fit:cover;
+      transition:opacity 0.25s ease, transform 0.35s ease;
+    }
+    .main-viewer img.switching {
+      opacity:0;
+      transform:scale(1.03);
+    }
+
+    /* No-image placeholder */
+    .main-no-img {
+      width:100%; height:100%;
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,0.07);
+      font-size:5rem;
+    }
+
+    /* Zoom hint */
+    .zoom-hint {
+      position:absolute; bottom:14px; left:14px;
+      font-family:'Space Mono'; font-size:0.55rem;
+      color:var(--cream); opacity:0.25; letter-spacing:2px;
+      pointer-events:none;
+    }
+
+    /* ── THUMBNAIL STRIP ─────────────────────────────────── */
+    .thumb-strip {
+      display:flex;
+      gap:10px;
+      overflow-x:auto;
+      padding-bottom:4px;
+      scrollbar-width:none;
+    }
+    .thumb-strip::-webkit-scrollbar { display:none; }
+
+    .thumb-item {
+      flex-shrink:0;
+      width:72px;
+      aspect-ratio:3/4;
+      border-radius:4px;
+      overflow:hidden;
+      cursor:pointer;
+      border:2px solid transparent;
+      background:#131112;
+      transition:border-color 0.2s, transform 0.2s, opacity 0.2s;
+      opacity:0.55;
+    }
+    .thumb-item:hover { opacity:0.85; transform:translateY(-2px); }
+    .thumb-item.active {
+      border-color:var(--rust);
+      opacity:1;
+      transform:translateY(-3px);
+    }
+    .thumb-item img {
+      width:100%; height:100%;
+      object-fit:cover;
+      pointer-events:none;
+    }
+    .thumb-item .thumb-empty-icon {
+      width:100%; height:100%;
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,0.1); font-size:1.2rem;
+    }
+
+    /* ── dot indicators (mobile only) ───────────────────── */
+    .dot-indicators {
+      display:none;
+      justify-content:center; gap:6px;
+      margin-top:4px;
+    }
+    .dot {
+      width:6px; height:6px; border-radius:50%;
+      background:rgba(255,255,255,0.2);
+      transition:background 0.2s, transform 0.2s;
+      cursor:pointer;
+    }
+    .dot.active { background:var(--rust); transform:scale(1.3); }
+
+    /* ══════════════════════════════════════════════════════
+       CONTENT COLUMN
+    ══════════════════════════════════════════════════════ */
+    .content-col { padding-top:0.5rem; }
+
+    .product-category {
+      font-family:'Space Mono'; font-size:0.7rem;
+      color:var(--rust); letter-spacing:3px;
+      margin-bottom:0.6rem; text-transform:uppercase;
+    }
+    .product-title {
+      font-family:'Outfit', sans-serif; font-weight:900;
+      font-size:clamp(2rem,4vw,3.2rem);
+      color:var(--cream); line-height:1.05;
+      margin-bottom:1.2rem;
+    }
+
+    /* Price block */
+    .price-block {
+      display:flex; align-items:center; gap:1rem;
+      margin-bottom:2rem; flex-wrap:wrap;
+    }
+    .price-final {
+      font-family:'Space Mono'; font-size:1.9rem;
+      color:var(--rust); font-weight:700;
+    }
+    .price-old {
+      font-family:'Space Mono'; font-size:1rem;
+      color:rgba(255,255,255,0.25);
+      text-decoration:line-through;
+    }
+    .price-badge {
+      font-family:'Space Mono'; font-size:0.7rem; font-weight:700;
+      background:var(--rust); color:var(--cream);
+      padding:4px 10px; border-radius:3px; letter-spacing:1px;
+    }
+
+    /* Divider */
+    .pdiv {
+      border:none; border-top:1px solid var(--border);
+      margin:1.5rem 0;
+    }
+
+    /* Size selector */
+    .selector-label {
+      font-family:'Space Mono'; font-size:0.65rem;
+      color:var(--cream); opacity:0.4; letter-spacing:3px;
+      margin-bottom:0.8rem; display:block;
+    }
+    .size-options { display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:2rem; }
     .size-btn {
-      border: 1px solid var(--border); background: transparent; color: var(--cream);
-      padding: 10px 24px; font-family: 'Space Mono', monospace; font-size: 0.9rem; cursor: pointer; transition: all 0.3s;
+      border:1px solid var(--border); background:transparent;
+      color:var(--cream); padding:10px 22px;
+      font-family:'Space Mono'; font-size:0.85rem;
+      cursor:pointer; border-radius:3px; transition:all 0.25s;
     }
-    .size-btn:hover, .size-btn.active { border-color: var(--rust); background: var(--rust); }
-    
-    .action-btn {
-      width: 100%; background: var(--rust); color: var(--cream); border: none; padding: 18px;
-      font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 3px; cursor: pointer; transition: background 0.3s;
+    .size-btn:hover { border-color:rgba(148,58,31,0.5); }
+    .size-btn.active { border-color:var(--rust); background:var(--rust); color:var(--cream); }
+
+    /* Add to bag button */
+    .btn-add-bag {
+      width:100%; background:var(--rust); color:var(--cream);
+      border:none; padding:18px;
+      font-family:'Bebas Neue'; font-size:1.3rem; letter-spacing:4px;
+      cursor:pointer; border-radius:4px;
+      transition:background 0.3s, transform 0.2s;
+      display:flex; align-items:center; justify-content:center; gap:12px;
     }
-    .action-btn:hover { background: #b5491e; }
+    .btn-add-bag:hover { background:#b5491e; transform:translateY(-2px); }
+    .btn-add-bag:active { transform:translateY(0); }
 
-    /* FOOTER */
-    footer { background: var(--card); border-top: 1px solid var(--border); padding: 3rem 2rem; text-align: center; }
-    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 6px; color: var(--cream); }
-    .footer-copy { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--cream); opacity: 0.2; letter-spacing: 2px; margin-top: 1rem; }
+    /* Image counter pill */
+    .img-counter {
+      position:absolute; top:14px; left:14px;
+      font-family:'Space Mono'; font-size:0.6rem;
+      color:var(--cream); letter-spacing:2px;
+      background:rgba(0,0,0,0.55);
+      padding:4px 10px; border-radius:100px;
+      pointer-events:none; z-index:2;
+      display:none; /* shown only when >1 image */
+    }
 
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .product-container { grid-template-columns: 1fr; gap: 2rem; margin-top: 90px; padding: 0 1.25rem; }
-      .product-meta-title { font-size: 2rem; }
-      .size-options { gap: 0.5rem; }
-      .size-btn { padding: 8px 18px; font-size: 0.85rem; }
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer { background:var(--card); border-top:1px solid var(--border); padding:3rem 2rem; text-align:center; }
+    .footer-logo { font-family:'Bebas Neue'; font-size:2.5rem; letter-spacing:6px; color:var(--cream); }
+    .footer-copy { font-family:'Space Mono'; font-size:0.65rem; color:var(--cream); opacity:0.2; letter-spacing:2px; margin-top:1rem; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width:768px) {
+      nav { padding:0 1.25rem; }
+      .product-page {
+        grid-template-columns:1fr;
+        gap:1.8rem;
+        padding:84px 0 4rem;
+      }
+      .media-col { gap:10px; padding:0 1.25rem; }
+      .content-col { padding:0 1.25rem; }
+
+      .thumb-strip { gap:8px; }
+      .thumb-item { width:60px; }
+
+      /* On mobile show dot indicators */
+      .dot-indicators { display:flex; }
+
+      .product-title { font-size:clamp(1.8rem, 7vw, 2.5rem); }
+      .size-btn { padding:9px 18px; font-size:0.8rem; }
+      .btn-add-bag { font-size:1.1rem; padding:16px; }
+    }
+
+    @media (max-width:400px) {
+      .thumb-item { width:52px; }
     }
   </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo"><span>NOXERA</span></a>
+  <a href="index.html" class="nav-logo">
+    <img src="logo.png" alt="NOXERA" onerror="this.style.display='none'">
+    <span>NOXERA</span>
+  </a>
   <div class="nav-links">
     <a href="index.html">HOME</a>
     <a href="index.html#shop">SHOP</a>
@@ -88,16 +286,44 @@
   </div>
 </nav>
 
-<div class="product-container">
-  <div class="product-media">
-    <img id="pImg" src="" alt="">
+<!-- PRODUCT PAGE -->
+<div class="product-page">
+
+  <!-- ── MEDIA COLUMN ── -->
+  <div class="media-col">
+
+    <!-- Main image viewer -->
+    <div class="main-viewer" id="mainViewer">
+      <img id="mainImg" src="" alt="" draggable="false">
+      <div class="main-no-img" id="mainNoImg" style="display:none">
+        <i class="fas fa-tshirt"></i>
+      </div>
+      <!-- counter pill e.g. "2 / 4" -->
+      <div class="img-counter" id="imgCounter">1 / 1</div>
+      <div class="zoom-hint">اضغط للتكبير</div>
+    </div>
+
+    <!-- Thumbnail strip -->
+    <div class="thumb-strip" id="thumbStrip"></div>
+
+    <!-- Dot indicators (mobile) -->
+    <div class="dot-indicators" id="dotIndicators"></div>
+
   </div>
-  <div class="product-content">
-    <h1 class="product-meta-title" id="pName">PRODUCT NAME</h1>
-    <div class="product-meta-price" id="pPrice">0 ج.م</div>
-    
-    <div class="selector-title">SELECT SIZE</div>
-    <div class="size-options">
+
+  <!-- ── CONTENT COLUMN ── -->
+  <div class="content-col">
+    <div class="product-category" id="pCategory">NOXERA COLLECTION</div>
+    <h1 class="product-title" id="pName">—</h1>
+
+    <div class="price-block" id="priceBlock">
+      <span class="price-final" id="pFinalPrice">—</span>
+    </div>
+
+    <hr class="pdiv">
+
+    <span class="selector-label">SELECT SIZE</span>
+    <div class="size-options" id="sizeOptions">
       <button class="size-btn" onclick="selectSize(this)">S</button>
       <button class="size-btn" onclick="selectSize(this)">M</button>
       <button class="size-btn" onclick="selectSize(this)">L</button>
@@ -105,66 +331,282 @@
       <button class="size-btn" onclick="selectSize(this)">XXL</button>
     </div>
 
-    <button class="action-btn" onclick="addToCart()">ADD TO BAG</button>
+    <button class="btn-add-bag" id="btnAddBag" onclick="addToCart()">
+      <i class="fas fa-shopping-bag"></i>
+      ADD TO BAG
+    </button>
   </div>
+
 </div>
 
+<!-- FOOTER -->
 <footer>
   <div class="footer-logo">NOXERA</div>
   <p class="footer-copy">© 2026 NOXERA — ALL RIGHTS RESERVED</p>
 </footer>
 
-<script>
-  let selectedSizeStr = '';
-  
-  // تحميل بيانات المنتج المختار من الـ LocalStorage
-  const pName = localStorage.getItem('selectedProduct');
-  const pPrice = localStorage.getItem('selectedPrice');
-  const pImg = localStorage.getItem('selectedImg');
-  const pId = localStorage.getItem('selectedId');
 
-  if(pName && pPrice) {
-    document.getElementById('pName').innerText = pName;
-    document.getElementById('pPrice').innerText = pPrice + ' ج.م';
-    document.getElementById('pImg').src = pImg || '';
-    document.getElementById('pImg').alt = pName;
-  } else {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+  /* ═══════════════════════════════════════════════════════
+     STATE
+  ═══════════════════════════════════════════════════════ */
+  var productImageUrls = [];   // array of up to 4 URL strings
+  var activeImageIndex = 0;
+  var selectedSize     = '';
+
+  // Read product from localStorage (set by index.html on card click)
+  const storedName  = localStorage.getItem('selectedProduct') || '';
+  const storedPrice = parseInt(localStorage.getItem('selectedPrice'))  || 0;
+  const storedImg   = localStorage.getItem('selectedImg')   || '';
+  const storedId    = localStorage.getItem('selectedId')    || '';
+  const storedUrls  = JSON.parse(localStorage.getItem('selectedImgUrls') || 'null');
+
+  if (!storedName) {
+    // Nothing selected — go home
     window.location.href = 'index.html';
   }
 
+  /* ═══════════════════════════════════════════════════════
+     INIT
+  ═══════════════════════════════════════════════════════ */
+  (async function init() {
+    // Build image array:
+    // 1. Prefer the full image_urls array stored by index.html
+    // 2. Fall back to single storedImg
+    if (Array.isArray(storedUrls) && storedUrls.length) {
+      productImageUrls = storedUrls.filter(Boolean).slice(0, 4);
+    } else if (storedImg) {
+      productImageUrls = [storedImg];
+    }
+
+    // If we have an ID, try to fetch fresh data from API
+    if (storedId) {
+      try {
+        const res  = await fetch(`/api/products/${storedId}`);
+        const data = await res.json();
+        if (data.success && data.product) {
+          const p = data.product;
+          const apiUrls = Array.isArray(p.image_urls) && p.image_urls.length
+            ? p.image_urls.filter(Boolean)
+            : (p.image_url ? [p.image_url] : []);
+          if (apiUrls.length) productImageUrls = apiUrls.slice(0, 4);
+
+          // Update price display using fresh API data
+          renderPriceBlock(p.price, p.discount_type, p.discount_value);
+
+          // Category
+          const catRes  = await fetch('/api/categories');
+          const catData = await catRes.json();
+          if (catData.success) {
+            const cat = (catData.categories || []).find(c => c.slug === p.type);
+            if (cat) document.getElementById('pCategory').innerText = cat.name.toUpperCase();
+          }
+        }
+      } catch (e) { /* use stored data */ }
+    }
+
+    // Render product name
+    document.getElementById('pName').innerText = storedName;
+
+    // If price block not yet rendered by API call above, render from stored
+    const finalPriceEl = document.getElementById('pFinalPrice');
+    if (finalPriceEl.innerText === '—') {
+      finalPriceEl.innerText = storedPrice + ' ج.م';
+    }
+
+    // Render gallery
+    renderGallery();
+    updateCartBadge();
+
+    // GSAP entrance
+    gsap.from(".content-col", { opacity:0, x:30, duration:0.7, ease:"power3.out", delay:0.1 });
+    gsap.from(".main-viewer",  { opacity:0, y:20, duration:0.6, ease:"power3.out" });
+    gsap.from(".thumb-strip",  { opacity:0, y:10, duration:0.5, ease:"power3.out", delay:0.2 });
+  })();
+
+  /* ═══════════════════════════════════════════════════════
+     PRICE BLOCK
+  ═══════════════════════════════════════════════════════ */
+  function calcFinal(price, dtype, dval) {
+    if (dtype === 'percentage') return Math.round(price * (1 - dval / 100));
+    if (dtype === 'fixed')      return Math.round(price - dval);
+    return price;
+  }
+
+  function renderPriceBlock(price, discType, discVal) {
+    const final    = calcFinal(price, discType, discVal);
+    const hasDisc  = discType !== 'none' && discVal > 0;
+    const discLabel = discType === 'percentage'
+      ? `-${discVal}%`
+      : `-${discVal} ج.م`;
+
+    const block = document.getElementById('priceBlock');
+    block.innerHTML = `
+      <span class="price-final">${final} ج.م</span>
+      ${hasDisc
+        ? `<span class="price-old">${price} ج.م</span>
+           <span class="price-badge">${discLabel}</span>`
+        : ''}
+    `;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     GALLERY
+  ═══════════════════════════════════════════════════════ */
+  function renderGallery() {
+    const mainImg    = document.getElementById('mainImg');
+    const mainNoImg  = document.getElementById('mainNoImg');
+    const imgCounter = document.getElementById('imgCounter');
+    const thumbStrip = document.getElementById('thumbStrip');
+    const dotWrap    = document.getElementById('dotIndicators');
+
+    if (!productImageUrls.length) {
+      mainImg.style.display   = 'none';
+      mainNoImg.style.display = 'flex';
+      thumbStrip.innerHTML    = '';
+      dotWrap.innerHTML       = '';
+      return;
+    }
+
+    // Main image
+    mainImg.style.display   = 'block';
+    mainNoImg.style.display = 'none';
+    mainImg.src             = productImageUrls[activeImageIndex];
+    mainImg.alt             = storedName;
+
+    // Counter pill (only if >1 image)
+    if (productImageUrls.length > 1) {
+      imgCounter.style.display = 'block';
+      imgCounter.innerText     = `${activeImageIndex + 1} / ${productImageUrls.length}`;
+    } else {
+      imgCounter.style.display = 'none';
+    }
+
+    // Thumbnail strip
+    thumbStrip.innerHTML = productImageUrls.map((url, i) => `
+      <div class="thumb-item ${i === activeImageIndex ? 'active' : ''}"
+           onclick="switchImage(${i})" id="thumb-${i}">
+        ${url
+          ? `<img src="${url}" alt="صورة ${i+1}" loading="lazy">`
+          : `<div class="thumb-empty-icon"><i class="fas fa-image"></i></div>`
+        }
+      </div>
+    `).join('');
+
+    // Dot indicators (mobile)
+    if (productImageUrls.length > 1) {
+      dotWrap.innerHTML = productImageUrls.map((_, i) =>
+        `<div class="dot ${i === activeImageIndex ? 'active' : ''}"
+              onclick="switchImage(${i})"></div>`
+      ).join('');
+    } else {
+      dotWrap.innerHTML = '';
+    }
+  }
+
+  /** Switch the active main image */
+  function switchImage(index) {
+    if (index === activeImageIndex) return;
+    if (index < 0 || index >= productImageUrls.length) return;
+
+    const mainImg = document.getElementById('mainImg');
+
+    // Fade-out → swap src → fade-in
+    mainImg.classList.add('switching');
+    setTimeout(() => {
+      activeImageIndex = index;
+      mainImg.src = productImageUrls[activeImageIndex];
+      mainImg.classList.remove('switching');
+
+      // Update counter
+      const counter = document.getElementById('imgCounter');
+      if (counter) counter.innerText = `${activeImageIndex + 1} / ${productImageUrls.length}`;
+
+      // Update thumb active state
+      document.querySelectorAll('.thumb-item').forEach((el, i) => {
+        el.classList.toggle('active', i === activeImageIndex);
+      });
+
+      // Update dots
+      document.querySelectorAll('.dot').forEach((el, i) => {
+        el.classList.toggle('active', i === activeImageIndex);
+      });
+    }, 180);
+  }
+
+  /* ── SWIPE SUPPORT on main viewer (mobile) ───────────── */
+  (function addSwipe() {
+    const viewer = document.getElementById('mainViewer');
+    let startX = 0;
+    viewer.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive:true });
+    viewer.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) < 40) return;
+      if (dx < 0) switchImage(activeImageIndex + 1);
+      else        switchImage(activeImageIndex - 1);
+    }, { passive:true });
+  })();
+
+  /* ── CLICK TO FULLSCREEN on main viewer ─────────────── */
+  document.getElementById('mainViewer').addEventListener('click', function() {
+    const img = document.getElementById('mainImg');
+    if (!img.src || img.style.display === 'none') return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      img.requestFullscreen && img.requestFullscreen();
+    }
+  });
+
+  /* ═══════════════════════════════════════════════════════
+     SIZE SELECTOR
+  ═══════════════════════════════════════════════════════ */
   function selectSize(btn) {
     document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    selectedSizeStr = btn.innerText;
+    selectedSize = btn.innerText;
   }
 
+  /* ═══════════════════════════════════════════════════════
+     ADD TO CART
+  ═══════════════════════════════════════════════════════ */
   function addToCart() {
-    if(!selectedSizeStr) {
+    if (!selectedSize) {
+      // Shake size options
+      const opts = document.getElementById('sizeOptions');
+      opts.style.animation = 'none';
+      opts.offsetHeight;
+      opts.style.animation = 'shakeX 0.4s ease';
       alert('الرجاء اختيار المقاس أولاً');
       return;
     }
-    
-    // حفظ بيانات المنتج المختار لإرسالها لصفحة السلة
+
     const cartItem = {
-      id: pId,
-      name: pName,
-      price: pPrice,
-      img: pImg,
-      size: selectedSizeStr,
-      qty: 1
+      id:    storedId,
+      name:  storedName,
+      price: storedPrice,
+      img:   productImageUrls[0] || storedImg,
+      size:  selectedSize,
+      qty:   1,
     };
-    
+
     localStorage.setItem('cartItem', JSON.stringify(cartItem));
+    // Keep legacy keys for cart.html / checkout.html compatibility
+    localStorage.setItem('selectedProduct', storedName);
+    localStorage.setItem('selectedPrice',   storedPrice);
+    localStorage.setItem('selectedImg',     productImageUrls[0] || storedImg);
+    localStorage.setItem('selectedId',      storedId);
+
     updateCartBadge();
     window.location.href = 'cart.html';
   }
 
   function updateCartBadge() {
-    const item = localStorage.getItem('cartItem');
+    const item  = localStorage.getItem('selectedProduct');
     const badge = document.getElementById('cartBadge');
-    if(item && badge) { badge.style.display = 'flex'; }
+    if (badge) badge.style.display = item ? 'flex' : 'none';
   }
-  updateCartBadge();
 </script>
 </body>
 </html>

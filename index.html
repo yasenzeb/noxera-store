@@ -445,11 +445,18 @@
       : `-${p.discount_value} ج.م`;
     const catName = (allCategories.find(c => c.slug === p.type) || {}).name || p.type;
 
+    // Cover = first image in array, or legacy image_url
+    const urls  = Array.isArray(p.image_urls) && p.image_urls.length ? p.image_urls : [];
+    const cover = urls[0] || p.image_url || '';
+
+    // Encode the full urls array for onclick (JSON → base64-safe via encodeURIComponent)
+    const urlsEncoded = encodeURIComponent(JSON.stringify(urls));
+
     return `
-      <div class="product-card" onclick="selectProduct('${escHtml(p.name)}', ${final}, '${escHtml(p.image_url||'')}', '${p.id}')">
+      <div class="product-card" onclick="selectProduct('${escHtml(p.name)}', ${final}, '${escHtml(cover)}', '${p.id}', '${urlsEncoded}')">
         <div class="product-image">
-          ${p.image_url
-            ? `<img src="${escHtml(p.image_url)}" alt="${escHtml(p.name)}" loading="lazy">`
+          ${cover
+            ? `<img src="${escHtml(cover)}" alt="${escHtml(p.name)}" loading="lazy">`
             : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.1)"><i class="fas fa-tshirt" style="font-size:3rem"></i></div>`}
           ${hasDiscount ? `<div class="discount-badge">${discLabel}</div>` : ''}
           <div class="add-btn">ADD TO CART</div>
@@ -471,11 +478,18 @@
     return String(str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
-  function selectProduct(name, price, img, id) {
+  function selectProduct(name, price, img, id, urlsEncoded) {
     localStorage.setItem('selectedProduct', name);
-    localStorage.setItem('selectedPrice', price);
-    localStorage.setItem('selectedImg', img);
-    localStorage.setItem('selectedId', id);
+    localStorage.setItem('selectedPrice',   price);
+    localStorage.setItem('selectedImg',     img);
+    localStorage.setItem('selectedId',      id);
+    // Store the full image gallery array for products.html
+    try {
+      const urls = JSON.parse(decodeURIComponent(urlsEncoded || '[]'));
+      localStorage.setItem('selectedImgUrls', JSON.stringify(urls));
+    } catch(e) {
+      localStorage.setItem('selectedImgUrls', JSON.stringify(img ? [img] : []));
+    }
     window.location.href = 'products.html';
   }
 
