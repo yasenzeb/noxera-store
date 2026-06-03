@@ -8,9 +8,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    @import url('https://fonts.cdnfonts.com/css/blabeloo');
+
     :root { --bg:#1B191A; --cream:#E9E4E0; --rust:#943A1F; --card:#141213; --border:rgba(148,58,31,0.2); }
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { background:var(--bg); color:var(--cream); font-family:'Cairo',sans-serif; }
+    body { background:var(--bg); color:var(--cream); font-family:'Blabeloo','Cairo',sans-serif; }
 
     nav {
       position:fixed; top:0; left:0; right:0; z-index:1000;
@@ -181,55 +183,97 @@
       <div class="ai-status" id="aiStatus"></div>
     </div>
 
-    <!-- FIELDS -->
-    <div class="field-group">
-      <label class="field-label">الاسم الكامل</label>
-      <input type="text" class="field-input" id="custName" placeholder="محمد أحمد" oninput="validateNameInput()">
-      <div class="field-error" id="nameError">الاسم يجب أن يكون حرفين على الأقل</div>
-    </div>
+    <!-- FIELDS wrapped in a proper form for browser autofill -->
+    <form id="orderForm" autocomplete="on" onsubmit="sendToWhatsApp(event)">
 
-    <div class="field-group">
-      <label class="field-label">رقم الموبايل</label>
-      <input type="tel" class="field-input" id="custPhone" placeholder="01xxxxxxxxx" oninput="validatePhoneInput()">
-      <div class="field-error" id="phoneError">أدخل رقم مصري صحيح (010/011/012/015)</div>
-    </div>
-
-    <div class="fields-row">
       <div class="field-group">
-        <label class="field-label">المحافظة</label>
-        <select class="field-select" id="custGov" onchange="handleGovChange()">
-          <option value="">اختر المحافظة</option>
-        </select>
+        <label class="field-label" for="custName">الاسم الكامل</label>
+        <input
+          type="text"
+          class="field-input"
+          id="custName"
+          name="name"
+          autocomplete="name"
+          placeholder="محمد أحمد"
+          oninput="validateNameInput()"
+        >
+        <div class="field-error" id="nameError">الاسم يجب أن يكون حرفين على الأقل</div>
       </div>
+
       <div class="field-group">
-        <label class="field-label">تكلفة الشحن</label>
-        <input type="text" class="field-input" id="shippingDisplay" value="اختر المحافظة أولاً" readonly style="opacity:0.5;cursor:default">
+        <label class="field-label" for="custPhone">رقم الموبايل</label>
+        <input
+          type="tel"
+          class="field-input"
+          id="custPhone"
+          name="tel"
+          autocomplete="tel"
+          placeholder="01xxxxxxxxx"
+          oninput="validatePhoneInput()"
+        >
+        <div class="field-error" id="phoneError">أدخل رقم مصري صحيح (010/011/012/015)</div>
       </div>
-    </div>
 
-    <div class="field-group">
-      <label class="field-label">العنوان التفصيلي</label>
-      <input type="text" class="field-input" id="custAddress" placeholder="الشارع، رقم المبنى، أقرب معلم...">
-    </div>
-
-    <div class="field-group">
-      <label class="field-label">طريقة الدفع</label>
-      <div class="pay-methods">
-        <div class="pay-opt selected" onclick="selectPay(this,'كاش عند الاستلام')">
-          <input type="radio" name="pay" id="pay1" checked>
-          <label for="pay1"><i class="fas fa-money-bill-wave" style="color:var(--rust);margin-left:6px"></i> كاش عند الاستلام</label>
+      <div class="fields-row">
+        <div class="field-group">
+          <label class="field-label" for="custGov">المحافظة</label>
+          <select
+            class="field-select"
+            id="custGov"
+            name="address-level1"
+            autocomplete="address-level1"
+            onchange="handleGovChange()"
+          >
+            <option value="">اختر المحافظة</option>
+          </select>
         </div>
-        <div class="pay-opt" onclick="selectPay(this,'تحويل بنكي')">
-          <input type="radio" name="pay" id="pay2">
-          <label for="pay2"><i class="fas fa-university" style="color:var(--rust);margin-left:6px"></i> تحويل بنكي</label>
+        <div class="field-group">
+          <label class="field-label" for="shippingDisplay">تكلفة الشحن</label>
+          <input
+            type="text"
+            class="field-input"
+            id="shippingDisplay"
+            name="shipping"
+            autocomplete="off"
+            value="اختر المحافظة أولاً"
+            readonly
+            style="opacity:0.5;cursor:default"
+          >
         </div>
       </div>
-    </div>
 
-    <button class="btn-submit" onclick="sendToWhatsApp(event)">
-      <i class="fab fa-whatsapp" style="font-size:1.3rem"></i>
-      أكمل الطلب عبر واتساب
-    </button>
+      <div class="field-group">
+        <label class="field-label" for="custAddress">العنوان التفصيلي</label>
+        <input
+          type="text"
+          class="field-input"
+          id="custAddress"
+          name="street-address"
+          autocomplete="street-address"
+          placeholder="الشارع، رقم المبنى، أقرب معلم..."
+        >
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">طريقة الدفع</label>
+        <div class="pay-methods">
+          <div class="pay-opt selected" onclick="selectPay(this,'كاش عند الاستلام')">
+            <input type="radio" name="pay" id="pay1" checked>
+            <label for="pay1"><i class="fas fa-money-bill-wave" style="color:var(--rust);margin-left:6px"></i> كاش عند الاستلام</label>
+          </div>
+          <div class="pay-opt" onclick="selectPay(this,'تحويل بنكي')">
+            <input type="radio" name="pay" id="pay2">
+            <label for="pay2"><i class="fas fa-university" style="color:var(--rust);margin-left:6px"></i> تحويل بنكي</label>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        <i class="fab fa-whatsapp" style="font-size:1.3rem"></i>
+        أكمل الطلب عبر واتساب
+      </button>
+
+    </form>
   </div>
 
   <!-- SUMMARY -->
@@ -422,7 +466,7 @@
       `🏡 *العنوان:* ${address}\n` +
       `💳 *الدفع:* ${selectedPayMethod}`;
 
-    window.open(`https://wa.me/201204761076?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`https://wa.me/201026490075?text=${encodeURIComponent(message)}`, '_blank');
     localStorage.clear();
     window.location.href = 'success.html';
   }
