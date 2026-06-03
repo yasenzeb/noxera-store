@@ -2,112 +2,82 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NOXERA — المنتج</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NOXERA — Product Details</title>
   
-  <!-- استيراد الخطوط الاحترافية والفاخرة الموحدة للمتجر -->
+  <!-- استدعاء الخطوط المستقرة -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root { --bg:#1B191A; --cream:#E9E4E0; --rust:#943A1F; --card:#141213; --border:rgba(148,58,31,0.2); }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { background:var(--bg); color:var(--cream); font-family:'Cairo', sans-serif; -webkit-font-smoothing: antialiased; }
-
-    /* العناوين والرموز الإنجليزية تستخدم Outfit أو Plus Jakarta Sans */
-    .font-eng {
-      font-family: 'Outfit', sans-serif;
+    :root {
+      --bg: #1B191A;
+      --cream: #E9E4E0;
+      --rust: #943A1F;
+      --card: #141213;
+      --border: rgba(148,58,31,0.2);
     }
-    .font-num {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--cream); font-family: 'Cairo', sans-serif; overflow-x: hidden; width: 100%; }
 
+    /* NAV */
     nav {
-      position:fixed; top:0; left:0; right:0; z-index:1000;
-      background:#141213; border-bottom:1px solid var(--border);
-      padding:0 2rem; height:64px;
-      display:flex; align-items:center; justify-content:space-between;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: #141213; border-bottom: 1px solid var(--border);
+      padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between;
     }
-    .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
-    .nav-logo img { height:36px; object-fit:contain; }
-    .nav-logo span { font-family:'Outfit'; font-size:1.6rem; font-weight:800; color:var(--cream); letter-spacing:3px; }
-    .nav-links { display:flex; align-items:center; gap:1.5rem; }
-    .nav-links a { color:var(--cream); text-decoration:none; font-family:'Outfit'; font-size:1rem; font-weight:600; letter-spacing:2px; opacity:0.7; transition:opacity 0.3s,color 0.3s; }
-    .nav-links a:hover { opacity:1; color:var(--rust); }
-    .cart-icon { position:relative; }
-    .cart-badge { position:absolute; top:-8px; right:-8px; background:var(--rust); color:white; font-family:'Plus Jakarta Sans'; font-size:10px; font-weight:700; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--cream); letter-spacing: 3px; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a { color: var(--cream); text-decoration: none; font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 2px; opacity: 0.7; }
+    .cart-icon { position: relative; }
+    .cart-badge {
+      position: absolute; top: -8px; right: -8px; background: var(--rust); color: white;
+      font-family: 'Space Mono', monospace; font-size: 10px; width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
 
-    .product-page {
-      min-height:100vh; padding-top:64px;
-      display:flex; align-items:center;
+    /* PRODUCT LAYOUT */
+    .product-container { max-width: 1200px; margin: 120px auto 60px; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .product-media img { width: 100%; border-radius: 4px; border: 1px solid var(--border); object-fit: cover; aspect-ratio: 3/4; background: #1a1718; }
+    .product-meta-title { font-family: 'Outfit', 'Syne', sans-serif; font-weight: 900; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin-bottom: 1rem; color: var(--cream); }
+    .product-meta-price { font-family: 'Space Mono', monospace; font-size: 1.8rem; color: var(--rust); font-weight: 700; margin-bottom: 2rem; }
+    
+    .selector-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 0.5rem; opacity: 0.6; }
+    .size-options { display: flex; gap: 0.75rem; margin-bottom: 2.5rem; }
+    .size-btn {
+      border: 1px solid var(--border); background: transparent; color: var(--cream);
+      padding: 10px 24px; font-family: 'Space Mono', monospace; font-size: 0.9rem; cursor: pointer; transition: all 0.3s;
     }
-    .product-inner {
-      max-width:1100px; margin:0 auto; padding:4rem 2rem;
-      display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start;
+    .size-btn:hover, .size-btn.active { border-color: var(--rust); background: var(--rust); }
+    
+    .action-btn {
+      width: 100%; background: var(--rust); color: var(--cream); border: none; padding: 18px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 3px; cursor: pointer; transition: background 0.3s;
     }
-    .product-img-wrap {
-      position:relative; aspect-ratio:3/4; background:var(--card);
-      border:1px solid var(--border); overflow:hidden; border-radius:12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-    .product-img-wrap img { width:100%; height:100%; object-fit:cover; }
-    .product-img-placeholder {
-      width:100%; height:100%; display:flex; align-items:center; justify-content:center;
-      color:rgba(255,255,255,0.07);
-    }
-    .product-img-placeholder i { font-size:6rem; }
+    .action-btn:hover { background: #b5491e; }
 
-    .product-details { padding-top:1rem; }
-    .product-cat { font-family:'Outfit'; font-size:0.75rem; font-weight:600; color:var(--rust); letter-spacing:3px; text-transform:uppercase; margin-bottom:0.8rem; }
-    .product-title { font-family:'Cairo'; font-size:clamp(1.8rem,4vw,2.8rem); font-weight:700; color:var(--cream); line-height:1.3; margin-bottom:1.5rem; }
-    .product-price-wrap { display:flex; align-items:center; gap:1rem; margin-bottom:2rem; }
-    .product-final-price { font-family:'Plus Jakarta Sans', 'Cairo', sans-serif; font-size:2rem; color:var(--rust); font-weight:700; }
-    .product-desc { font-family:'Cairo'; font-size:0.95rem; color:var(--cream); opacity:0.65; line-height:1.8; margin-bottom:2.5rem; }
+    /* FOOTER */
+    footer { background: var(--card); border-top: 1px solid var(--border); padding: 3rem 2rem; text-align: center; }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 6px; color: var(--cream); }
+    .footer-copy { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--cream); opacity: 0.2; letter-spacing: 2px; margin-top: 1rem; }
 
-    .actions { display:flex; flex-direction:column; gap:1rem; }
-    .btn-primary {
-      background:var(--rust); color:var(--cream);
-      padding:18px 32px; border:none; border-radius:100px;
-      font-family:'Cairo'; font-size:1.05rem; font-weight:700;
-      cursor:pointer; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      display:flex; align-items:center; justify-content:center; gap:10px;
-    }
-    .btn-primary:hover { background:#b5491e; transform:translateY(-2px); box-shadow: 0 8px 20px rgba(148, 58, 31, 0.2); }
-    .btn-secondary {
-      background:transparent; color:var(--cream);
-      padding:16px 32px; border:1px solid var(--border); border-radius:100px;
-      font-family:'Cairo'; font-size:1.05rem; font-weight:600;
-      cursor:pointer; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .btn-secondary:hover { border-color:var(--cream); transform:translateY(-2px); }
-
-    .back-link {
-      display:inline-flex; align-items:center; gap:8px;
-      color:var(--cream); opacity:0.5; text-decoration:none;
-      font-family:'Cairo'; font-size:0.9rem; font-weight:600;
-      margin-bottom:1.5rem; transition:opacity 0.3s, color 0.3s;
-    }
-    .back-link:hover { opacity:1; color:var(--rust); }
-
-    .empty-page { min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding-top:64px; }
-    .empty-page h2 { font-family:'Cairo'; font-size:2rem; font-weight:700; color:var(--cream); opacity:0.3; }
-
-    @media (max-width:768px) {
-      .product-inner { grid-template-columns:1fr; gap:2.5rem; padding:2rem 1.25rem; }
-      .product-details { padding-top:0; }
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .product-container { grid-template-columns: 1fr; gap: 2rem; margin-top: 90px; padding: 0 1.25rem; }
+      .product-meta-title { font-size: 2rem; }
+      .size-options { gap: 0.5rem; }
+      .size-btn { padding: 8px 18px; font-size: 0.85rem; }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">
-    <img src="logo.png" alt="NOXERA" onerror="this.style.display='none'">
-    <span>NOXERA</span>
-  </a>
+  <a href="index.html" class="nav-logo"><span>NOXERA</span></a>
   <div class="nav-links">
     <a href="index.html">HOME</a>
     <a href="index.html#shop">SHOP</a>
@@ -118,78 +88,83 @@
   </div>
 </nav>
 
-<div id="pageContent"></div>
+<div class="product-container">
+  <div class="product-media">
+    <img id="pImg" src="" alt="">
+  </div>
+  <div class="product-content">
+    <h1 class="product-meta-title" id="pName">PRODUCT NAME</h1>
+    <div class="product-meta-price" id="pPrice">0 ج.م</div>
+    
+    <div class="selector-title">SELECT SIZE</div>
+    <div class="size-options">
+      <button class="size-btn" onclick="selectSize(this)">S</button>
+      <button class="size-btn" onclick="selectSize(this)">M</button>
+      <button class="size-btn" onclick="selectSize(this)">L</button>
+      <button class="size-btn" onclick="selectSize(this)">XL</button>
+      <button class="size-btn" onclick="selectSize(this)">XXL</button>
+    </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <button class="action-btn" onclick="addToCart()">ADD TO BAG</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">NOXERA</div>
+  <p class="footer-copy">© 2026 NOXERA — ALL RIGHTS RESERVED</p>
+</footer>
+
 <script>
-  const name  = localStorage.getItem('selectedProduct') || '';
-  const price = localStorage.getItem('selectedPrice') || '';
-  const img   = localStorage.getItem('selectedImg') || '';
-  const id    = localStorage.getItem('selectedId') || '';
+  let selectedSizeStr = '';
+  
+  // تحميل بيانات المنتج المختار من الـ LocalStorage
+  const pName = localStorage.getItem('selectedProduct');
+  const pPrice = localStorage.getItem('selectedPrice');
+  const pImg = localStorage.getItem('selectedImg');
+  const pId = localStorage.getItem('selectedId');
 
-  // Cart badge
-  if (localStorage.getItem('selectedProduct')) {
-    const b = document.getElementById('cartBadge');
-    if (b) b.style.display = 'flex';
+  if(pName && pPrice) {
+    document.getElementById('pName').innerText = pName;
+    document.getElementById('pPrice').innerText = pPrice + ' ج.م';
+    document.getElementById('pImg').src = pImg || '';
+    document.getElementById('pImg').alt = pName;
+  } else {
+    window.location.href = 'index.html';
   }
 
-  if (!name) {
-    document.getElementById('pageContent').innerHTML = `
-      <div class="empty-page">
-        <div>
-          <h2>لم يتم اختيار منتج بعد</h2>
-          <a href="index.html" style="display:inline-block; margin-top:1.5rem; font-family:'Cairo'; font-size:1rem; font-weight:600; color:#943A1F; text-decoration:none;">← العودة للمتجر</a>
-        </div>
-      </div>`;
-  } else {
-    document.getElementById('pageContent').innerHTML = `
-      <section class="product-page">
-        <div class="product-inner">
-          <div class="product-img-wrap">
-            ${img
-              ? `<img src="${img}" alt="${name}">`
-              : `<div class="product-img-placeholder"><i class="fas fa-tshirt"></i></div>`}
-          </div>
-          <div class="product-details">
-            <a href="index.html" class="back-link"><i class="fas fa-arrow-right"></i> العودة للمتجر</a>
-            <div class="product-cat">NOXERA PREMIUM COLLECTION</div>
-            <h1 class="product-title">${name}</h1>
-            <div class="product-price-wrap">
-              <span class="product-final-price">${price} ج.م</span>
-            </div>
-            <p class="product-desc">
-              قطعة فريدة مصممة بعناية فائقة من كولكشن NOXERA الحصري — نجمع فيها بين أصالة الخامات المصرية الفاخرة وأحدث صيحات الموضة العصرية لتمنحك إطلالة فخمة تدوم طويلاً وتناسب كل أوقاتك.
-            </p>
-            <div class="actions">
-              <button class="btn-primary" onclick="buyNow()">
-                <i class="fas fa-shopping-bag"></i> اشتري الآن — ${price} ج.م
-              </button>
-              <button class="btn-secondary" onclick="addToCart()">أضف للسلة</button>
-            </div>
-          </div>
-        </div>
-      </section>`;
-
-    gsap.from(".product-img-wrap", { opacity:0, x:-40, duration:0.8, ease:"power3.out" });
-    gsap.from(".product-details", { opacity:0, x:40, duration:0.8, ease:"power3.out", delay:0.15 });
+  function selectSize(btn) {
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedSizeStr = btn.innerText;
   }
 
   function addToCart() {
-    showToast('✓ تمت إضافة المنتج للسلة بنجاح');
-    setTimeout(() => window.location.href = 'cart.html', 800);
+    if(!selectedSizeStr) {
+      alert('الرجاء اختيار المقاس أولاً');
+      return;
+    }
+    
+    // حفظ بيانات المنتج المختار لإرسالها لصفحة السلة
+    const cartItem = {
+      id: pId,
+      name: pName,
+      price: pPrice,
+      img: pImg,
+      size: selectedSizeStr,
+      qty: 1
+    };
+    
+    localStorage.setItem('cartItem', JSON.stringify(cartItem));
+    updateCartBadge();
+    window.location.href = 'cart.html';
   }
 
-  function buyNow() {
-    window.location.href = 'checkout.html';
+  function updateCartBadge() {
+    const item = localStorage.getItem('cartItem');
+    const badge = document.getElementById('cartBadge');
+    if(item && badge) { badge.style.display = 'flex'; }
   }
-
-  function showToast(msg) {
-    const t = document.createElement('div');
-    t.style.cssText = `position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:#943A1F; color:#E9E4E0; padding:14px 28px; border-radius:100px; font-family:'Cairo'; font-size:0.95rem; font-weight:600; z-index:9999; box-shadow: 0 10px 25px rgba(0,0,0,0.3);`;
-    t.innerText = msg;
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 2500);
-  }
+  updateCartBadge();
 </script>
 </body>
 </html>

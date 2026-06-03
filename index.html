@@ -4,13 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NOXERA — Fashion Store</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- استدعاء رسمي ومستقر 100% من جوجل لجميع الخطوط الفاخرة للموقع -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.cdnfonts.com/css/blabeloo');
-
     :root {
       --bg: #1B191A;
       --cream: #E9E4E0;
@@ -19,7 +22,16 @@
       --border: rgba(148,58,31,0.2);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: var(--bg); color: var(--cream); font-family: 'Blabeloo', 'Cairo', sans-serif; overflow-x: hidden; width: 100%; }
+    
+    /* جعل الخط الافتراضي للموقع هو Cairo لضمان جمال النصوص العربية */
+    body { 
+      background: var(--bg); 
+      color: var(--cream); 
+      font-family: 'Cairo', sans-serif; 
+      overflow-x: hidden; 
+      width: 100%; 
+      -webkit-font-smoothing: antialiased;
+    }
 
     /* NAV */
     nav {
@@ -32,15 +44,15 @@
     }
     .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .nav-logo img { height: 36px; object-fit: contain; }
-    .nav-logo span { font-family: 'Bebas Neue'; font-size: 1.6rem; color: var(--cream); letter-spacing: 3px; }
+    .nav-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--cream); letter-spacing: 3px; }
     .nav-links { display: flex; align-items: center; gap: 2rem; }
-    .nav-links a { color: var(--cream); text-decoration: none; font-family: 'Bebas Neue'; font-size: 1rem; letter-spacing: 2px; opacity: 0.7; transition: opacity 0.3s, color 0.3s; }
+    .nav-links a { color: var(--cream); text-decoration: none; font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 2px; opacity: 0.7; transition: opacity 0.3s, color 0.3s; }
     .nav-links a:hover { opacity: 1; color: var(--rust); }
     .cart-icon { position: relative; }
     .cart-badge {
       position: absolute; top: -8px; right: -8px;
       background: var(--rust); color: white;
-      font-family: 'Space Mono'; font-size: 10px;
+      font-family: 'Space Mono', monospace; font-size: 10px;
       width: 18px; height: 18px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
     }
@@ -53,7 +65,7 @@
       padding: 0 1rem;
     }
     .hero-bg-text {
-      font-family: 'Bebas Neue';
+      font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(100px, 20vw, 220px);
       color: rgba(148,58,31,0.12);
       position: absolute;
@@ -70,27 +82,30 @@
       width: 100%;
     }
     .hero-logo { height: 70px; margin-bottom: 1.5rem; filter: brightness(0) invert(1); max-width: 100%; object-fit: contain; }
+    
+    /* هنا استبدال خط Blabeloo بخط جرافيكي فاخر وضخم موحد */
     .hero-title {
-      font-family: 'Bebas Neue';
-      font-size: clamp(50px, 12vw, 140px);
+      font-family: 'Outfit', 'Syne', sans-serif;
+      font-weight: 900;
+      font-size: clamp(50px, 11vw, 130px);
       color: var(--cream);
       line-height: 0.95;
-      letter-spacing: 4px;
+      letter-spacing: 2px;
     }
     .hero-title span { color: var(--rust); }
-    .hero-tagline { font-family: 'Cairo'; color: var(--cream); opacity: 0.55; margin-top: 1.2rem; font-size: 1.1rem; padding: 0 10px; }
+    .hero-tagline { font-family: 'Cairo', sans-serif; color: var(--cream); opacity: 0.55; margin-top: 1.2rem; font-size: 1.1rem; padding: 0 10px; }
     .hero-btn {
       display: inline-block; margin-top: 2rem;
       background: var(--rust); color: var(--cream);
       padding: 14px 48px; border-radius: 100px;
-      font-family: 'Bebas Neue'; font-size: 1.2rem; letter-spacing: 3px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 3px;
       text-decoration: none; transition: background 0.3s, transform 0.2s;
     }
     .hero-btn:hover { background: #b5491e; transform: scale(1.04); }
     .hero-scroll {
       position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
       color: var(--cream); opacity: 0.3;
-      font-family: 'Space Mono'; font-size: 0.7rem; letter-spacing: 3px;
+      font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 3px;
       animation: bounce 2s infinite;
     }
     @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
@@ -101,7 +116,7 @@
       display: flex; gap: 3rem; white-space: nowrap;
       animation: marquee 18s linear infinite;
     }
-    .marquee-track span { font-family: 'Bebas Neue'; font-size: 1rem; letter-spacing: 4px; color: var(--cream); opacity: 0.9; }
+    .marquee-track span { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 4px; color: var(--cream); opacity: 0.9; }
     @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
     /* SHOP SECTION */
@@ -110,15 +125,15 @@
       display: flex; align-items: flex-end; justify-content: space-between;
       margin-bottom: 2.5rem;
     }
-    .section-title { font-family: 'Bebas Neue'; font-size: clamp(2.5rem,6vw,5rem); color: var(--cream); letter-spacing: 3px; line-height: 1; }
-    .section-subtitle { font-family: 'Space Mono'; font-size: 0.7rem; color: var(--rust); letter-spacing: 3px; margin-bottom: 0.4rem; }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem,6vw,5rem); color: var(--cream); letter-spacing: 3px; line-height: 1; }
+    .section-subtitle { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--rust); letter-spacing: 3px; margin-bottom: 0.4rem; }
 
     /* FILTER TABS */
     .filter-tabs { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
     .tab-btn {
       background: transparent; border: 1px solid var(--border);
       color: var(--cream); padding: 8px 20px;
-      font-family: 'Bebas Neue'; font-size: 0.9rem; letter-spacing: 2px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; letter-spacing: 2px;
       cursor: pointer; border-radius: 100px; transition: all 0.3s;
       -webkit-tap-highlight-color: transparent;
     }
@@ -145,24 +160,24 @@
     .discount-badge {
       position: absolute; top: 12px; right: 12px;
       background: var(--rust); color: white;
-      font-family: 'Space Mono'; font-size: 0.7rem; font-weight: 700;
+      font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700;
       padding: 4px 8px; border-radius: 2px; z-index: 10;
     }
     .add-btn {
       position: absolute; bottom: 0; left: 0; right: 0;
       background: rgba(20,18,19,0.92);
       color: var(--cream); text-align: center;
-      font-family: 'Bebas Neue'; font-size: 1rem; letter-spacing: 3px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 3px;
       padding: 14px;
       transform: translateY(100%); transition: transform 0.3s;
     }
     .product-card:hover .add-btn { transform: translateY(0); }
     .product-info { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-    .product-name { font-family: 'Bebas Neue'; font-size: 1.3rem; color: var(--cream); margin-bottom: 0.4rem; line-height: 1.2; }
-    .product-type { font-family: 'Cairo'; font-size: 0.75rem; color: var(--rust); opacity: 0.8; margin-bottom: 0.5rem; }
+    .product-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--cream); margin-bottom: 0.4rem; line-height: 1.2; }
+    .product-type { font-family: 'Cairo', sans-serif; font-size: 0.75rem; color: var(--rust); opacity: 0.8; margin-bottom: 0.5rem; }
     .prices { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
-    .final-price { font-family: 'Space Mono'; color: var(--rust); font-weight: 700; }
-    .old-price { font-family: 'Space Mono'; font-size: 0.8rem; text-decoration: line-through; color: #555; }
+    .final-price { font-family: 'Space Mono', monospace; color: var(--rust); font-weight: 700; }
+    .old-price { font-family: 'Space Mono', monospace; font-size: 0.8rem; text-decoration: line-through; color: #555; }
 
     /* LOADING */
     .loading-grid { display: flex; justify-content: center; align-items: center; min-height: 300px; }
@@ -174,7 +189,7 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .empty-state { text-align: center; padding: 4rem 1rem; color: var(--cream); opacity: 0.4; }
     .empty-state i { font-size: 3rem; margin-bottom: 1rem; display: block; }
-    .empty-state p { font-family: 'Bebas Neue'; font-size: 1.5rem; letter-spacing: 2px; }
+    .empty-state p { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 2px; }
 
     /* FOOTER */
     footer {
@@ -184,15 +199,15 @@
       display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
       text-align: center;
     }
-    .footer-logo { font-family: 'Bebas Neue'; font-size: 2.5rem; letter-spacing: 6px; color: var(--cream); }
-    .footer-tagline { font-family: 'Cairo'; font-size: 0.85rem; color: var(--cream); opacity: 0.4; }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 6px; color: var(--cream); }
+    .footer-tagline { font-family: 'Cairo', sans-serif; font-size: 0.85rem; color: var(--cream); opacity: 0.4; }
     .social-links { display: flex; gap: 1.5rem; }
     .social-links a {
       color: var(--cream); font-size: 1.2rem; opacity: 0.5;
       transition: opacity 0.3s, color 0.3s;
     }
     .social-links a:hover { opacity: 1; color: var(--rust); }
-    .footer-copy { font-family: 'Space Mono'; font-size: 0.65rem; color: var(--cream); opacity: 0.2; letter-spacing: 2px; }
+    .footer-copy { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--cream); opacity: 0.2; letter-spacing: 2px; }
 
     /* FLOATING WHATSAPP BUTTON */
     .whatsapp-float {
@@ -219,15 +234,15 @@
       .nav-links a { font-size: 0.9rem; letter-spacing: 1px; }
       
       .hero-content { padding-top: 40px; }
+      .hero-title { font-size: clamp(42px, 12vw, 80px); }
       .hero-btn { padding: 12px 36px; font-size: 1.1rem; }
-      .hero-scroll { bottom: 4.5rem; } /* منع التداخل مع الأزرار في الهواتف القصيرة */
+      .hero-scroll { bottom: 4.5rem; }
 
       #shop { padding: 3.5rem 1rem; }
       .section-header { flex-direction: column; align-items: flex-start; gap: 0.4rem; margin-bottom: 1.75rem; }
       .filter-tabs { gap: 0.4rem; margin-bottom: 1.75rem; }
       .tab-btn { padding: 6px 16px; font-size: 0.85rem; }
 
-      /* جعل المنتجات تظهر كـ 2 في كل صف بدلاً من 1 عملاق لتجربة تصفح فاخرة */
       .products-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 0.75rem;
@@ -239,7 +254,6 @@
       .final-price { font-size: 0.95rem; }
       .old-price { font-size: 0.75rem; }
       
-      /* إظهار زر الإضافة بشكل دائم وأنيق أسفل الصورة في الهواتف لسهولة الضغط */
       .add-btn {
         transform: translateY(0);
         position: relative;
