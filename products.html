@@ -411,8 +411,8 @@
 
     // If price block not yet rendered by API call above, render from stored
     const finalPriceEl = document.getElementById('pFinalPrice');
-    if (finalPriceEl.innerText === '—') {
-      finalPriceEl.innerText = storedPrice + ' ج.م';
+    if (!finalPriceEl || finalPriceEl.innerText === '—') {
+      renderPriceBlock(storedPrice, 'none', 0);
     }
 
     // Render gallery
