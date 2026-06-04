@@ -274,9 +274,9 @@
         </div>
       </div>
 
-      <button type="submit" class="btn-submit">
-        <i class="fab fa-whatsapp" style="font-size:1.4rem"></i>
-        أكمل الطلب عبر واتساب
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <i class="fas fa-check-circle" style="font-size:1.4rem"></i>
+        تأكيد الطلب
       </button>
 
     </form>
@@ -403,37 +403,66 @@
     err.classList.add('show'); return false;
   }
 
-  function sendToWhatsApp(event) {
+  async function sendToWhatsApp(event) {
     event.preventDefault();
     if (!validateNameInput() || !validatePhoneInput()) return;
 
-    const product = localStorage.getItem('selectedProduct') || "منتج من NOXERA";
+    const product = localStorage.getItem('selectedProduct') || 'منتج من NOXERA';
     const name    = document.getElementById('custName').value.trim();
     const phone   = document.getElementById('custPhone').value.trim();
     const address = document.getElementById('custAddress').value.trim();
     const gov     = detectedGovText || document.getElementById('custGov').value;
     const total   = baseProductPrice + shippingCostAmount;
 
-    if(!gov) {
+    if (!gov) {
       alert('من فضلك اختر المحافظة أولاً لحساب تكلفة الشحن');
       return;
     }
 
-    const message =
-      `🖤 *طلب جديد من NOXERA* 🖤\n\n` +
-      `👕 *المنتج:* ${product}\n` +
-      `💵 *السعر:* ${baseProductPrice} ج.م\n` +
-      `🚚 *الشحن:* ${shippingCostAmount} ج.م\n` +
-      `💰 *الإجمالي:* ${total} ج.م\n\n` +
-      `👤 *الاسم:* ${name}\n` +
-      `📞 *الموبايل:* ${phone}\n` +
-      `📍 *المحافظة:* ${gov}\n` +
-      `🏡 *العنوان:* ${address}\n` +
-      `💳 *الدفع:* ${selectedPayMethod}`;
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin" style="font-size:1.2rem"></i> جاري الإرسال...`;
 
-    window.open(`https://wa.me/201026490075?text=${encodeURIComponent(message)}`, '_blank');
-    localStorage.clear();
-    window.location.href = 'success.html';
+    try {
+      const res = await fetch('/api/order', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          product,
+          price:     baseProductPrice,
+          shipping:  shippingCostAmount,
+          total,
+          name,
+          phone,
+          gov,
+          address,
+          payMethod: selectedPayMethod,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        localStorage.clear();
+        window.location.href = 'success.html';
+      } else {
+        throw new Error(data.error || 'حدث خطأ');
+      }
+
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.4rem"></i> تأكيد الطلب`;
+      let errEl = document.getElementById('orderError');
+      if (!errEl) {
+        errEl = document.createElement('div');
+        errEl.id = 'orderError';
+        errEl.style.cssText = 'background:rgba(180,30,30,0.15);border:1px solid rgba(180,30,30,0.4);color:#e05555;font-family:Cairo,sans-serif;font-size:0.9rem;padding:12px 16px;border-radius:6px;margin-top:1rem;text-align:center;';
+        btn.after(errEl);
+      }
+      errEl.innerText = 'حدث خطأ أثناء إرسال الطلب، حاول مرة أخرى.';
+      errEl.style.display = 'block';
+      setTimeout(() => { errEl.style.display = 'none'; }, 6000);
+    }
   }
 </script>
 </body>
