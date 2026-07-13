@@ -448,7 +448,7 @@ tbody td{padding:12px 14px;vertical-align:middle}
         <div class="stat-card"><div class="stat-icon gold"><i class="fas fa-sack-dollar"></i></div><div><div class="stat-val" id="sum-revenue">—</div><div class="stat-lbl">إجمالي البيع بالقطاعي (بعد المكسب)</div></div></div>
         <div class="stat-card"><div class="stat-icon green"><i class="fas fa-coins"></i></div><div><div class="stat-val" id="sum-profit">—</div><div class="stat-lbl">صافي الأرباح</div></div></div>
         <div class="stat-card"><div class="stat-icon purple"><i class="fas fa-crown"></i></div><div><div class="stat-val" id="sum-top-product" style="font-size:1rem">—</div><div class="stat-lbl">الأكثر مبيعاً</div></div></div>
-        <div class="stat-card"><div class="stat-icon red" style="background:rgba(239,68,68,.1);color:#ef4444"><i class="fas fa-search-dollar"></i></div><div><div class="stat-val" id="sum-seo-tax">—</div><div class="stat-lbl">ضرايب خدمة SEO من جوجل</div></div></div>
+        <div class="stat-card"><div class="stat-icon red" style="background:rgba(239,68,68,.1);color:#ef4444"><i class="fas fa-search-dollar"></i></div><div><div class="stat-val" id="sum-seo-tax">—</div><div class="stat-lbl">ضريبة بوت التيليجرام</div></div></div>
       </div>
       <div style="font-size:.75rem;color:var(--muted);margin:-10px 0 18px;display:flex;align-items:center;gap:6px">
         <i class="fas fa-info-circle" style="color:var(--gold)"></i>
@@ -476,9 +476,9 @@ tbody td{padding:12px 14px;vertical-align:middle}
         </div>
         <div class="table-responsive">
           <table>
-            <thead><tr><th>رقم الطلب</th><th>الاسم</th><th>الهاتف</th><th>المحافظة</th><th>الإجمالي</th><th>الدفع</th><th>الحالة</th><th>التاريخ</th><th>ضرايب خدمة seo من جوجل</th><th>الإجراءات</th></tr></thead>
+            <thead><tr><th>رقم الطلب</th><th>المنتج المطلوب</th><th>الاسم</th><th>الهاتف</th><th>المحافظة</th><th>الإجمالي</th><th>الدفع</th><th>الحالة</th><th>التاريخ</th><th>ضريبة بوت التيليجرام</th><th>الإجراءات</th></tr></thead>
             <tbody id="orders-table-body">
-              <tr><td colspan="10"><div class="empty-state"><i class="fas fa-spinner fa-spin" style="color:var(--gold)"></i>جارٍ التحميل...</div></td></tr>
+              <tr><td colspan="11"><div class="empty-state"><i class="fas fa-spinner fa-spin" style="color:var(--gold)"></i>جارٍ التحميل...</div></td></tr>
             </tbody>
           </table>
         </div>
@@ -1399,7 +1399,7 @@ function renderSalesSummary(){
   });
 
   const profitTotal = retailTotal - wholesaleTotal;
-  const totalSeoTax = allOrders.length * 3;
+  const totalSeoTax = allOrders.length * 6;
 
   document.getElementById('sum-order-count').textContent = orderCount;
   document.getElementById('sum-wholesale').textContent = wholesaleTotal.toLocaleString('ar-EG') + ' ج.م';
@@ -1447,14 +1447,28 @@ function renderSalesSummary(){
 function renderOrdersTable(){
   const tbody=document.getElementById('orders-table-body');
   if(!tbody)return;
-  if(!allOrders.length){tbody.innerHTML='<tr><td colspan="10"><div class="empty-state"><i class="fas fa-shopping-bag"></i>لا توجد طلبات بعد.</div></td></tr>';return;}
+  if(!allOrders.length){tbody.innerHTML='<tr><td colspan="11"><div class="empty-state"><i class="fas fa-shopping-bag"></i>لا توجد طلبات بعد.</div></td></tr>';return;}
   tbody.innerHTML=allOrders.map(o=>{
     const date=new Date(o.created_at).toLocaleDateString('ar-EG',{year:'numeric',month:'short',day:'numeric'});
     const statusLabel=ORDER_STATUS_LABELS[o.status]||htmlEsc(o.status);
     const statusColor=ORDER_STATUS_COLORS[o.status]||'var(--muted)';
     const payLabel=o.payment_method==='cod'?'عند الاستلام':'تحويل';
+
+    // Parse items to extract product name(s)
+    let items = o.items || o.order_items || o.products || null;
+    if (typeof items === 'string') {
+      try { items = JSON.parse(items); } catch(e) {}
+    }
+    let productNames = '—';
+    if (Array.isArray(items) && items.length) {
+      productNames = items.map(it => `${htmlEsc(it.name)} (${it.quantity || 1})`).join(', ');
+    } else if (o.product) {
+      productNames = htmlEsc(o.product);
+    }
+
     return `<tr>
       <td><strong>${htmlEsc(o.order_number)}</strong></td>
+      <td style="font-weight:600;color:var(--gold)">${productNames}</td>
       <td>${htmlEsc(o.customer_name)}</td>
       <td dir="ltr">${htmlEsc(o.customer_phone)}</td>
       <td>${htmlEsc(o.governorate)}</td>
@@ -1462,7 +1476,7 @@ function renderOrdersTable(){
       <td>${htmlEsc(payLabel)}</td>
       <td><span class="badge" style="background:${statusColor}22;color:${statusColor}">${statusLabel}</span></td>
       <td>${htmlEsc(date)}</td>
-      <td><strong style="color:var(--gold)">3 ج.م</strong></td>
+      <td><strong style="color:var(--gold)">6 ج.م</strong></td>
       <td><div class="actions-col">
         <select class="form-group" style="background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'Cairo',sans-serif;font-size:.78rem;padding:5px 8px;border-radius:8px;outline:none"
           onchange="updateOrderStatus('${htmlEsc(o.id)}',this.value)">
