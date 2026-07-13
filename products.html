@@ -322,6 +322,13 @@
 
     <hr class="pdiv">
 
+    <!-- Description section -->
+    <div class="description-section" id="descriptionSection" style="display:none">
+      <span class="selector-label">DESCRIPTION</span>
+      <p class="product-desc" id="pDescription" style="font-size:0.95rem; line-height:1.7; color:rgba(233,228,224,0.75); margin-bottom:2rem; white-space:pre-line; text-align:justify; font-family:'Cairo', sans-serif;"></p>
+      <hr class="pdiv">
+    </div>
+
     <span class="selector-label">SELECT SIZE</span>
     <div class="size-options" id="sizeOptions">
       <button class="size-btn" onclick="selectSize(this)">S</button>
@@ -394,6 +401,12 @@
 
           // Update price display using fresh API data
           renderPriceBlock(p.price, p.discount_type, p.discount_value);
+
+          // Description
+          if (p.description) {
+            document.getElementById('pDescription').innerText = p.description;
+            document.getElementById('descriptionSection').style.display = 'block';
+          }
 
           // Category
           const catRes  = await fetch('/api/categories');

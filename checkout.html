@@ -407,12 +407,13 @@
     event.preventDefault();
     if (!validateNameInput() || !validatePhoneInput()) return;
 
-    const product = localStorage.getItem('selectedProduct') || 'منتج من NOXERA';
-    const name    = document.getElementById('custName').value.trim();
-    const phone   = document.getElementById('custPhone').value.trim();
-    const address = document.getElementById('custAddress').value.trim();
-    const gov     = detectedGovText || document.getElementById('custGov').value;
-    const total   = baseProductPrice + shippingCostAmount;
+    const product   = localStorage.getItem('selectedProduct') || 'منتج من NOXERA';
+    const productId = localStorage.getItem('selectedId') || '';
+    const name      = document.getElementById('custName').value.trim();
+    const phone     = document.getElementById('custPhone').value.trim();
+    const address   = document.getElementById('custAddress').value.trim();
+    const gov       = detectedGovText || document.getElementById('custGov').value;
+    const total     = baseProductPrice + shippingCostAmount;
 
     if (!gov) {
       alert('من فضلك اختر المحافظة أولاً لحساب تكلفة الشحن');
@@ -429,6 +430,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           product,
+          productId,
           price:     baseProductPrice,
           shipping:  shippingCostAmount,
           total,
