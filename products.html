@@ -213,6 +213,33 @@
     .size-btn:hover { border-color:rgba(148,58,31,0.5); }
     .size-btn.active { border-color:var(--rust); background:var(--rust); color:var(--cream); }
 
+    /* Color selector */
+    .color-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .color-btn::after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-hex);
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: all 0.2s;
+    }
+    .color-btn:hover { border-color: rgba(148,58,31,0.5); }
+    .color-btn.active { border-color: var(--rust); }
+    .color-btn.active::after { transform: scale(0.85); }
+
     /* Add to bag button */
     .btn-add-bag {
       width:100%; background:var(--rust); color:var(--cream);
@@ -331,11 +358,13 @@
 
     <span class="selector-label">SELECT SIZE</span>
     <div class="size-options" id="sizeOptions">
-      <button class="size-btn" onclick="selectSize(this)">S</button>
-      <button class="size-btn" onclick="selectSize(this)">M</button>
-      <button class="size-btn" onclick="selectSize(this)">L</button>
-      <button class="size-btn" onclick="selectSize(this)">XL</button>
-      <button class="size-btn" onclick="selectSize(this)">XXL</button>
+      <!-- Dynamic Sizes -->
+    </div>
+
+    <!-- Color Selector -->
+    <div class="color-section" id="colorSection" style="display:none">
+      <span class="selector-label">SELECT COLOR</span>
+      <div class="color-options" id="colorOptions" style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-bottom:2rem;"></div>
     </div>
 
     <button class="btn-add-bag" id="btnAddBag" onclick="addToCart()">
@@ -406,6 +435,39 @@
           if (p.description) {
             document.getElementById('pDescription').innerText = p.description;
             document.getElementById('descriptionSection').style.display = 'block';
+          }
+
+          // Render sizes
+          const sizeOptionsContainer = document.getElementById('sizeOptions');
+          let sizes = p.sizes || [];
+          if (typeof sizes === 'string') {
+            try { sizes = JSON.parse(sizes); } catch(e) { sizes = sizes.split(',').map(s=>s.trim()).filter(Boolean); }
+          }
+          if (Array.isArray(sizes) && sizes.length) {
+            sizeOptionsContainer.innerHTML = sizes.map(sz => `
+              <button class="size-btn" onclick="selectSize(this)">${sz.toUpperCase()}</button>
+            `).join('');
+          } else {
+            const defaultSizes = ['S', 'M', 'L', 'XL', 'XXL'];
+            sizeOptionsContainer.innerHTML = defaultSizes.map(sz => `
+              <button class="size-btn" onclick="selectSize(this)">${sz}</button>
+            `).join('');
+          }
+
+          // Render colors
+          const colorSection = document.getElementById('colorSection');
+          const colorOptionsContainer = document.getElementById('colorOptions');
+          let colors = p.colors || [];
+          if (typeof colors === 'string') {
+            try { colors = JSON.parse(colors); } catch(e) {}
+          }
+          if (Array.isArray(colors) && colors.length) {
+            colorSection.style.display = 'block';
+            colorOptionsContainer.innerHTML = colors.map(c => `
+              <button class="color-btn" onclick="selectColor(this, '${escapeString(c.name)}')" style="--color-hex: ${c.hex};" title="${c.name}"></button>
+            `).join('');
+          } else {
+            colorSection.style.display = 'none';
           }
 
           // Category
@@ -581,6 +643,17 @@
     selectedSize = btn.innerText;
   }
 
+  var selectedColor = '';
+  function selectColor(btn, name) {
+    document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedColor = name;
+  }
+
+  function escapeString(str) {
+    return String(str || '').replace(/'/g, "\\'");
+  }
+
   /* ═══════════════════════════════════════════════════════
      ADD TO CART
   ═══════════════════════════════════════════════════════ */
@@ -595,12 +668,23 @@
       return;
     }
 
+    const hasColors = document.getElementById('colorSection').style.display === 'block';
+    if (hasColors && !selectedColor) {
+      const opts = document.getElementById('colorOptions');
+      opts.style.animation = 'none';
+      opts.offsetHeight;
+      opts.style.animation = 'shakeX 0.4s ease';
+      alert('الرجاء اختيار اللون أولاً');
+      return;
+    }
+
     const cartItem = {
       id:    storedId,
       name:  storedName,
       price: storedPrice,
       img:   productImageUrls[0] || storedImg,
       size:  selectedSize,
+      color: selectedColor || null,
       qty:   1,
     };
 
@@ -610,6 +694,12 @@
     localStorage.setItem('selectedPrice',   storedPrice);
     localStorage.setItem('selectedImg',     productImageUrls[0] || storedImg);
     localStorage.setItem('selectedId',      storedId);
+    localStorage.setItem('selectedSize',    selectedSize);
+    if (selectedColor) {
+      localStorage.setItem('selectedColor', selectedColor);
+    } else {
+      localStorage.removeItem('selectedColor');
+    }
 
     updateCartBadge();
     window.location.href = 'cart.html';

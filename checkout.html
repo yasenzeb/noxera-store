@@ -445,8 +445,14 @@
       const data = await res.json();
 
       if (data.success) {
-        localStorage.clear();
-        window.location.href = 'success.html';
+        localStorage.removeItem('cartItem');
+        localStorage.removeItem('selectedProduct');
+        localStorage.removeItem('selectedPrice');
+        localStorage.removeItem('selectedImg');
+        localStorage.removeItem('selectedId');
+        localStorage.removeItem('selectedSize');
+        localStorage.removeItem('selectedColor');
+        window.location.href = 'track.html?id=' + (data.id || '') + '&number=' + (data.order_number || '');
       } else {
         throw new Error(data.error || 'حدث خطأ');
       }

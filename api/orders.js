@@ -24,12 +24,25 @@ export default async function handler(req, res) {
     const { id } = req.query;
 
     if (req.method === 'GET') {
-      const { data, error } = await supabase
-        .from('orders')
-        .select('*')
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      return res.status(200).json({ success: true, orders: data || [] });
+      const { number } = req.query;
+      if (id || number) {
+        let query = supabase.from('orders').select('*');
+        if (id) {
+          query = query.eq('id', id);
+        } else {
+          query = query.eq('order_number', number);
+        }
+        const { data, error } = await query.maybeSingle();
+        if (error) throw error;
+        return res.status(200).json({ success: true, order: data });
+      } else {
+        const { data, error } = await supabase
+          .from('orders')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (error) throw error;
+        return res.status(200).json({ success: true, orders: data || [] });
+      }
     }
 
     if (req.method === 'POST') {

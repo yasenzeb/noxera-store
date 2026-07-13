@@ -34,6 +34,35 @@ export default async function handler(req, res) {
 
     const orderNumber = `NOX-${Math.floor(100000 + Math.random() * 900000)}`;
 
+    // 1. Save Order to Supabase Table (orders)
+    let orderId = null;
+    if (supabase) {
+      const items = [{
+        id: productId || null,
+        name: product,
+        price: price,
+        quantity: 1
+      }];
+
+      const { data: orderData, error: dbError } = await supabase.from('orders').insert([{
+        order_number: orderNumber,
+        customer_name: name,
+        customer_phone: phone,
+        governorate: gov,
+        address: address,
+        total: parseFloat(total),
+        payment_method: payMethod === 'كاش عند الاستلام' ? 'cod' : 'card',
+        status: 'pending',
+        items: items
+      }]).select().single();
+
+      if (dbError) {
+        console.error('Database error saving order:', dbError);
+      } else if (orderData) {
+        orderId = orderData.id;
+      }
+    }
+
     // Escape all user inputs to prevent Telegram HTML parse errors
     const safeProduct = escapeHtml(product);
     const safeName = escapeHtml(name);
@@ -54,57 +83,52 @@ export default async function handler(req, res) {
         `🏡 <b>العنوان:</b> ${safeAddress}\n` +
         `💳 <b>الدفع:</b> ${safePayMethod}`;
 
-    // 1. Send Telegram Notification
-    const botToken = '8895784637:AAE0R_kF1myYsSaMEYJYoavFpSVpDUWqNO4';
-    const chatId = '5022327836';
-    const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+    // 2. Send Telegram Notification using Vercel Environment Variables
+    const botToken = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
 
-    const tgRes = await fetch(telegramUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    if (botToken && chatId) {
+      const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+      const payload = {
         chat_id: chatId,
         text: message,
         parse_mode: 'HTML'
-      })
-    });
+      };
 
-    if (!tgRes.ok) {
-      const errText = await tgRes.text();
-      console.error('Telegram API error details:', errText);
-      // If Telegram send fails, throw error to trigger catch block and notify the user/client
-      throw new Error(`Telegram error: ${errText}`);
-    }
-
-    // 2. Save Order to Supabase Table (orders)
-    if (supabase) {
-      const items = [{
-        id: productId || null,
-        name: product,
-        price: price,
-        quantity: 1
-      }];
-
-      const { error: dbError } = await supabase.from('orders').insert([{
-        order_number: orderNumber,
-        customer_name: name,
-        customer_phone: phone,
-        governorate: gov,
-        address: address,
-        total: parseFloat(total),
-        payment_method: payMethod === 'كاش عند الاستلام' ? 'cod' : 'card',
-        status: 'pending',
-        items: items
-      }]);
-
-      if (dbError) {
-        console.error('Database error saving order:', dbError);
+      // Add inline buttons if order was saved successfully and we have orderId
+      if (orderId) {
+        payload.reply_markup = {
+          inline_keyboard: [
+            [
+              { text: "🟡 قيد الانتظار", callback_data: `status:pending:${orderId}` },
+              { text: "🔵 تم القبول والتجهيز", callback_data: `status:confirmed:${orderId}` }
+            ],
+            [
+              { text: "🚚 خرج للشحن", callback_data: `status:shipped:${orderId}` },
+              { text: "🟢 تم التسليم", callback_data: `status:delivered:${orderId}` }
+            ]
+          ]
+        };
       }
+
+      const tgRes = await fetch(telegramUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!tgRes.ok) {
+        const errText = await tgRes.text();
+        console.error('Telegram API error details:', errText);
+        throw new Error(`Telegram error: ${errText}`);
+      }
+    } else {
+      console.warn('Telegram integration is not configured. Please set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID.');
     }
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, id: orderId, order_number: orderNumber });
 
   } catch (err) {
     console.error('Order handler error:', err);

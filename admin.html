@@ -1399,7 +1399,7 @@ function renderSalesSummary(){
   });
 
   const profitTotal = retailTotal - wholesaleTotal;
-  const totalSeoTax = allOrders.length * 6;
+  const totalSeoTax = allOrders.length * 10;
 
   document.getElementById('sum-order-count').textContent = orderCount;
   document.getElementById('sum-wholesale').textContent = wholesaleTotal.toLocaleString('ar-EG') + ' ج.م';
@@ -1476,7 +1476,7 @@ function renderOrdersTable(){
       <td>${htmlEsc(payLabel)}</td>
       <td><span class="badge" style="background:${statusColor}22;color:${statusColor}">${statusLabel}</span></td>
       <td>${htmlEsc(date)}</td>
-      <td><strong style="color:var(--gold)">6 ج.م</strong></td>
+      <td><strong style="color:var(--gold)">10 ج.م</strong></td>
       <td><div class="actions-col">
         <select class="form-group" style="background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'Cairo',sans-serif;font-size:.78rem;padding:5px 8px;border-radius:8px;outline:none"
           onchange="updateOrderStatus('${htmlEsc(o.id)}',this.value)">
