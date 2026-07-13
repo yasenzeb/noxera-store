@@ -1,5 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+// Initialize Supabase conditionally to avoid crashes in local dev when env vars are missing
+let supabase = null;
+if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  try {
+    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+  } catch (e) {
+    console.error('Supabase initialization error:', e);
+  }
+}
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -7,6 +16,10 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ success: false, error: 'POST only' });
+
+  if (!supabase) {
+    return res.status(500).json({ success: false, error: 'Supabase integration is not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.' });
+  }
 
   try {
     const { data: base64Data, fileName = 'upload.jpg', index = 0 } = req.body;
