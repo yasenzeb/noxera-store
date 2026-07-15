@@ -2,25 +2,30 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NOXERA — السلة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>سلة التسوق | NOXERA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root { --bg:#1B191A; --cream:#E9E4E0; --rust:#943A1F; --card:#141213; --border:rgba(148,58,31,0.2); }
+    :root {
+      --bg: #F4F4F6;
+      --cream: #000000;
+      --rust: #79D20C;
+      --card: #FFFFFF;
+      --border: rgba(0, 0, 0, 0.06);
+    }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:var(--bg); color:var(--cream); font-family:'Cairo',sans-serif; min-height:100vh; }
 
     nav {
       position:fixed; top:0; left:0; right:0; z-index:1000;
-      background:#141213; border-bottom:1px solid var(--border);
+      background:#FFFFFF; border-bottom:1px solid rgba(0,0,0,0.06);
       padding:0 2rem; height:64px;
       display:flex; align-items:center; justify-content:space-between;
     }
     .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
-    .nav-logo img { height:36px; object-fit:contain; }
-    .nav-logo span { font-family:'Bebas Neue'; font-size:1.6rem; color:var(--cream); letter-spacing:3px; }
+    .nav-logo span { font-family:'Bebas Neue'; font-size:1.6rem; color:var(--rust); letter-spacing:3px; font-weight:900; }
     .nav-links { display:flex; align-items:center; gap:2rem; }
     .nav-links a { color:var(--cream); text-decoration:none; font-family:'Bebas Neue'; font-size:1rem; letter-spacing:2px; opacity:0.7; transition:opacity 0.3s,color 0.3s; }
     .nav-links a:hover { opacity:1; color:var(--rust); }
@@ -29,74 +34,97 @@
       min-height:100vh; padding-top:64px;
       display:flex; align-items:center; justify-content:center;
     }
-    .cart-inner { max-width:900px; width:100%; margin:0 auto; padding:4rem 2rem; }
+    .cart-inner { max-width:800px; width:100%; margin:0 auto; padding:4rem 2rem; }
 
-    .page-label { font-family:'Space Mono'; font-size:0.7rem; color:var(--rust); letter-spacing:4px; margin-bottom:0.8rem; }
-    .page-title { font-family:'Bebas Neue'; font-size:clamp(3rem,7vw,6rem); color:var(--cream); letter-spacing:3px; line-height:1; margin-bottom:3rem; }
+    .page-label { font-family:'Space Mono'; font-size:0.7rem; color:var(--cream); opacity:0.4; letter-spacing:4px; margin-bottom:0.8rem; }
+    .page-title { font-family:'Bebas Neue'; font-size:clamp(3rem,7vw,5rem); color:var(--cream); letter-spacing:3px; line-height:1; margin-bottom:3rem; }
 
     /* EMPTY STATE */
     .empty-cart {
       text-align:center; padding:5rem 1rem;
-      border:1px solid var(--border); border-radius:4px; background:var(--card);
+      border:1px solid var(--border); border-radius:12px; background:var(--card);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
     }
-    .empty-cart i { font-size:4rem; color:var(--rust); opacity:0.3; margin-bottom:1.5rem; display:block; }
-    .empty-cart h3 { font-family:'Bebas Neue'; font-size:2rem; color:var(--cream); opacity:0.4; letter-spacing:3px; margin-bottom:0.5rem; }
-    .empty-cart p { font-family:'Cairo'; font-size:0.9rem; color:var(--cream); opacity:0.3; margin-bottom:2rem; }
+    .empty-cart i { font-size:4rem; color:var(--rust); opacity:0.6; margin-bottom:1.5rem; display:block; }
+    .empty-cart h3 { font-family:'Bebas Neue'; font-size:2rem; color:var(--cream); letter-spacing:3px; margin-bottom:0.5rem; }
+    .empty-cart p { font-family:'Cairo'; font-size:0.9rem; color:var(--cream); opacity:0.4; margin-bottom:2rem; }
     .btn-shop {
-      display:inline-block; background:var(--rust); color:var(--cream);
+      display:inline-block; background:#0B252E; color:#FFFFFF;
       padding:12px 36px; border-radius:100px;
       font-family:'Bebas Neue'; font-size:1rem; letter-spacing:3px;
       text-decoration:none; transition:background 0.3s;
     }
-    .btn-shop:hover { background:#b5491e; }
+    .btn-shop:hover { background:#111827; }
 
     /* CART ITEM */
     .cart-item {
       display:grid; grid-template-columns:120px 1fr auto;
       gap:1.5rem; align-items:center;
       background:var(--card); border:1px solid var(--border);
-      border-radius:4px; padding:1.5rem;
-      margin-bottom:1rem;
+      border-radius:12px; padding:1.5rem;
+      margin-bottom:1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
     }
     .cart-item-img {
-      aspect-ratio:3/4; background:#1a1718; overflow:hidden; border-radius:2px;
+      aspect-ratio:3/4; background:#f3f4f6; overflow:hidden; border-radius:6px;
+      border: 1px solid rgba(0,0,0,0.05);
     }
     .cart-item-img img { width:100%; height:100%; object-fit:cover; }
-    .cart-item-img .no-img { width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.1); }
-    .cart-item-name { font-family:'Bebas Neue'; font-size:1.5rem; color:var(--cream); letter-spacing:2px; margin-bottom:0.4rem; }
-    .cart-item-price { font-family:'Space Mono'; color:var(--rust); font-size:1.1rem; font-weight:700; }
+    .cart-item-img .no-img { width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(0,0,0,0.1); }
+    .cart-item-name { font-family:'Bebas Neue'; font-size:1.6rem; color:var(--cream); letter-spacing:2px; margin-bottom:0.2rem; }
+    .cart-item-price { font-family:'Space Mono'; color:var(--cream); font-size:1.1rem; font-weight:700; }
     .cart-item-label { font-family:'Cairo'; font-size:0.75rem; color:var(--cream); opacity:0.35; margin-bottom:0.3rem; }
 
     .delete-btn {
-      background:transparent; border:1px solid rgba(255,0,0,0.15);
-      color:rgba(255,80,80,0.5); padding:8px 12px; border-radius:4px;
+      background:transparent; border:1px solid rgba(220,50,50,0.1);
+      color:rgba(220,50,50,0.7); padding:8px 12px; border-radius:6px;
       cursor:pointer; transition:all 0.3s; font-size:1rem; align-self:flex-start;
+      margin-top: 5px;
     }
-    .delete-btn:hover { border-color:rgba(255,80,80,0.5); color:rgba(255,80,80,0.9); background:rgba(255,0,0,0.05); }
+    .delete-btn:hover { border-color:rgba(220,50,50,0.5); color:rgba(220,50,50,1); background:rgba(220,50,50,0.05); }
 
     /* SUMMARY */
     .cart-summary {
       background:var(--card); border:1px solid var(--border);
-      border-radius:4px; padding:1.5rem 2rem;
-      display:flex; align-items:center; justify-content:space-between;
-      margin-top:1.5rem; flex-wrap:wrap; gap:1.5rem;
+      border-radius:12px; padding:2rem;
+      margin-top:1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
     }
-    .summary-total-label { font-family:'Space Mono'; font-size:0.7rem; color:var(--cream); opacity:0.4; letter-spacing:2px; margin-bottom:0.3rem; }
-    .summary-total-val { font-family:'Bebas Neue'; font-size:2.5rem; color:var(--rust); letter-spacing:2px; }
+    .summary-total-label { font-family:'Space Mono'; font-size:0.8rem; color:var(--cream); opacity:0.5; letter-spacing:2px; margin-bottom:0.3rem; }
+    .summary-total-val { font-family:'Bebas Neue'; font-size:2.5rem; color:var(--cream); letter-spacing:2px; }
 
     .btn-checkout {
-      background:var(--rust); color:var(--cream);
+      background:#0B252E; color:#FFFFFF;
       padding:16px 40px; border:none; border-radius:100px;
       font-family:'Bebas Neue'; font-size:1.1rem; letter-spacing:3px;
-      cursor:pointer; text-decoration:none; display:inline-block;
+      cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; justify-content:center;
       transition:background 0.3s, transform 0.2s;
+      width: 100%;
     }
-    .btn-checkout:hover { background:#b5491e; transform:scale(1.03); }
+    .btn-checkout:hover { background:#111827; transform:translateY(-2px); }
+
+    .note-box {
+      width: 100%;
+      height: 100px;
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.9rem;
+      color: #111827;
+      outline: none;
+      resize: none;
+      margin-top: 10px;
+    }
+    .note-box:focus {
+      border-color: var(--rust);
+    }
 
     @media(max-width:640px){
       .cart-item { grid-template-columns:90px 1fr; }
       .delete-btn { grid-column:1/-1; width:fit-content; }
-      .cart-summary { flex-direction:column; align-items:flex-start; }
+      .cart-summary { padding: 1.5rem; }
       nav { padding:0 1rem; }
     }
   </style>
@@ -105,20 +133,18 @@
 
 <nav>
   <a href="index.html" class="nav-logo">
-    <img src="logo.png" alt="NOXERA" onerror="this.style.display='none'">
     <span>NOXERA</span>
   </a>
   <div class="nav-links">
     <a href="index.html">HOME</a>
     <a href="index.html#shop">SHOP</a>
-    <a href="cart.html" style="color:var(--rust);opacity:1"><i class="fas fa-shopping-bag"></i></a>
   </div>
 </nav>
 
 <div class="page-wrap">
   <div class="cart-inner">
     <div class="page-label">MY BAG</div>
-    <h1 class="page-title">CART</h1>
+    <h1 class="page-title">Shopping Cart</h1>
     <div id="cartContent"></div>
   </div>
 </div>
@@ -127,8 +153,11 @@
 <script>
   function renderCart() {
     const name  = localStorage.getItem('selectedProduct');
-    const price = localStorage.getItem('selectedPrice');
+    const price = parseInt(localStorage.getItem('selectedPrice')) || 0;
     const img   = localStorage.getItem('selectedImg');
+    const size  = localStorage.getItem('selectedSize') || '';
+    const color = localStorage.getItem('selectedColor') || '';
+    const qty   = parseInt(localStorage.getItem('selectedQty')) || 1;
     const container = document.getElementById('cartContent');
 
     if (!name) {
@@ -142,6 +171,8 @@
       return;
     }
 
+    const total = price * qty;
+
     container.innerHTML = `
       <div class="cart-item" id="cartItem">
         <div class="cart-item-img">
@@ -152,25 +183,59 @@
         <div>
           <div class="cart-item-label">NOXERA COLLECTION</div>
           <div class="cart-item-name">${name}</div>
+          <div class="flex gap-4 mb-2 text-sm" style="color:#666;">
+            ${size ? `<span>المقاس: <b>${size.toUpperCase()}</b></span>` : ''}
+            ${color ? `<span>اللون: <b>${color}</b></span>` : ''}
+          </div>
           <div class="cart-item-price">${price} ج.م</div>
+          
+          <!-- Quantity Adjuster -->
+          <div class="flex items-center gap-2 mt-4" style="background:#E5E7EB; border-radius:6px; overflow:hidden; width:fit-content; padding:2px;">
+            <button onclick="changeCartQty(-1)" style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#111827; cursor:pointer;">-</button>
+            <span style="width:30px; text-align:center; font-family:'Space Mono'; font-weight:700; color:#111827;">${qty}</span>
+            <button onclick="changeCartQty(1)" style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#111827; cursor:pointer;">+</button>
+          </div>
         </div>
+        
         <button class="delete-btn" onclick="clearCart()" title="حذف">
           <i class="fas fa-trash-alt"></i>
         </button>
       </div>
 
+      <div style="margin-top:2rem;">
+        <span class="selector-label" style="font-family:'Space Mono'; font-size:0.7rem; color:var(--cream); opacity:0.5; letter-spacing:2px;">ADD ORDER NOTE</span>
+        <textarea class="note-box" id="orderNote" placeholder="كيف يمكننا مساعدتك؟ اكتب أي ملاحظات حول المقاس أو الشحن هنا..."></textarea>
+      </div>
+
       <div class="cart-summary">
-        <div>
-          <div class="summary-total-label">TOTAL</div>
-          <div class="summary-total-val">${price} ج.م</div>
+        <div class="flex justify-between items-center mb-6">
+          <div>
+            <div class="summary-total-label">Subtotal</div>
+            <div class="summary-total-val" id="summaryTotal">${total} ج.م EGP</div>
+          </div>
+          <div class="text-left text-sm" style="color:#666; font-family:'Space Mono';">
+            Tax included. Shipping calculated at checkout.
+          </div>
         </div>
-        <a href="checkout.html" class="btn-checkout">
-          استكمال الطلب <i class="fas fa-arrow-left" style="margin-right:8px"></i>
+        <a href="checkout.html" class="btn-checkout" onclick="saveOrderNote()">
+          استكمال الطلب <i class="fas fa-arrow-left" style="margin-right:12px"></i>
         </a>
       </div>`;
 
     gsap.from(".cart-item", { opacity:0, y:30, duration:0.6, ease:"power3.out" });
     gsap.from(".cart-summary", { opacity:0, y:20, duration:0.5, ease:"power3.out", delay:0.15 });
+  }
+
+  function changeCartQty(diff) {
+    let qty = parseInt(localStorage.getItem('selectedQty')) || 1;
+    qty = Math.max(1, qty + diff);
+    localStorage.setItem('selectedQty', qty);
+    renderCart();
+  }
+
+  function saveOrderNote() {
+    const note = document.getElementById('orderNote').value;
+    localStorage.setItem('orderNote', note);
   }
 
   function clearCart() {
@@ -181,6 +246,11 @@
         localStorage.removeItem('selectedPrice');
         localStorage.removeItem('selectedImg');
         localStorage.removeItem('selectedId');
+        localStorage.removeItem('selectedSize');
+        localStorage.removeItem('selectedColor');
+        localStorage.removeItem('selectedQty');
+        localStorage.removeItem('cartItem');
+        localStorage.removeItem('orderNote');
         renderCart();
       }
     });

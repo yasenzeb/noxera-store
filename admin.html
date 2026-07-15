@@ -366,6 +366,14 @@ tbody td{padding:12px 14px;vertical-align:middle}
             <label>وصف المنتج (اختياري)</label>
             <textarea id="f-description" placeholder="أضف وصفاً جذاباً للمنتج يظهر في صفحة تفاصيل المنتج..."></textarea>
           </div>
+          <div class="form-group" style="display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" id="f-sold-out" style="width:20px; height:20px; cursor:pointer; margin-left:8px;">
+            <label for="f-sold-out" style="cursor:pointer; font-weight:700;">سولد أوت بالكامل (Sold Out)</label>
+          </div>
+          <div class="form-group">
+            <label>المقاسات النفدة فقط (مثال: s, m)</label>
+            <input type="text" id="f-sold-out-sizes" placeholder="s, l" dir="ltr">
+          </div>
         </div>
         <div class="form-actions">
           <button class="btn btn-gold" onclick="submitAddProduct()" id="btn-add-submit"><i class="fas fa-save"></i> حفظ المنتج</button>
@@ -593,6 +601,14 @@ tbody td{padding:12px 14px;vertical-align:middle}
         <div class="form-group full">
           <label>وصف المنتج (اختياري)</label>
           <textarea id="edit-description" placeholder="أضف وصفاً جذاباً للمنتج..."></textarea>
+        </div>
+        <div class="form-group" style="display:flex; align-items:center; gap:8px; grid-column:span 2;">
+          <input type="checkbox" id="edit-sold-out" style="width:20px; height:20px; cursor:pointer; margin-left:8px;">
+          <label for="edit-sold-out" style="cursor:pointer; font-weight:700;">سولد أوت بالكامل (Sold Out)</label>
+        </div>
+        <div class="form-group full">
+          <label>المقاسات النفدة فقط (مثال: s, m)</label>
+          <input type="text" id="edit-sold-out-sizes" placeholder="s, l" dir="ltr">
         </div>
       </div>
       <div class="modal-actions">
@@ -1199,20 +1215,22 @@ async function submitAddProduct(){
   const gallery=getGalleryUrls('new');
   const mainImgUrl=getMainImageUrl('new');
   const mIdx=mainIndex['new']||0;
-  const payload={
-    name:document.getElementById('f-name').value.trim(),
-    type:document.getElementById('f-type').value,
-    price:parseInt(document.getElementById('f-price').value),
-    cost_price:parseInt(document.getElementById('f-cost-price').value||0),
-    description:(document.getElementById('f-description').value||'').trim(),
-    image_url:mainImgUrl||null,
-    discount_type:discountType,
-    discount_value:discountValue,
-    sizes:parseSizes(document.getElementById('f-sizes').value),
-    colors:getColorsFromContainer('f-colors-builder'),
-    gallery:gallery,
-    main_image_index:mIdx
-  };
+    const payload={
+      name:document.getElementById('f-name').value.trim(),
+      type:document.getElementById('f-type').value,
+      price:parseInt(document.getElementById('f-price').value),
+      cost_price:parseInt(document.getElementById('f-cost-price').value||0),
+      description:(document.getElementById('f-description').value||'').trim(),
+      image_url:mainImgUrl||null,
+      discount_type:discountType,
+      discount_value:discountValue,
+      sizes:parseSizes(document.getElementById('f-sizes').value),
+      colors:getColorsFromContainer('f-colors-builder'),
+      gallery:gallery,
+      main_image_index:mIdx,
+      sold_out:document.getElementById('f-sold-out').checked,
+      sold_out_sizes:parseSizes(document.getElementById('f-sold-out-sizes').value)
+    };
   console.log('[submitAddProduct] → POST /api/products payload:', payload);
   try{
    const data=await api('POST','/api/products',payload);
@@ -1229,12 +1247,13 @@ async function submitAddProduct(){
 }
 
 function resetAddForm(){
-  ['f-name','f-price','f-cost-price','f-discount-value'].forEach(id=>document.getElementById(id).value='');
+  ['f-name','f-price','f-cost-price','f-discount-value','f-sold-out-sizes'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-type').value='';
   document.getElementById('f-discount-type').value='none';
   document.getElementById('f-discount-value').style.display='none';
   document.getElementById('f-sizes').value='';
   document.getElementById('f-description').value='';
+  document.getElementById('f-sold-out').checked=false;
   document.getElementById('f-colors-builder').innerHTML='';
   ['err-name','err-type','err-price'].forEach(id=>document.getElementById(id).textContent='');
   initGalleryGrid('new-gallery-grid','new');
@@ -1252,6 +1271,8 @@ function openEditModal(id){
   document.getElementById('edit-discount-value').value=p.discount_value||'';
   document.getElementById('edit-sizes').value=(Array.isArray(p.sizes)&&p.sizes.length)?p.sizes.join(','):'';
   document.getElementById('edit-description').value=p.description||'';
+  document.getElementById('edit-sold-out').checked=p.sold_out||false;
+  document.getElementById('edit-sold-out-sizes').value=(Array.isArray(p.sold_out_sizes)&&p.sold_out_sizes.length)?p.sold_out_sizes.join(','):'';
   setColorsInContainer('edit-colors-builder',p.colors||[]);
 
   // Build existing gallery
@@ -1288,7 +1309,9 @@ async function submitEditProduct(){
     sizes:parseSizes(document.getElementById('edit-sizes').value),
     colors:getColorsFromContainer('edit-colors-builder'),
     gallery:gallery,
-    main_image_index:mIdx
+    main_image_index:mIdx,
+    sold_out:document.getElementById('edit-sold-out').checked,
+    sold_out_sizes:parseSizes(document.getElementById('edit-sold-out-sizes').value)
   };
   console.log('[submitEditProduct] → PUT /api/products/'+editingProductId+' payload:', payload);
   try{
@@ -1461,9 +1484,25 @@ function renderOrdersTable(){
     }
     let productNames = '—';
     if (Array.isArray(items) && items.length) {
-      productNames = items.map(it => `${htmlEsc(it.name)} (${it.quantity || 1})`).join(', ');
+      productNames = items.map(it => {
+        let details = [];
+        if (it.size) details.push(`مقاس: ${it.size.toUpperCase()}`);
+        if (it.color) details.push(`لون: ${it.color}`);
+        const detailsStr = details.length ? ` [${details.join(' - ')}]` : '';
+        return `${htmlEsc(it.name)} (${it.quantity || 1})${detailsStr}`;
+      }).join(', ');
     } else if (o.product) {
       productNames = htmlEsc(o.product);
+    }
+
+    // Add client notes if available
+    let notesText = o.notes || o.note || '';
+    if (!notesText && Array.isArray(items) && items.length) {
+      const firstItem = items[0];
+      if (firstItem && firstItem.note) notesText = firstItem.note;
+    }
+    if (notesText) {
+      productNames += `<br><span style="font-size:0.75rem;color:#888;display:block;margin-top:4px;">📝 ملاحظة: ${htmlEsc(notesText)}</span>`;
     }
 
     return `<tr>

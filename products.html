@@ -11,11 +11,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --bg: #1B191A;
-      --cream: #E9E4E0;
-      --rust: #943A1F;
-      --card: #141213;
-      --border: rgba(148,58,31,0.2);
+      --bg: #F4F4F6;
+      --cream: #000000;
+      --rust: #79D20C;
+      --card: #FFFFFF;
+      --border: rgba(0, 0, 0, 0.06);
     }
     * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
     body {
@@ -28,12 +28,12 @@
     /* ── NAV ────────────────────────────────────────────── */
     nav {
       position:fixed; top:0; left:0; right:0; z-index:1000;
-      background:#141213; border-bottom:1px solid var(--border);
+      background:#FFFFFF; border-bottom:1px solid rgba(0,0,0,0.06);
       padding:0 2rem; height:64px;
       display:flex; align-items:center; justify-content:space-between;
     }
     .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
-    .nav-logo span { font-family:'Bebas Neue'; font-size:1.6rem; color:var(--cream); letter-spacing:3px; }
+    .nav-logo span { font-family:'Bebas Neue'; font-size:1.6rem; color:var(--rust); letter-spacing:3px; font-weight:900; }
     .nav-links { display:flex; align-items:center; gap:2rem; }
     .nav-links a {
       color:var(--cream); text-decoration:none;
@@ -44,10 +44,11 @@
     .cart-icon { position:relative; }
     .cart-badge {
       position:absolute; top:-8px; right:-8px;
-      background:var(--rust); color:white;
+      background:var(--rust); color:black;
       font-family:'Space Mono'; font-size:10px;
       width:18px; height:18px; border-radius:50%;
       display:flex; align-items:center; justify-content:center;
+      font-weight:700;
     }
 
     /* ── PAGE LAYOUT ────────────────────────────────────── */
@@ -70,7 +71,7 @@
       position:relative;
       width:100%;
       aspect-ratio:3/4;
-      background:#131112;
+      background:#F9FAFB;
       border:1px solid var(--border);
       border-radius:6px;
       overflow:hidden;
@@ -89,7 +90,7 @@
     .main-no-img {
       width:100%; height:100%;
       display:flex; align-items:center; justify-content:center;
-      color:rgba(255,255,255,0.07);
+      color:rgba(0,0,0,0.05);
       font-size:5rem;
     }
 
@@ -119,7 +120,7 @@
       overflow:hidden;
       cursor:pointer;
       border:2px solid transparent;
-      background:#131112;
+      background:#F9FAFB;
       transition:border-color 0.2s, transform 0.2s, opacity 0.2s;
       opacity:0.55;
     }
@@ -137,7 +138,7 @@
     .thumb-item .thumb-empty-icon {
       width:100%; height:100%;
       display:flex; align-items:center; justify-content:center;
-      color:rgba(255,255,255,0.1); font-size:1.2rem;
+      color:rgba(0,0,0,0.06); font-size:1.2rem;
     }
 
     /* ── dot indicators (mobile only) ───────────────────── */
@@ -148,7 +149,7 @@
     }
     .dot {
       width:6px; height:6px; border-radius:50%;
-      background:rgba(255,255,255,0.2);
+      background:rgba(0,0,0,0.15);
       transition:background 0.2s, transform 0.2s;
       cursor:pointer;
     }
@@ -178,16 +179,16 @@
     }
     .price-final {
       font-family:'Space Mono'; font-size:1.9rem;
-      color:var(--rust); font-weight:700;
+      color:var(--cream); font-weight:700;
     }
     .price-old {
       font-family:'Space Mono'; font-size:1rem;
-      color:rgba(255,255,255,0.25);
+      color:#888;
       text-decoration:line-through;
     }
     .price-badge {
       font-family:'Space Mono'; font-size:0.7rem; font-weight:700;
-      background:var(--rust); color:var(--cream);
+      background:var(--rust); color:black;
       padding:4px 10px; border-radius:3px; letter-spacing:1px;
     }
 
@@ -203,15 +204,22 @@
       color:var(--cream); opacity:0.4; letter-spacing:3px;
       margin-bottom:0.8rem; display:block;
     }
-    .size-options { display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:2rem; }
     .size-btn {
-      border:1px solid var(--border); background:transparent;
-      color:var(--cream); padding:10px 22px;
-      font-family:'Space Mono'; font-size:0.85rem;
-      cursor:pointer; border-radius:3px; transition:all 0.25s;
+      border:1px solid #E5E7EB; background:#FFFFFF;
+      color:#000000; padding:10px 22px;
+      font-family:'Space Mono'; font-weight:700; font-size:0.85rem;
+      cursor:pointer; border-radius:4px; transition:all 0.25s;
     }
-    .size-btn:hover { border-color:rgba(148,58,31,0.5); }
-    .size-btn.active { border-color:var(--rust); background:var(--rust); color:var(--cream); }
+    .size-btn:hover { border-color:#000000; }
+    .size-btn.active { border-color:#000000; background:#000000; color:#FFFFFF; }
+    .size-btn.sold-out {
+      border-color: #E5E7EB !important;
+      background: #F3F4F6 !important;
+      color: #9CA3AF !important;
+      text-decoration: line-through;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
 
     /* Color selector */
     .color-btn {
@@ -242,14 +250,14 @@
 
     /* Add to bag button */
     .btn-add-bag {
-      width:100%; background:var(--rust); color:var(--cream);
+      width:100%; background:#0B252E; color:#FFFFFF;
       border:none; padding:18px;
       font-family:'Bebas Neue'; font-size:1.3rem; letter-spacing:4px;
       cursor:pointer; border-radius:4px;
       transition:background 0.3s, transform 0.2s;
       display:flex; align-items:center; justify-content:center; gap:12px;
     }
-    .btn-add-bag:hover { background:#b5491e; transform:translateY(-2px); }
+    .btn-add-bag:hover { background:#111827; transform:translateY(-2px); }
     .btn-add-bag:active { transform:translateY(0); }
 
     /* Image counter pill */
@@ -347,17 +355,23 @@
       <span class="price-final" id="pFinalPrice">—</span>
     </div>
 
+    <!-- Stock Status -->
+    <div id="stockStatus" style="display:flex; align-items:center; gap:8px; font-size:0.9rem; font-weight:700; color:#111827; margin-bottom:1.5rem;">
+      <span id="stockDot" style="width:8px; height:8px; border-radius:50%; background:#79D20C; display:inline-block;"></span>
+      <span id="stockText">متوفر في المخزن (In Stock)</span>
+    </div>
+
     <hr class="pdiv">
 
     <!-- Description section -->
     <div class="description-section" id="descriptionSection" style="display:none">
       <span class="selector-label">DESCRIPTION</span>
-      <p class="product-desc" id="pDescription" style="font-size:0.95rem; line-height:1.7; color:rgba(233,228,224,0.75); margin-bottom:2rem; white-space:pre-line; text-align:justify; font-family:'Cairo', sans-serif;"></p>
+      <p class="product-desc" id="pDescription" style="font-size:0.95rem; line-height:1.7; color:#333333; margin-bottom:2rem; white-space:pre-line; text-align:justify; font-family:'Cairo', sans-serif;"></p>
       <hr class="pdiv">
     </div>
 
     <span class="selector-label">SELECT SIZE</span>
-    <div class="size-options" id="sizeOptions">
+    <div class="size-options" id="sizeOptions" style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:2rem;">
       <!-- Dynamic Sizes -->
     </div>
 
@@ -365,6 +379,22 @@
     <div class="color-section" id="colorSection" style="display:none">
       <span class="selector-label">SELECT COLOR</span>
       <div class="color-options" id="colorOptions" style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-bottom:2rem;"></div>
+    </div>
+
+    <!-- Quantity Selector -->
+    <div id="qtySection" style="margin-bottom:2rem;">
+      <span class="selector-label">QUANTITY</span>
+      <div style="display:inline-flex; align-items:center; background:#E5E7EB; border-radius:6px; overflow:hidden; padding:2px;">
+        <button onclick="changeQty(-1)" style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:bold; color:#111827; cursor:pointer;">-</button>
+        <input type="text" id="qtyInput" value="1" readonly style="width:40px; text-align:center; background:transparent; font-family:'Space Mono', monospace; font-weight:700; font-size:1rem; color:#111827; border:none; outline:none;">
+        <button onclick="changeQty(1)" style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:bold; color:#111827; cursor:pointer;">+</button>
+      </div>
+    </div>
+
+    <!-- Shipping Banner -->
+    <div id="shippingBanner" style="background:rgba(121, 210, 12, 0.12); color:#428a07; font-size:0.9rem; font-weight:700; border-radius:8px; padding:10px 16px; margin: 1.5rem 0 2rem; display:flex; align-items:center; gap:8px;">
+      <i class="fas fa-check"></i>
+      الشحن خلال 2-3 أيام عمل
     </div>
 
     <button class="btn-add-bag" id="btnAddBag" onclick="addToCart()">
@@ -390,6 +420,9 @@
   var productImageUrls = [];   // array of up to 4 URL strings
   var activeImageIndex = 0;
   var selectedSize     = '';
+  var discountTypeVal  = 'none';
+  var discountValueVal = 0;
+  var currentQty       = 1;
 
   // Read product from localStorage (set by index.html on card click)
   const storedName  = localStorage.getItem('selectedProduct') || '';
@@ -423,6 +456,29 @@
         const data = await res.json();
         if (data.success && data.product) {
           const p = data.product;
+
+          discountTypeVal = p.discount_type || 'none';
+          discountValueVal = p.discount_value || 0;
+          updateAddButtonPrice();
+
+          // Handle entire product sold out
+          if (p.sold_out) {
+            document.getElementById('stockDot').style.background = '#ef4444';
+            document.getElementById('stockText').innerText = 'نفد من المخزن (Sold Out)';
+            document.getElementById('stockStatus').style.color = '#ef4444';
+
+            document.getElementById('qtySection').style.opacity = '0.5';
+            document.getElementById('qtySection').style.pointerEvents = 'none';
+            document.getElementById('shippingBanner').style.display = 'none';
+
+            const addBtn = document.getElementById('btnAddBag');
+            addBtn.disabled = true;
+            addBtn.style.background = '#9CA3AF';
+            addBtn.style.cursor = 'not-allowed';
+            addBtn.style.pointerEvents = 'none';
+            addBtn.innerText = 'غير متوفر - SOLD OUT';
+          }
+
           const apiUrls = Array.isArray(p.image_urls) && p.image_urls.length
             ? p.image_urls.filter(Boolean)
             : (p.image_url ? [p.image_url] : []);
@@ -443,15 +499,20 @@
           if (typeof sizes === 'string') {
             try { sizes = JSON.parse(sizes); } catch(e) { sizes = sizes.split(',').map(s=>s.trim()).filter(Boolean); }
           }
+          
+          const soldOutSizes = Array.isArray(p.sold_out_sizes) ? p.sold_out_sizes.map(s => s.toLowerCase().trim()) : [];
+          
           if (Array.isArray(sizes) && sizes.length) {
-            sizeOptionsContainer.innerHTML = sizes.map(sz => `
-              <button class="size-btn" onclick="selectSize(this)">${sz.toUpperCase()}</button>
-            `).join('');
+            sizeOptionsContainer.innerHTML = sizes.map(sz => {
+              const isSizeSoldOut = p.sold_out || soldOutSizes.includes(sz.toLowerCase().trim());
+              return `<button class="size-btn ${isSizeSoldOut ? 'sold-out' : ''}" onclick="selectSize(this)" ${isSizeSoldOut ? 'disabled' : ''}>${sz.toUpperCase()}</button>`;
+            }).join('');
           } else {
             const defaultSizes = ['S', 'M', 'L', 'XL', 'XXL'];
-            sizeOptionsContainer.innerHTML = defaultSizes.map(sz => `
-              <button class="size-btn" onclick="selectSize(this)">${sz}</button>
-            `).join('');
+            sizeOptionsContainer.innerHTML = defaultSizes.map(sz => {
+              const isSizeSoldOut = p.sold_out || soldOutSizes.includes(sz.toLowerCase().trim());
+              return `<button class="size-btn ${isSizeSoldOut ? 'sold-out' : ''}" onclick="selectSize(this)" ${isSizeSoldOut ? 'disabled' : ''}>${sz}</button>`;
+            }).join('');
           }
 
           // Render colors
@@ -489,6 +550,7 @@
     if (!finalPriceEl || finalPriceEl.innerText === '—') {
       renderPriceBlock(storedPrice, 'none', 0);
     }
+    updateAddButtonPrice();
 
     // Render gallery
     renderGallery();
@@ -654,6 +716,18 @@
     return String(str || '').replace(/'/g, "\\'");
   }
 
+  function changeQty(diff) {
+    currentQty = Math.max(1, currentQty + diff);
+    document.getElementById('qtyInput').value = currentQty;
+    updateAddButtonPrice();
+  }
+
+  function updateAddButtonPrice() {
+    const btn = document.getElementById('btnAddBag');
+    const finalPrice = calcFinal(storedPrice, discountTypeVal, discountValueVal);
+    btn.innerHTML = `<i class="fas fa-shopping-bag"></i> ADD TO CART - ${finalPrice * currentQty} ج.م`;
+  }
+
   /* ═══════════════════════════════════════════════════════
      ADD TO CART
   ═══════════════════════════════════════════════════════ */
@@ -685,7 +759,7 @@
       img:   productImageUrls[0] || storedImg,
       size:  selectedSize,
       color: selectedColor || null,
-      qty:   1,
+      qty:   currentQty,
     };
 
     localStorage.setItem('cartItem', JSON.stringify(cartItem));
@@ -695,6 +769,7 @@
     localStorage.setItem('selectedImg',     productImageUrls[0] || storedImg);
     localStorage.setItem('selectedId',      storedId);
     localStorage.setItem('selectedSize',    selectedSize);
+    localStorage.setItem('selectedQty',     currentQty);
     if (selectedColor) {
       localStorage.setItem('selectedColor', selectedColor);
     } else {

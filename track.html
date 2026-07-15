@@ -13,12 +13,12 @@
   
   <style>
     :root {
-      --bg: #1B191A;
-      --cream: #E9E4E0;
-      --rust: #943A1F;
-      --rust-glow: rgba(148, 58, 31, 0.4);
-      --card: #141213;
-      --border: rgba(148, 58, 31, 0.2);
+      --bg: #F4F4F6;
+      --cream: #000000;
+      --rust: #79D20C;
+      --rust-glow: rgba(121, 210, 12, 0.3);
+      --card: #FFFFFF;
+      --border: rgba(0, 0, 0, 0.06);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -29,38 +29,34 @@
       min-height: 100vh;
     }
     
-    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: #141213;
-      border-bottom: 1px solid var(--border);
+      background: #FFFFFF;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
       padding: 0 2rem;
       height: 64px;
       display: flex; align-items: center; justify-content: space-between;
     }
     .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .nav-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--cream); letter-spacing: 3px; }
+    .nav-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--rust); letter-spacing: 3px; font-weight: 900; }
     .nav-links { display: flex; align-items: center; gap: 2rem; }
     .nav-links a { color: var(--cream); text-decoration: none; font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 2px; opacity: 0.7; transition: opacity 0.3s, color 0.3s; }
     .nav-links a:hover { opacity: 1; color: var(--rust); }
 
-    /* LAYOUT */
     .page-wrap {
       padding: 100px 1.5rem 4rem;
       max-width: 800px;
       margin: 0 auto;
     }
 
-    /* CARD STYLE */
     .track-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 2.5rem 2rem;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
     }
 
-    /* SUCCESS SECTION */
     .success-badge {
       display: flex;
       flex-direction: column;
@@ -72,13 +68,13 @@
       width: 72px;
       height: 72px;
       border-radius: 50%;
-      background: rgba(148, 58, 31, 0.15);
+      background: rgba(121, 210, 12, 0.1);
       border: 2px solid var(--rust);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 2.2rem;
-      color: var(--cream);
+      color: var(--rust);
       margin-bottom: 1.2rem;
       box-shadow: 0 0 20px var(--rust-glow);
     }
@@ -94,7 +90,6 @@
       opacity: 0.6;
     }
 
-    /* AMAZON-STYLE TIMELINE */
     .timeline-wrap {
       margin: 3.5rem 0 3rem;
       position: relative;
@@ -103,7 +98,7 @@
       position: absolute;
       top: 24px; left: 6%; right: 6%;
       height: 4px;
-      background: rgba(233, 228, 224, 0.1);
+      background: rgba(0, 0, 0, 0.06);
       z-index: 1;
       border-radius: 2px;
     }
@@ -116,7 +111,7 @@
       z-index: 2;
       border-radius: 2px;
       transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 0 10px var(--rust);
+      box-shadow: 0 0 10px var(--rust-glow);
     }
     .timeline-steps {
       display: flex;
@@ -135,17 +130,17 @@
       width: 52px;
       height: 52px;
       border-radius: 50%;
-      background: #1d1b1c;
-      border: 3px solid rgba(233, 228, 224, 0.15);
+      background: #F3F4F6;
+      border: 3px solid rgba(0, 0, 0, 0.08);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.2rem;
-      color: rgba(233, 228, 224, 0.4);
+      color: rgba(0, 0, 0, 0.25);
       transition: all 0.5s ease;
     }
     .step-item.active .step-icon {
-      background: var(--bg);
+      background: var(--card);
       border-color: var(--rust);
       color: var(--cream);
       box-shadow: 0 0 20px var(--rust-glow);
@@ -153,13 +148,13 @@
     .step-item.completed .step-icon {
       background: var(--rust);
       border-color: var(--rust);
-      color: var(--cream);
+      color: black;
     }
     .step-label {
       font-size: 0.85rem;
       font-weight: 700;
       margin-top: 0.8rem;
-      color: rgba(233, 228, 224, 0.4);
+      color: rgba(0, 0, 0, 0.3);
       transition: color 0.5s ease;
     }
     .step-item.active .step-label,
@@ -173,7 +168,6 @@
       margin-top: 0.2rem;
     }
 
-    /* DETAILS SECTION */
     .details-section {
       border-top: 1px solid var(--border);
       padding-top: 2rem;
@@ -196,89 +190,48 @@
       justify-content: space-between;
       font-size: 0.95rem;
       padding: 0.8rem 0;
-      border-bottom: 1px solid rgba(148, 58, 31, 0.08);
-    }
-    .detail-row:last-child {
-      border-bottom: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
     }
     .detail-label {
       opacity: 0.5;
     }
-    .detail-value {
-      font-weight: 600;
-    }
-    
-    /* PRODUCTS LIST */
-    .order-items-box {
-      background: rgba(148, 58, 31, 0.05);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.2rem 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .item-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem 0;
-    }
-    .item-name {
+    .detail-val {
       font-weight: 700;
-    }
-    .item-qty {
       font-family: 'Space Mono', monospace;
-      font-size: 0.85rem;
-      opacity: 0.5;
-      margin-right: 0.5rem;
+    }
+    .btn-continue {
+      display: inline-block;
+      background: #0B252E;
+      color: #FFFFFF;
+      padding: 14px 40px;
+      border-radius: 100px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+      margin-top: 2rem;
+    }
+    .btn-continue:hover {
+      background: #111827;
+      transform: translateY(-2px);
     }
 
-    /* MOBILE ADJUSTMENTS */
     @media (max-width: 640px) {
-      .track-card {
-        padding: 2rem 1.2rem;
-      }
-      .timeline-wrap {
-        display: flex;
-        flex-direction: row-reverse;
-        padding-right: 20px;
-        margin: 2.5rem 0 2rem;
-      }
-      .timeline-line-bg {
-        top: 0; bottom: 0; left: auto; right: 45px;
-        width: 4px; height: auto;
-      }
-      .timeline-line-progress {
-        top: 0; left: auto; right: 45px;
-        width: 4px; height: 0%;
-      }
-      .timeline-steps {
-        flex-direction: column;
-        gap: 2.5rem;
-        width: 100%;
-        align-items: flex-start;
-      }
-      .step-item {
-        flex-direction: row;
-        text-align: right;
-        gap: 1.5rem;
-        width: 100%;
-        justify-content: flex-start;
-      }
-      .step-label {
-        margin-top: 0;
-        text-align: right;
-      }
-      .step-time {
-        margin-top: 0;
-      }
+      nav { padding: 0 1rem; }
+      .page-wrap { padding: 80px 1rem 3rem; }
+      .track-card { padding: 2rem 1.2rem; }
+      .step-icon { width: 42px; height: 42px; font-size: 1rem; }
+      .step-label { font-size: 0.7rem; }
+      .success-icon { width: 60px; height: 60px; font-size: 1.8rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">
+    <img src="logo.png" alt="NOXERA" onerror="this.style.display='none'">
     <span>NOXERA</span>
   </a>
   <div class="nav-links">
@@ -287,239 +240,129 @@
   </div>
 </nav>
 
-<!-- MAIN LAYOUT -->
 <div class="page-wrap">
   <div class="track-card">
-    
-    <!-- Success Alert Header -->
+
     <div class="success-badge">
-      <div class="success-icon">
-        <i class="fas fa-check"></i>
-      </div>
-      <h2 class="success-title">تم استلام طلبك بنجاح</h2>
-      <p class="success-desc">شكراً لك لتسوقك من NOXERA. يمكنك متابعة حالة طلبك مباشرة من هذه الصفحة.</p>
+      <div class="success-icon"><i class="fas fa-check"></i></div>
+      <div class="success-title">تم استلام طلبك بنجاح! 🎉</div>
+      <div class="success-desc">رقم الطلب: <b id="orderNumber">...</b></div>
     </div>
 
-    <!-- Tracking Timeline (Amazon Style) -->
     <div class="timeline-wrap">
       <div class="timeline-line-bg"></div>
-      <div class="timeline-line-progress" id="progressLine"></div>
-      
-      <div class="timeline-steps">
-        <!-- Step 1: Pending -->
-        <div class="step-item" id="step-pending">
-          <div class="step-icon">
-            <i class="fas fa-clock"></i>
-          </div>
-          <div>
-            <div class="step-label">قيد الانتظار</div>
-            <div class="step-time" id="time-pending"></div>
-          </div>
+      <div class="timeline-line-progress" id="timelineProgress"></div>
+      <div class="timeline-steps" id="timelineSteps">
+        <div class="step-item active" data-status="pending">
+          <div class="step-icon"><i class="fas fa-clock"></i></div>
+          <div class="step-label">قيد الانتظار</div>
+          <div class="step-time" id="time-pending"></div>
         </div>
-        
-        <!-- Step 2: Confirmed -->
-        <div class="step-item" id="step-confirmed">
-          <div class="step-icon">
-            <i class="fas fa-check-double"></i>
-          </div>
-          <div>
-            <div class="step-label">مؤكد</div>
-            <div class="step-time" id="time-confirmed"></div>
-          </div>
+        <div class="step-item" data-status="confirmed">
+          <div class="step-icon"><i class="fas fa-check-double"></i></div>
+          <div class="step-label">تم التأكيد</div>
+          <div class="step-time" id="time-confirmed"></div>
         </div>
-        
-        <!-- Step 3: Shipped -->
-        <div class="step-item" id="step-shipped">
-          <div class="step-icon">
-            <i class="fas fa-shipping-fast"></i>
-          </div>
-          <div>
-            <div class="step-label">جاري الشحن</div>
-            <div class="step-time" id="time-shipped"></div>
-          </div>
+        <div class="step-item" data-status="shipped">
+          <div class="step-icon"><i class="fas fa-truck"></i></div>
+          <div class="step-label">خرج للشحن</div>
+          <div class="step-time" id="time-shipped"></div>
         </div>
-        
-        <!-- Step 4: Delivered -->
-        <div class="step-item" id="step-delivered">
-          <div class="step-icon">
-            <i class="fas fa-home"></i>
-          </div>
-          <div>
-            <div class="step-label">تم التسليم</div>
-            <div class="step-time" id="time-delivered"></div>
-          </div>
+        <div class="step-item" data-status="delivered">
+          <div class="step-icon"><i class="fas fa-box-open"></i></div>
+          <div class="step-label">تم التسليم</div>
+          <div class="step-time" id="time-delivered"></div>
         </div>
       </div>
     </div>
 
-    <!-- Order Items Summary -->
-    <div class="details-section">
-      <h3 class="section-title">
-        <i class="fas fa-shopping-bag"></i>
-        تفاصيل المنتجات
-      </h3>
-      <div class="order-items-box" id="itemsList">
-        <!-- Dynmic Items -->
-      </div>
+    <div class="details-section" id="detailsSection" style="display:none">
+      <div class="section-title"><i class="fas fa-receipt"></i> تفاصيل الطلب</div>
+      <div id="detailsRows"></div>
     </div>
 
-    <!-- Customer/Shipping Info Summary -->
-    <div class="details-section">
-      <h3 class="section-title">
-        <i class="fas fa-truck"></i>
-        تفاصيل الشحن والدفع
-      </h3>
-      <div class="track-details">
-        <div class="detail-row">
-          <span class="detail-label">رقم الطلب</span>
-          <span class="detail-value" id="orderNumberVal">—</span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">الاسم الكامل</span>
-          <span class="detail-value" id="custNameVal">—</span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">الهاتف</span>
-          <span class="detail-value" id="custPhoneVal">—</span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">المحافظة</span>
-          <span class="detail-value" id="custGovVal">—</span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">العنوان التفصيلي</span>
-          <span class="detail-value" id="custAddressVal">—</span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">طريقة الدفع</span>
-          <span class="detail-value" id="payMethodVal">—</span>
-        </div>
-        <div class="detail-row" style="border-top: 1px solid var(--border); padding-top: 1.2rem; margin-top: 0.5rem;">
-          <span class="detail-label" style="font-size: 1.1rem; opacity: 0.8; font-weight: 700;">الإجمالي</span>
-          <span class="detail-value" id="totalAmtVal" style="font-size: 1.2rem; color: var(--rust);">—</span>
-        </div>
-      </div>
+    <div style="text-align:center;">
+      <a href="index.html" class="btn-continue">متابعة التسوق</a>
     </div>
 
   </div>
 </div>
 
 <script>
-  // Parse URL query params
-  const params = new URLSearchParams(window.location.search);
-  const orderId = params.get('id') || '';
-  const orderNum = params.get('number') || '';
+  const statusOrder = ['pending','confirmed','shipped','delivered'];
+  const statusAr = { pending:'قيد الانتظار', confirmed:'تم التأكيد', shipped:'خرج للشحن', delivered:'تم التسليم' };
 
-  // DOM Elements
-  const progressLine = document.getElementById('progressLine');
-  const itemsList = document.getElementById('itemsList');
-  const orderNumberVal = document.getElementById('orderNumberVal');
-  const custNameVal = document.getElementById('custNameVal');
-  const custPhoneVal = document.getElementById('custPhoneVal');
-  const custGovVal = document.getElementById('custGovVal');
-  const custAddressVal = document.getElementById('custAddressVal');
-  const payMethodVal = document.getElementById('payMethodVal');
-  const totalAmtVal = document.getElementById('totalAmtVal');
+  function getQueryParam(name) {
+    const url = new URLSearchParams(window.location.search);
+    return url.get(name) || '';
+  }
 
-  // Status mapping to timeline completion percentages
-  const statusConfig = {
-    pending: { percent: 0, steps: ['pending'] },
-    confirmed: { percent: 33, steps: ['pending', 'confirmed'] },
-    shipped: { percent: 66, steps: ['pending', 'confirmed', 'shipped'] },
-    delivered: { percent: 100, steps: ['pending', 'confirmed', 'shipped', 'delivered'] }
-  };
+  const orderId     = getQueryParam('id');
+  const orderNumber = getQueryParam('number');
 
-  function updateTimeline(status, updatedAt) {
-    const config = statusConfig[status] || statusConfig['pending'];
-    
-    // Reset steps
-    document.querySelectorAll('.step-item').forEach(el => {
-      el.classList.remove('active', 'completed');
+  if (orderNumber) {
+    document.getElementById('orderNumber').innerText = '#' + orderNumber;
+  }
+
+  function updateTimeline(status) {
+    const idx = statusOrder.indexOf(status || 'pending');
+    const progressPercents = [0, 29, 62, 88];
+    document.getElementById('timelineProgress').style.width = progressPercents[idx] + '%';
+
+    document.querySelectorAll('.step-item').forEach((step, i) => {
+      step.classList.remove('active', 'completed');
+      if (i < idx) step.classList.add('completed');
+      else if (i === idx) step.classList.add('active');
     });
+  }
 
-    // Mark steps as completed or active
-    config.steps.forEach((step, idx) => {
-      const el = document.getElementById(`step-${step}`);
-      if (el) {
-        if (idx === config.steps.length - 1) {
-          el.classList.add('active');
-          // Add timestamp to the currently active status
-          const timeEl = document.getElementById(`time-${step}`);
-          if (timeEl && updatedAt) {
-            const date = new Date(updatedAt);
-            timeEl.innerText = date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) + ' - ' + date.toLocaleDateString('ar-EG', { month: 'short', day: 'numeric' });
-          }
-        } else {
-          el.classList.add('completed');
-        }
-      }
-    });
+  function renderDetails(order) {
+    if (!order) return;
+    const section = document.getElementById('detailsSection');
+    const rows = document.getElementById('detailsRows');
+    section.style.display = 'block';
 
-    // Update the progress line (supporting vertical timeline layout for mobile)
-    const isMobile = window.innerWidth <= 640;
-    if (isMobile) {
-      progressLine.style.width = '4px';
-      progressLine.style.height = `${config.percent}%`;
-    } else {
-      progressLine.style.height = '4px';
-      progressLine.style.width = `${config.percent}%`;
-    }
+    const items = [
+      ['المنتج', order.product || '—'],
+      ['المقاس', (order.size || '—').toUpperCase()],
+      ['اللون', order.color || '—'],
+      ['الكمية', order.qty || 1],
+      ['العميل', order.customer_name || '—'],
+      ['الموبايل', order.customer_phone || '—'],
+      ['المحافظة', order.governorate || '—'],
+      ['العنوان', order.address || '—'],
+      ['سعر المنتج', (order.price || 0) + ' ج.م'],
+      ['الشحن', (order.shipping || 0) + ' ج.م'],
+      ['الإجمالي', (order.total || 0) + ' ج.م'],
+      ['الدفع', order.payment_method || '—'],
+    ];
+
+    rows.innerHTML = items.map(([label, val]) => `
+      <div class="detail-row">
+        <span class="detail-label">${label}</span>
+        <span class="detail-val">${val}</span>
+      </div>
+    `).join('');
   }
 
   async function fetchOrderStatus() {
-    if (!orderId && !orderNum) return;
-    
+    if (!orderId && !orderNumber) return;
     try {
-      const url = `/api/orders?id=${orderId}&number=${orderNum}`;
-      const res = await fetch(url);
+      const q = orderId ? `id=${orderId}` : `number=${orderNumber}`;
+      const res = await fetch(`/api/orders?${q}`);
       const data = await res.json();
-      
       if (data.success && data.order) {
-        const order = data.order;
-        
-        // Update customer details
-        orderNumberVal.innerText = order.order_number;
-        custNameVal.innerText = order.customer_name;
-        custPhoneVal.innerText = order.customer_phone;
-        custGovVal.innerText = order.governorate || '—';
-        custAddressVal.innerText = order.address || '—';
-        payMethodVal.innerText = order.payment_method === 'cod' ? 'كاش عند الاستلام' : 'تحويل بنكي';
-        totalAmtVal.innerText = `${order.total} ج.م`;
-
-        // Update items details
-        let items = order.items || [];
-        if (typeof items === 'string') {
-          try { items = JSON.parse(items); } catch(e) {}
-        }
-        if (Array.isArray(items) && items.length) {
-          itemsList.innerHTML = items.map(it => `
-            <div class="item-row">
-              <span class="item-name">${it.name} <span class="item-qty">x ${it.quantity || 1}</span></span>
-              <span class="item-price" style="font-weight:600;">${(it.price || 0) * (it.quantity || 1)} ج.م</span>
-            </div>
-          `).join('');
-        } else {
-          itemsList.innerHTML = `<div class="item-row"><span class="item-name">طلب رقم ${order.order_number}</span></div>`;
-        }
-
-        // Update tracking status timeline
-        updateTimeline(order.status, order.created_at);
+        updateTimeline(data.order.status);
+        renderDetails(data.order);
       }
-    } catch (e) {
-      console.error('Failed to query order details:', e);
+    } catch(e) {
+      console.error('Error fetching order:', e);
     }
   }
 
-  // Initial load
+  updateTimeline('pending');
   fetchOrderStatus();
-
-  // Poll for updates every 7 seconds
-  setInterval(fetchOrderStatus, 7000);
-
-  // Re-render timeline line on resize
-  window.addEventListener('resize', () => {
-    fetchOrderStatus();
-  });
+  setInterval(fetchOrderStatus, 15000);
 </script>
 </body>
 </html>

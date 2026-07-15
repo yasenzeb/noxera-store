@@ -7,50 +7,42 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Outfit:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Bebas+Neue&family=Outfit:wght@400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   
   <style>
     :root { 
-      --bg: #1B191A; 
-      --cream: #E9E4E0; 
-      --rust: #943A1F; 
-      --card: #141213; 
-      --border: rgba(148,58,31,0.2); 
+      --bg: #F4F4F6; 
+      --cream: #000000; 
+      --rust: #79D20C; 
+      --card: #FFFFFF; 
+      --border: rgba(0, 0, 0, 0.06); 
     }
     
-    * { 
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box; 
-      -webkit-tap-highlight-color: transparent; /* تحسين تجربة الضغط على الموبايل */
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     
     body { 
       background: var(--bg); 
       color: var(--cream); 
-      font-family: 'Cairo', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; 
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif; 
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
     }
 
-    .font-eng {
-      font-family: 'Outfit', system-ui, sans-serif;
-    }
+    .font-eng { font-family: 'Outfit', system-ui, sans-serif; }
 
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: #141213; border-bottom: 1px solid var(--border);
+      background: #FFFFFF; border-bottom: 1px solid rgba(0,0,0,0.06);
       padding: 0 2rem; height: 64px;
       display: flex; align-items: center; justify-content: space-between;
     }
     .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .nav-logo img { height: 36px; object-fit: contain; }
-    .nav-logo span { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--cream); letter-spacing: 3px; }
-    .nav-links a { color: var(--cream); text-decoration: none; font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: 2px; opacity: 0.7; transition: opacity 0.3s, color 0.3s; margin-right: 1.5rem; }
+    .nav-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; font-weight: 900; color: var(--rust); letter-spacing: 3px; }
+    .nav-links a { color: var(--cream); text-decoration: none; font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 2px; opacity: 0.7; transition: opacity 0.3s, color 0.3s; margin-right: 1.5rem; }
     .nav-links a:hover { opacity: 1; color: var(--rust); }
 
     .checkout-wrap {
@@ -60,62 +52,58 @@
       align-items: start;
     }
 
-    /* LEFT — FORM */
     .form-col { padding-top: 1rem; }
-    .page-label { font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 600; color: var(--rust); letter-spacing: 4px; margin-bottom: 0.6rem; }
+    .page-label { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--cream); opacity: 0.4; letter-spacing: 4px; margin-bottom: 0.6rem; }
     .page-title { font-family: 'Cairo', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; color: var(--cream); line-height: 1.3; margin-bottom: 2.5rem; }
 
-    /* FORM FIELDS */
     .field-group { margin-bottom: 1.5rem; }
     .field-label { font-family: 'Cairo', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--cream); opacity: 0.7; margin-bottom: 0.6rem; display: block; }
     .field-input {
-      width: 100%; background: var(--card); border: 1px solid var(--border);
+      width: 100%; background: var(--card); border: 1px solid #E5E7EB;
       color: var(--cream); font-family: 'Cairo', sans-serif; font-size: 0.95rem;
       padding: 14px 16px; border-radius: 6px; outline: none; transition: all 0.3s ease;
-      -webkit-appearance: none; /* لتوحيد المظهر على iOS */
+      -webkit-appearance: none;
     }
-    .field-input:focus { border-color: var(--rust); box-shadow: 0 0 0 2px rgba(148, 58, 31, 0.1); }
+    .field-input:focus { border-color: var(--rust); box-shadow: 0 0 0 2px rgba(121, 210, 12, 0.1); }
     .field-input::placeholder { opacity: 0.3; }
     
     .field-select {
-      width: 100%; background: var(--card); border: 1px solid var(--border);
+      width: 100%; background: var(--card); border: 1px solid #E5E7EB;
       color: var(--cream); font-family: 'Cairo', sans-serif; font-size: 0.95rem;
       padding: 14px 16px; border-radius: 6px; outline: none; cursor: pointer;
       transition: all 0.3s ease; appearance: none; -webkit-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23E9E4E0'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23111827'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: left 16px center;
       background-size: 18px;
     }
-    .field-select:focus { border-color: var(--rust); box-shadow: 0 0 0 2px rgba(148, 58, 31, 0.1); }
-    .field-select option { background: #1B191A; }
+    .field-select:focus { border-color: var(--rust); box-shadow: 0 0 0 2px rgba(121, 210, 12, 0.1); }
+    .field-select option { background: #FFFFFF; }
     .field-error { font-family: 'Cairo', sans-serif; font-size: 0.8rem; color: #e05555; margin-top: 0.5rem; display: none; }
     .field-error.show { display: block; }
 
     .fields-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
 
-    /* PAY METHOD */
     .pay-methods { display: flex; gap: 1rem; flex-wrap: wrap; }
     .pay-opt {
-      flex: 1; min-width: 140px; background: var(--card); border: 1px solid var(--border);
+      flex: 1; min-width: 140px; background: var(--card); border: 1px solid #E5E7EB;
       border-radius: 6px; padding: 16px; cursor: pointer; transition: all 0.3s ease;
       display: flex; align-items: center; gap: 12px;
     }
-    .pay-opt.selected { border-color: var(--rust); background: rgba(148, 58, 31, 0.05); }
+    .pay-opt.selected { border-color: var(--rust); background: rgba(121, 210, 12, 0.04); }
     .pay-opt input { accent-color: var(--rust); width: 18px; height: 18px; cursor: pointer; }
     .pay-opt label { font-family: 'Cairo', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--cream); cursor: pointer; display: flex; align-items: center; gap: 8px; width: 100%; }
 
     .btn-submit {
-      width: 100%; background: var(--rust); color: var(--cream);
+      width: 100%; background: #0B252E; color: #FFFFFF;
       padding: 18px; border: none; border-radius: 100px;
       font-family: 'Cairo', sans-serif; font-size: 1.1rem; font-weight: 700;
       cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 2.5rem;
     }
-    .btn-submit:hover { background: #b5491e; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(148, 58, 31, 0.2); }
+    .btn-submit:hover { background: #111827; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
     .btn-submit:active { transform: translateY(0); }
 
-    /* RIGHT — ORDER SUMMARY */
     .summary-col {
       padding-top: 1rem;
       position: sticky; top: 94px;
@@ -123,30 +111,28 @@
     .summary-box {
       background: var(--card); border: 1px solid var(--border);
       border-radius: 12px; overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     }
     .summary-header {
       padding: 1.5rem; border-bottom: 1px solid var(--border);
       font-family: 'Cairo', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--cream); letter-spacing: 0.5px;
     }
     .summary-product { display: flex; gap: 1.2rem; padding: 1.5rem; border-bottom: 1px solid var(--border); align-items: center; }
-    .summary-img { width: 75px; aspect-ratio: 3/4; background: #1a1718; border-radius: 6px; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.05); }
+    .summary-img { width: 75px; aspect-ratio: 3/4; background: #F3F4F6; border-radius: 6px; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.05); }
     .summary-img img { width: 100%; height: 100%; object-fit: cover; }
-    .summary-img .no-img { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.1); font-size: 1.8rem; }
+    .summary-img .no-img { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: rgba(0,0,0,0.1); font-size: 1.8rem; }
     .summary-name { font-family: 'Cairo', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--cream); line-height: 1.4; }
-    .summary-pname-label { font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--rust); letter-spacing: 2px; margin-bottom: 0.2rem; }
+    .summary-pname-label { font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 600; color: var(--rust); letter-spacing: 2px; margin-bottom: 0.2rem; }
 
     .summary-rows { padding: 1.5rem; }
     .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .summary-row-label { font-family: 'Cairo', sans-serif; font-size: 0.9rem; color: var(--cream); opacity: 0.6; }
-    .summary-row-val { font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--cream); }
-    .summary-row-val.shipping { color: var(--cream); }
+    .summary-row-val { font-family: 'Space Mono', 'Cairo', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--cream); }
     .summary-divider { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
     .summary-total-row { display: flex; justify-content: space-between; align-items: center; }
     .summary-total-label-txt { font-family: 'Cairo', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--cream); }
-    .summary-total-amt { font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--rust); }
+    .summary-total-amt { font-family: 'Space Mono', 'Cairo', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--cream); }
 
-    /* MEDIA QUERIES FOR MOBILE OPTIMIZATION */
     @media (max-width: 900px) {
       nav { padding: 0 1.25rem; }
       .checkout-wrap { 
@@ -157,10 +143,10 @@
         padding-top: 74px;
         padding-bottom: 3rem;
       }
-      .form-col { padding-top: 0.5rem; order: 2; } /* ترتيب الاستمارة لتصبح أسفل الملخص مريح للموبايل */
-      .summary-col { position: static; padding-top: 0; order: 1; } /* الملخص يظهر أولاً ليرى العميل ماذا يشتري */
+      .form-col { padding-top: 0.5rem; order: 2; }
+      .summary-col { position: static; padding-top: 0; order: 1; }
       .page-title { margin-bottom: 1.8rem; }
-      .fields-row { grid-template-columns: 1fr; gap: 0; } /* تحويل الصفوف إلى عمودية بالكامل على الموبايل */
+      .fields-row { grid-template-columns: 1fr; gap: 0; }
       .pay-methods { flex-direction: column; gap: 0.8rem; }
       .pay-opt { width: 100%; }
       .btn-submit { margin-top: 2rem; padding: 16px; font-size: 1rem; }
@@ -190,74 +176,32 @@
 
       <div class="field-group">
         <label class="field-label" for="custName">الاسم الكامل</label>
-        <input
-          type="text"
-          class="field-input"
-          id="custName"
-          name="name"
-          autocomplete="name"
-          placeholder="محمد أحمد"
-          oninput="validateNameInput()"
-          required
-        >
+        <input type="text" class="field-input" id="custName" name="name" autocomplete="name" placeholder="محمد أحمد" oninput="validateNameInput()" required>
         <div class="field-error" id="nameError">الاسم يجب أن يكون حرفين على الأقل وبدون أرقام</div>
       </div>
 
       <div class="field-group">
         <label class="field-label" for="custPhone">رقم الموبايل</label>
-        <input
-          type="tel"
-          class="field-input font-eng"
-          id="custPhone"
-          name="tel"
-          autocomplete="tel"
-          placeholder="01xxxxxxxxx"
-          oninput="validatePhoneInput()"
-          required
-        >
+        <input type="tel" class="field-input font-eng" id="custPhone" name="tel" autocomplete="tel" placeholder="01xxxxxxxxx" oninput="validatePhoneInput()" required>
         <div class="field-error" id="phoneError">أدخل رقم مصري صحيح (010/011/012/015) مكون من 11 رقم</div>
       </div>
 
       <div class="fields-row">
         <div class="field-group">
           <label class="field-label" for="custGov">المحافظة</label>
-          <select
-            class="field-select"
-            id="custGov"
-            name="address-level1"
-            autocomplete="address-level1"
-            onchange="handleGovChange()"
-            required
-          >
+          <select class="field-select" id="custGov" name="address-level1" autocomplete="address-level1" onchange="handleGovChange()" required>
             <option value="">اختر المحافظة</option>
           </select>
         </div>
         <div class="field-group">
           <label class="field-label" for="shippingDisplay">تكلفة الشحن</label>
-          <input
-            type="text"
-            class="field-input"
-            id="shippingDisplay"
-            name="shipping"
-            autocomplete="off"
-            value="اختر المحافظة أولاً"
-            readonly
-            style="opacity:0.6; cursor:default;"
-          >
+          <input type="text" class="field-input" id="shippingDisplay" name="shipping" autocomplete="off" value="اختر المحافظة أولاً" readonly style="opacity:0.6; cursor:default;">
         </div>
       </div>
 
       <div class="field-group">
         <label class="field-label" for="custAddress">العنوان التفصيلي</label>
-        <input
-          type="text"
-          class="field-input"
-          id="custAddress"
-          name="street-address"
-          autocomplete="street-address"
-          placeholder="الشارع، رقم المبنى، الدور، أقرب معلم..."
-          required
-        >
+        <input type="text" class="field-input" id="custAddress" name="street-address" autocomplete="street-address" placeholder="الشارع، رقم المبنى، الدور، أقرب معلم..." required>
       </div>
 
       <div class="field-group">
@@ -292,6 +236,7 @@
         <div>
           <div class="summary-pname-label">NOXERA</div>
           <div class="summary-name" id="summaryName">—</div>
+          <div id="summaryMeta" style="font-size:0.8rem; color:#666; margin-top:4px;"></div>
         </div>
       </div>
       <div class="summary-rows">
@@ -300,8 +245,12 @@
           <span class="summary-row-val" id="summaryPrice">—</span>
         </div>
         <div class="summary-row">
+          <span class="summary-row-label">الكمية</span>
+          <span class="summary-row-val" id="summaryQty">1</span>
+        </div>
+        <div class="summary-row">
           <span class="summary-row-label">الشحن</span>
-          <span class="summary-row-val shipping" id="summaryShipping">اختر المحافظة</span>
+          <span class="summary-row-val" id="summaryShipping">اختر المحافظة</span>
         </div>
         <hr class="summary-divider">
         <div class="summary-total-row">
@@ -336,17 +285,27 @@
   var shippingCostAmount = 0;
   var detectedGovText = '';
   var selectedPayMethod = 'كاش عند الاستلام';
+  var orderQty = 1;
 
-  // Init
   (function init() {
     const name  = localStorage.getItem('selectedProduct') || '';
     const price = parseInt(localStorage.getItem('selectedPrice')) || 0;
     const img   = localStorage.getItem('selectedImg') || '';
-    baseProductPrice = price;
+    const size  = localStorage.getItem('selectedSize') || '';
+    const color = localStorage.getItem('selectedColor') || '';
+    orderQty    = parseInt(localStorage.getItem('selectedQty')) || 1;
+    baseProductPrice = price * orderQty;
 
     document.getElementById('summaryName').innerText = name || '—';
     document.getElementById('summaryPrice').innerText = price ? price + ' ج.م' : '—';
-    document.getElementById('summaryTotal').innerText = price ? price + ' ج.م' : '—';
+    document.getElementById('summaryQty').innerText = orderQty;
+    document.getElementById('summaryTotal').innerText = baseProductPrice ? baseProductPrice + ' ج.م' : '—';
+
+    // Show size and color meta
+    let meta = [];
+    if (size) meta.push('المقاس: ' + size.toUpperCase());
+    if (color) meta.push('اللون: ' + color);
+    document.getElementById('summaryMeta').innerText = meta.join(' | ');
 
     if (img) {
       document.getElementById('summaryImg').innerHTML = `<img src="${img}" alt="${name}">`;
@@ -409,6 +368,9 @@
 
     const product   = localStorage.getItem('selectedProduct') || 'منتج من NOXERA';
     const productId = localStorage.getItem('selectedId') || '';
+    const size      = localStorage.getItem('selectedSize') || '';
+    const color     = localStorage.getItem('selectedColor') || '';
+    const note      = localStorage.getItem('orderNote') || '';
     const name      = document.getElementById('custName').value.trim();
     const phone     = document.getElementById('custPhone').value.trim();
     const address   = document.getElementById('custAddress').value.trim();
@@ -439,6 +401,10 @@
           gov,
           address,
           payMethod: selectedPayMethod,
+          size,
+          color,
+          qty: orderQty,
+          note
         }),
       });
 
@@ -452,6 +418,8 @@
         localStorage.removeItem('selectedId');
         localStorage.removeItem('selectedSize');
         localStorage.removeItem('selectedColor');
+        localStorage.removeItem('selectedQty');
+        localStorage.removeItem('orderNote');
         window.location.href = 'track.html?id=' + (data.id || '') + '&number=' + (data.order_number || '');
       } else {
         throw new Error(data.error || 'حدث خطأ');
@@ -464,7 +432,7 @@
       if (!errEl) {
         errEl = document.createElement('div');
         errEl.id = 'orderError';
-        errEl.style.cssText = 'background:rgba(180,30,30,0.15);border:1px solid rgba(180,30,30,0.4);color:#e05555;font-family:Cairo,sans-serif;font-size:0.9rem;padding:12px 16px;border-radius:6px;margin-top:1rem;text-align:center;';
+        errEl.style.cssText = 'background:rgba(220,50,50,0.08);border:1px solid rgba(220,50,50,0.2);color:#e05555;font-family:Cairo,sans-serif;font-size:0.9rem;padding:12px 16px;border-radius:6px;margin-top:1rem;text-align:center;';
         btn.after(errEl);
       }
       errEl.innerText = 'حدث خطأ أثناء إرسال الطلب، حاول مرة أخرى.';

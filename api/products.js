@@ -15,6 +15,13 @@ function normalise(p) {
   let urls = Array.isArray(p.image_urls) ? p.image_urls.filter(Boolean) : [];
   if (urls.length === 0 && p.image_url) urls = [p.image_url];
   urls = urls.slice(0, 4);
+  
+  // Parse sold_out_sizes
+  let soldOutSizes = p.sold_out_sizes || [];
+  if (typeof soldOutSizes === 'string') {
+    try { soldOutSizes = JSON.parse(soldOutSizes); } catch(e) { soldOutSizes = []; }
+  }
+
   return {
     ...p,
     image_url:      urls[0] || p.image_url || '',
@@ -26,6 +33,8 @@ function normalise(p) {
     sizes:          p.sizes          || [],
     colors:         p.colors         || [],
     main_image_index: p.main_image_index || 0,
+    sold_out:       p.sold_out || false,
+    sold_out_sizes: soldOutSizes
   };
 }
 
@@ -63,7 +72,8 @@ export default async function handler(req, res) {
         name, type, price, description = '', cost_price = 0,
         image_url = '', image_urls = [], gallery = [],
         discount_type = 'none', discount_value = 0,
-        sizes = [], colors = [], main_image_index = 0
+        sizes = [], colors = [], main_image_index = 0,
+        sold_out = false, sold_out_sizes = []
       } = req.body;
 
       if (!name || !type || !price) {
@@ -89,7 +99,9 @@ export default async function handler(req, res) {
           discount_value: discount_value || 0,
           sizes,
           colors,
-          main_image_index: parseInt(main_image_index || 0)
+          main_image_index: parseInt(main_image_index || 0),
+          sold_out:       Boolean(sold_out),
+          sold_out_sizes: Array.isArray(sold_out_sizes) ? sold_out_sizes : []
         }])
         .select().single();
 
@@ -104,7 +116,8 @@ export default async function handler(req, res) {
         name, type, price, description, cost_price,
         image_url, image_urls, gallery,
         discount_type, discount_value,
-        sizes, colors, main_image_index
+        sizes, colors, main_image_index,
+        sold_out, sold_out_sizes
       } = req.body || {};
 
       const updates = {};
@@ -118,6 +131,8 @@ export default async function handler(req, res) {
       if (sizes !== undefined) updates.sizes = sizes;
       if (colors !== undefined) updates.colors = colors;
       if (main_image_index !== undefined) updates.main_image_index = parseInt(main_image_index || 0);
+      if (sold_out !== undefined) updates.sold_out = Boolean(sold_out);
+      if (sold_out_sizes !== undefined) updates.sold_out_sizes = Array.isArray(sold_out_sizes) ? sold_out_sizes : [];
 
       // Handle image URLs (gallery or image_urls)
       const rawUrls = (Array.isArray(gallery) && gallery.length) ? gallery : image_urls;

@@ -29,7 +29,8 @@ export default async function handler(req, res) {
   try {
     const {
       product, productId, price, shipping, total,
-      name, phone, gov, address, payMethod
+      name, phone, gov, address, payMethod,
+      size = '', color = '', qty = 1, note = ''
     } = req.body || {};
 
     const orderNumber = `NOX-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -41,7 +42,10 @@ export default async function handler(req, res) {
         id: productId || null,
         name: product,
         price: price,
-        quantity: 1
+        quantity: parseInt(qty || 1),
+        size: size || null,
+        color: color || null,
+        note: note || null
       }];
 
       const { data: orderData, error: dbError } = await supabase.from('orders').insert([{
@@ -53,7 +57,8 @@ export default async function handler(req, res) {
         total: parseFloat(total),
         payment_method: payMethod === 'كاش عند الاستلام' ? 'cod' : 'card',
         status: 'pending',
-        items: items
+        items: items,
+        notes: note || null
       }]).select().single();
 
       if (dbError) {
@@ -70,10 +75,19 @@ export default async function handler(req, res) {
     const safeGov = escapeHtml(gov);
     const safeAddress = escapeHtml(address);
     const safePayMethod = escapeHtml(payMethod);
+    const safeSize = escapeHtml(size);
+    const safeColor = escapeHtml(color);
+    const safeNote = escapeHtml(note);
 
-    const message =
+    let message =
         `🚨 <b>طلب جديد من NOXERA (#${orderNumber})</b> 🚨\n\n` +
-        `📦 <b>المنتج:</b> ${safeProduct}\n` +
+        `📦 <b>المنتج:</b> ${safeProduct}\n`;
+    
+    if (safeSize) message += `📏 <b>المقاس:</b> ${safeSize.toUpperCase()}\n`;
+    if (safeColor) message += `🎨 <b>اللون:</b> ${safeColor}\n`;
+    
+    message +=
+        `🔢 <b>الكمية:</b> ${qty}\n` +
         `💵 <b>السعر:</b> ${price} ج.م\n` +
         `🚚 <b>الشحن:</b> ${shipping} ج.م\n` +
         `💰 <b>الإجمالي:</b> ${total} ج.م\n\n` +
@@ -83,9 +97,25 @@ export default async function handler(req, res) {
         `🏡 <b>العنوان:</b> ${safeAddress}\n` +
         `💳 <b>الدفع:</b> ${safePayMethod}`;
 
+    if (safeNote) {
+      message += `\n📝 <b>ملاحظة:</b> ${safeNote}`;
+    }
+
     // 2. Send Telegram Notification using Vercel Environment Variables
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
+
+    // Auto-register the webhook dynamically to make sure inline buttons work immediately on any Vercel domain!
+    if (botToken) {
+      try {
+        const host = req.headers.host;
+        const protocol = req.headers['x-forwarded-proto'] || 'https';
+        const webhookUrl = `${protocol}://${host}/api/telegram-webhook`;
+        await fetch(`https://api.telegram.org/bot${botToken}/setWebhook?url=${encodeURIComponent(webhookUrl)}`);
+      } catch (e) {
+        console.error('Failed to set Telegram webhook in order API:', e);
+      }
+    }
 
     if (botToken && chatId) {
       const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;

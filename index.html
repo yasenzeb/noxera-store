@@ -15,11 +15,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --bg: #1B191A;
-      --cream: #E9E4E0;
-      --rust: #943A1F;
-      --card: #141213;
-      --border: rgba(148,58,31,0.2);
+      --bg: #F4F4F6;
+      --cream: #000000;
+      --rust: #79D20C;
+      --card: #FFFFFF;
+      --border: rgba(0, 0, 0, 0.06);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
@@ -36,25 +36,26 @@
     /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: #141213;
-      border-bottom: 1px solid var(--border);
+      background: #FFFFFF;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
       padding: 0 2rem;
       height: 64px;
       display: flex; align-items: center; justify-content: space-between;
     }
     .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .nav-logo img { height: 36px; object-fit: contain; }
-    .nav-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--cream); letter-spacing: 3px; }
+    .nav-logo span { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--rust); letter-spacing: 3px; font-weight: 900; }
     .nav-links { display: flex; align-items: center; gap: 2rem; }
     .nav-links a { color: var(--cream); text-decoration: none; font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 2px; opacity: 0.7; transition: opacity 0.3s, color 0.3s; }
     .nav-links a:hover { opacity: 1; color: var(--rust); }
     .cart-icon { position: relative; }
     .cart-badge {
       position: absolute; top: -8px; right: -8px;
-      background: var(--rust); color: white;
+      background: var(--rust); color: black;
       font-family: 'Space Mono', monospace; font-size: 10px;
       width: 18px; height: 18px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
     }
 
     /* HERO */
@@ -67,7 +68,7 @@
     .hero-bg-text {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(100px, 20vw, 220px);
-      color: rgba(148,58,31,0.12);
+      color: rgba(121, 210, 12, 0.04);
       position: absolute;
       top: 50%; transform: translateY(-50%);
       white-space: nowrap;
@@ -96,12 +97,12 @@
     .hero-tagline { font-family: 'Cairo', sans-serif; color: var(--cream); opacity: 0.55; margin-top: 1.2rem; font-size: 1.1rem; padding: 0 10px; }
     .hero-btn {
       display: inline-block; margin-top: 2rem;
-      background: var(--rust); color: var(--cream);
+      background: #0B252E; color: #FFFFFF;
       padding: 14px 48px; border-radius: 100px;
       font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 3px;
       text-decoration: none; transition: background 0.3s, transform 0.2s;
     }
-    .hero-btn:hover { background: #b5491e; transform: scale(1.04); }
+    .hero-btn:hover { background: var(--rust); color: black; transform: scale(1.04); }
     .hero-scroll {
       position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
       color: var(--cream); opacity: 0.3;
@@ -111,12 +112,12 @@
     @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
 
     /* MARQUEE */
-    .marquee-wrap { background: var(--rust); overflow: hidden; padding: 10px 0; width: 100%; }
+    .marquee-wrap { background: var(--rust); overflow: hidden; padding: 10px 0; width: 100%; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05); }
     .marquee-track {
       display: flex; gap: 3rem; white-space: nowrap;
       animation: marquee 18s linear infinite;
     }
-    .marquee-track span { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 4px; color: var(--cream); opacity: 0.9; }
+    .marquee-track span { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 4px; color: black; font-weight: 700; opacity: 0.9; }
     @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
     /* SHOP SECTION */
@@ -137,7 +138,7 @@
       cursor: pointer; border-radius: 100px; transition: all 0.3s;
       -webkit-tap-highlight-color: transparent;
     }
-    .tab-btn:hover, .tab-btn.active { background: var(--rust); border-color: var(--rust); }
+    .tab-btn:hover, .tab-btn.active { background: #0B252E; border-color: #0B252E; color: white; }
 
     /* PRODUCTS GRID */
     .products-grid {
@@ -154,19 +155,19 @@
       height: 100%;
     }
     .product-card:hover { transform: translateY(-6px); border-color: var(--rust); }
-    .product-image { aspect-ratio: 3/4; overflow: hidden; position: relative; background: #1a1718; }
+    .product-image { aspect-ratio: 3/4; overflow: hidden; position: relative; background: #F3F4F6; }
     .product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
     .product-card:hover .product-image img { transform: scale(1.06); }
     .discount-badge {
       position: absolute; top: 12px; right: 12px;
-      background: var(--rust); color: white;
+      background: var(--rust); color: black;
       font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700;
       padding: 4px 8px; border-radius: 2px; z-index: 10;
     }
     .add-btn {
       position: absolute; bottom: 0; left: 0; right: 0;
-      background: rgba(20,18,19,0.92);
-      color: var(--cream); text-align: center;
+      background: #0B252E;
+      color: #FFFFFF; text-align: center;
       font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 3px;
       padding: 14px;
       transform: translateY(100%); transition: transform 0.3s;
@@ -176,8 +177,8 @@
     .product-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--cream); margin-bottom: 0.4rem; line-height: 1.2; }
     .product-type { font-family: 'Cairo', sans-serif; font-size: 0.75rem; color: var(--rust); opacity: 0.8; margin-bottom: 0.5rem; }
     .prices { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
-    .final-price { font-family: 'Space Mono', monospace; color: var(--rust); font-weight: 700; }
-    .old-price { font-family: 'Space Mono', monospace; font-size: 0.8rem; text-decoration: line-through; color: #555; }
+    .final-price { font-family: 'Space Mono', monospace; color: var(--cream); font-weight: 700; }
+    .old-price { font-family: 'Space Mono', monospace; font-size: 0.8rem; text-decoration: line-through; color: #888; }
 
     /* LOADING */
     .loading-grid { display: flex; justify-content: center; align-items: center; min-height: 300px; }
@@ -259,7 +260,8 @@
         position: relative;
         padding: 10px;
         font-size: 0.85rem;
-        background: var(--card);
+        background: #0B252E;
+        color: #FFFFFF;
         border-top: 1px solid var(--border);
       }
       .product-card:hover { transform: none; }
@@ -452,14 +454,18 @@
     // Encode the full urls array for onclick (JSON → base64-safe via encodeURIComponent)
     const urlsEncoded = encodeURIComponent(JSON.stringify(urls));
 
+    const isSoldOut = p.sold_out;
+    const soldOutBadge = isSoldOut ? `<div class="discount-badge" style="background:#ef4444;color:white;left:12px;right:auto;font-family:'Bebas Neue';letter-spacing:1px;">SOLD OUT</div>` : '';
+
     return `
-      <div class="product-card" onclick="selectProduct('${escHtml(p.name)}', ${final}, '${escHtml(cover)}', '${p.id}', '${urlsEncoded}')">
+      <div class="product-card" onclick="${isSoldOut ? '' : `selectProduct('${escHtml(p.name)}', ${final}, '${escHtml(cover)}', '${p.id}', '${urlsEncoded}')`}" style="${isSoldOut ? 'cursor:not-allowed;' : ''}">
         <div class="product-image">
           ${cover
-            ? `<img src="${escHtml(cover)}" alt="${escHtml(p.name)}" loading="lazy">`
-            : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.1)"><i class="fas fa-tshirt" style="font-size:3rem"></i></div>`}
-          ${hasDiscount ? `<div class="discount-badge">${discLabel}</div>` : ''}
-          <div class="add-btn">ADD TO CART</div>
+            ? `<img src="${escHtml(cover)}" alt="${escHtml(p.name)}" loading="lazy" style="${isSoldOut ? 'filter: grayscale(0.8); opacity: 0.6;' : ''}">`
+            : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,0.1)"><i class="fas fa-tshirt" style="font-size:3rem"></i></div>`}
+          ${hasDiscount && !isSoldOut ? `<div class="discount-badge">${discLabel}</div>` : ''}
+          ${soldOutBadge}
+          <div class="add-btn">${isSoldOut ? 'SOLD OUT' : 'ADD TO CART'}</div>
         </div>
         <div class="product-info">
           <div>
@@ -467,7 +473,7 @@
             <div class="product-name">${escHtml(p.name)}</div>
           </div>
           <div class="prices">
-            <span class="final-price">${final} ج.م</span>
+            <span class="final-price" style="${isSoldOut ? 'color:#888;' : ''}">${final} ج.م</span>
             ${hasDiscount ? `<span class="old-price">${p.price} ج.م</span>` : ''}
           </div>
         </div>
