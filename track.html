@@ -322,22 +322,36 @@
     const rows = document.getElementById('detailsRows');
     section.style.display = 'block';
 
-    const items = [
-      ['المنتج', order.product || '—'],
-      ['المقاس', (order.size || '—').toUpperCase()],
-      ['اللون', order.color || '—'],
-      ['الكمية', order.qty || 1],
+    // Extract product details from the items JSONB array
+    let productName = '—', productSize = '—', productColor = '—', productQty = 1;
+    let orderItems = order.items;
+    if (typeof orderItems === 'string') {
+      try { orderItems = JSON.parse(orderItems); } catch(e) {}
+    }
+    if (Array.isArray(orderItems) && orderItems.length) {
+      const first = orderItems[0];
+      productName = first.name || '—';
+      productSize = (first.size || '—').toUpperCase();
+      productColor = first.color || '—';
+      productQty = first.quantity || first.qty || 1;
+    }
+
+    const payLabel = order.payment_method === 'cod' ? 'كاش عند الاستلام' : (order.payment_method === 'card' ? 'تحويل بنكي' : (order.payment_method || '—'));
+
+    const details = [
+      ['المنتج', productName],
+      ['المقاس', productSize],
+      ['اللون', productColor],
+      ['الكمية', productQty],
       ['العميل', order.customer_name || '—'],
       ['الموبايل', order.customer_phone || '—'],
       ['المحافظة', order.governorate || '—'],
       ['العنوان', order.address || '—'],
-      ['سعر المنتج', (order.price || 0) + ' ج.م'],
-      ['الشحن', (order.shipping || 0) + ' ج.م'],
       ['الإجمالي', (order.total || 0) + ' ج.م'],
-      ['الدفع', order.payment_method || '—'],
+      ['الدفع', payLabel],
     ];
 
-    rows.innerHTML = items.map(([label, val]) => `
+    rows.innerHTML = details.map(([label, val]) => `
       <div class="detail-row">
         <span class="detail-label">${label}</span>
         <span class="detail-val">${val}</span>
@@ -362,7 +376,7 @@
 
   updateTimeline('pending');
   fetchOrderStatus();
-  setInterval(fetchOrderStatus, 15000);
+  setInterval(fetchOrderStatus, 10000);
 </script>
 </body>
 </html>

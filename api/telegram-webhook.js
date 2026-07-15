@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase conditionally to avoid crashes in local dev when env vars are missing
 let supabase = null;
 if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
   try {
@@ -10,12 +9,24 @@ if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
   }
 }
 
-function escapeHtml(text) {
-  if (!text) return '';
-  return String(text)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+const STATUS_LABELS = {
+  pending:   '🟡 قيد الانتظار',
+  confirmed: '🔵 تم القبول والتجهيز',
+  shipped:   '🚚 خرج للشحن',
+  delivered: '🟢 تم التسليم'
+};
+
+async function tgApi(botToken, method, body) {
+  const res = await fetch(`https://api.telegram.org/bot${botToken}/${method}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if (!data.ok) {
+    console.error(`Telegram ${method} error:`, JSON.stringify(data));
+  }
+  return data;
 }
 
 export default async function handler(req, res) {
@@ -26,122 +37,148 @@ export default async function handler(req, res) {
 
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
 
-  // GET request: Auto-register the webhook url with Telegram Bot API
+  // ──────────────────────────────────────────────
+  // GET: Register webhook with Telegram
+  // ──────────────────────────────────────────────
   if (req.method === 'GET') {
     if (!botToken) {
-      return res.status(400).json({ success: false, error: 'TELEGRAM_BOT_TOKEN environment variable is not defined.' });
+      return res.status(400).json({ success: false, error: 'TELEGRAM_BOT_TOKEN not set.' });
     }
-
     try {
       const host = req.headers.host;
       const protocol = req.headers['x-forwarded-proto'] || 'https';
       const webhookUrl = `${protocol}://${host}/api/telegram-webhook`;
 
-      const response = await fetch(`https://api.telegram.org/bot${botToken}/setWebhook?url=${encodeURIComponent(webhookUrl)}`);
-      const data = await response.json();
+      // First delete any old webhook
+      await tgApi(botToken, 'deleteWebhook', {});
+      // Then set new one
+      const result = await tgApi(botToken, 'setWebhook', { url: webhookUrl });
 
       return res.status(200).json({
         success: true,
-        message: 'Webhook registration attempt completed.',
-        telegram_response: data,
-        webhook_url: webhookUrl
+        webhook_url: webhookUrl,
+        telegram_response: result
       });
     } catch (err) {
       return res.status(500).json({ success: false, error: err.message });
     }
   }
 
-  // POST request: Handle incoming updates from Telegram
+  // ──────────────────────────────────────────────
+  // POST: Handle Telegram callback_query updates
+  // ──────────────────────────────────────────────
   if (req.method === 'POST') {
     try {
       const update = req.body;
+
+      // Telegram sends many update types; we only care about callback_query
       if (!update || !update.callback_query) {
-        return res.status(200).json({ success: true, message: 'Unhandled update type.' });
+        return res.status(200).json({ ok: true });
       }
 
-      const callbackQuery = update.callback_query;
-      const callbackData = callbackQuery.data; // format: "status:new_status:order_id"
-      const callbackQueryId = callbackQuery.id;
+      const cb = update.callback_query;
+      const cbId = cb.id;
+      const cbData = cb.data || '';
 
-      if (callbackData && callbackData.startsWith('status:')) {
-        const parts = callbackData.split(':');
-        const newStatus = parts[1];
-        const orderId = parts[2];
-
-        if (!supabase) {
-          await fetch(`https://api.telegram.org/bot${botToken}/answerCallbackQuery`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              callback_query_id: callbackQueryId,
-              text: '❌ خطأ: لم يتم تهيئة اتصال قاعدة البيانات.'
-            })
-          });
-          return res.status(200).json({ success: false, error: 'Supabase client not initialized' });
-        }
-
-        // Update the order status in Supabase database
-        const { data: updatedOrder, error: dbError } = await supabase
-          .from('orders')
-          .update({ status: newStatus })
-          .eq('id', orderId)
-          .select()
-          .single();
-
-        if (dbError) {
-          console.error('Database update error:', dbError);
-          await fetch(`https://api.telegram.org/bot${botToken}/answerCallbackQuery`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              callback_query_id: callbackQueryId,
-              text: '❌ فشل تحديث حالة الطلب في قاعدة البيانات.'
-            })
-          });
-          return res.status(200).json({ success: false, error: dbError.message });
-        }
-
-        // Mapping labels
-        const statusLabels = {
-          pending: '🟡 قيد الانتظار',
-          confirmed: '🔵 تم قبول الطلب وجاري تجهيزه',
-          shipped: '🚚 خرج للشحن',
-          delivered: '🟢 تم التسليم'
-        };
-        const statusLabel = statusLabels[newStatus] || newStatus;
-
-        // Answer callback query with alert popup
-        await fetch(`https://api.telegram.org/bot${botToken}/answerCallbackQuery`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            callback_query_id: callbackQueryId,
-            text: `✅ تم تحديث حالة الطلب بنجاح إلى: ${statusLabel}`
-          })
+      // Our format: "status:<newStatus>:<orderId>"
+      if (!cbData.startsWith('status:')) {
+        await tgApi(botToken, 'answerCallbackQuery', {
+          callback_query_id: cbId,
+          text: '⚠️ إجراء غير معروف'
         });
+        return res.status(200).json({ ok: true });
+      }
 
-        // Edit message text to show updated status at the bottom of the original message
-        const originalText = callbackQuery.message.text || '';
-        const cleanText = originalText.split('\n\n🔄 حالة الطلب')[0];
-        const updatedText = `${cleanText}\n\n🔄 حالة الطلب الحالية: <b>${statusLabel}</b>`;
+      const parts = cbData.split(':');
+      if (parts.length < 3) {
+        await tgApi(botToken, 'answerCallbackQuery', {
+          callback_query_id: cbId,
+          text: '❌ بيانات غير صحيحة'
+        });
+        return res.status(200).json({ ok: true });
+      }
 
-        await fetch(`https://api.telegram.org/bot${botToken}/editMessageText`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: callbackQuery.message.chat.id,
-            message_id: callbackQuery.message.message_id,
-            text: updatedText,
-            parse_mode: 'HTML',
-            reply_markup: callbackQuery.message.reply_markup // Keep the inline keyboard buttons active
-          })
+      const newStatus = parts[1];
+      const orderId = parts.slice(2).join(':'); // Handle UUIDs with colons (won't happen, but safe)
+
+      // ── 1. Validate Supabase connection ──
+      if (!supabase) {
+        await tgApi(botToken, 'answerCallbackQuery', {
+          callback_query_id: cbId,
+          text: '❌ خطأ: قاعدة البيانات غير متصلة'
+        });
+        return res.status(200).json({ ok: true });
+      }
+
+      // ── 2. Update order in database ──
+      const { data: updatedOrder, error: dbError } = await supabase
+        .from('orders')
+        .update({ status: newStatus })
+        .eq('id', orderId)
+        .select()
+        .single();
+
+      if (dbError) {
+        console.error('DB update error:', dbError);
+        await tgApi(botToken, 'answerCallbackQuery', {
+          callback_query_id: cbId,
+          text: '❌ فشل التحديث: ' + (dbError.message || 'خطأ غير معروف')
+        });
+        return res.status(200).json({ ok: true });
+      }
+
+      const statusLabel = STATUS_LABELS[newStatus] || newStatus;
+
+      // ── 3. Answer the callback (toast popup in Telegram) ──
+      await tgApi(botToken, 'answerCallbackQuery', {
+        callback_query_id: cbId,
+        text: `✅ تم التحديث: ${statusLabel}`,
+        show_alert: true
+      });
+
+      // ── 4. Edit the message to show current status ──
+      // Use the original message text (plain text, no HTML entities from callback)
+      const msg = cb.message;
+      if (msg) {
+        const chatId = msg.chat.id;
+        const messageId = msg.message_id;
+
+        // Rebuild the message text: keep original + append/update status line
+        let originalText = msg.text || '';
+        
+        // Remove any previously appended status line
+        const statusLineRegex = /\n\n━━━━━━━━━━━━━━━━━━━━\n🔄 حالة الطلب:.*/s;
+        originalText = originalText.replace(statusLineRegex, '');
+
+        const newText = originalText +
+          `\n\n━━━━━━━━━━━━━━━━━━━━\n🔄 حالة الطلب: ${statusLabel}`;
+
+        // Rebuild the inline keyboard (keep buttons active for future clicks)
+        const inlineKeyboard = [
+          [
+            { text: newStatus === 'pending' ? '🟡 ● قيد الانتظار' : '🟡 قيد الانتظار', callback_data: `status:pending:${orderId}` },
+            { text: newStatus === 'confirmed' ? '🔵 ● تم التجهيز' : '🔵 تم التجهيز', callback_data: `status:confirmed:${orderId}` }
+          ],
+          [
+            { text: newStatus === 'shipped' ? '🚚 ● خرج للشحن' : '🚚 خرج للشحن', callback_data: `status:shipped:${orderId}` },
+            { text: newStatus === 'delivered' ? '🟢 ● تم التسليم' : '🟢 تم التسليم', callback_data: `status:delivered:${orderId}` }
+          ]
+        ];
+
+        await tgApi(botToken, 'editMessageText', {
+          chat_id: chatId,
+          message_id: messageId,
+          text: newText,
+          reply_markup: { inline_keyboard: inlineKeyboard }
         });
       }
 
-      return res.status(200).json({ success: true });
+      return res.status(200).json({ ok: true, status: newStatus });
+
     } catch (err) {
       console.error('Webhook handler error:', err);
-      return res.status(500).json({ success: false, error: err.message });
+      // Always return 200 to Telegram to prevent retries
+      return res.status(200).json({ ok: true, error: err.message });
     }
   }
 
